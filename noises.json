@@ -1,0 +1,4 @@
+[
+    {"name": "hiss", "desc": "hiss like a cat", "preview": "/static/hiss.mp3"},
+    {"name": "pop", "desc": "like popping a bubble", "preview": "/static/pop.mp3"}
+]
