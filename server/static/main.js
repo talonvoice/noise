@@ -1,12 +1,12 @@
 /*
   TODOS:
-  - load data
-  - allow user to select mic
-  - fallback to <input>
-  - refactor
-  - update UI when done recording, and uploading
-  - allow user to review and submit
-  - load noise info from data json
+  - [x] load data
+  - [ ] allow user to select mic
+  - [ ] fallback to <input>
+  - [ ] refactor
+  - [x] update UI when done recording, and uploading
+  - [ ] allow user to review and submit
+  - [x] load noise info from data json
 */
 
 const WAITING = 0;
@@ -14,7 +14,11 @@ const RECORDING = 1;
 const UPLOADING = 2;
 const UPLOADED = 3;
 
-let status = WAITING;
+let state = {
+  status: WAITING,
+  noiseList: [],
+  selectedNoise: -1,
+};
 
 let statuses = [
   { description: 'Waiting to record' },
@@ -63,7 +67,7 @@ function renderStatus(status) {
 
 const handleSuccess = function(stream) {
   const options = {mimeType: 'audio/webm'};
-  status = WAITING;
+  state.status = WAITING;
   let recordedChunks = [];
 
   try {
@@ -74,7 +78,7 @@ const handleSuccess = function(stream) {
   }
 
   recordButton.addEventListener('click', function() {
-    if (status === WAITING) {
+    if (state.status === WAITING) {
       recordedChunks = [];
 
       player.setAttribute('disabled', 'disabled');
@@ -88,7 +92,7 @@ const handleSuccess = function(stream) {
         console.error(e);
         // TODO: reset UI
       }
-    } else if (status === RECORDING) {
+    } else if (state.status === RECORDING) {
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
   })
@@ -106,8 +110,8 @@ const handleSuccess = function(stream) {
   mediaRecorder.addEventListener('start', function() {
     startTime = Date.now();
     recordButton.classList.add('Recorder-recordButton--recording');
-    status = RECORDING;
-    renderStatus(status); 
+    state.status = RECORDING;
+    renderStatus(state.status); 
   });
   
   mediaRecorder.addEventListener('stop', function() {
@@ -115,8 +119,8 @@ const handleSuccess = function(stream) {
     renderTime(elapsed);
     recordButton.classList.remove('Recorder-recordButton--recording');
     filename = `${filenamePrefix}.${filenameSessionID}.webm`;
-    status = UPLOADING;
-    renderStatus(status);
+    state.status = UPLOADING;
+    renderStatus(state.status);
 
     let blob = new Blob(recordedChunks);
     let file = new File([blob], filename);
@@ -131,8 +135,8 @@ const handleSuccess = function(stream) {
       response => console.log(response.statusText)
     ).then(
       success => {
-        status = UPLOADED;
-        renderStatus(status);
+        state.status = UPLOADED;
+        renderStatus(state.status);
       }).catch(
       error => console.log(error) // Handle the error response object
     );
@@ -185,10 +189,31 @@ function updateFilenamePrefix(prefix) {
   filenamePrefix = prefix;
 }
 
-function process(noises) {
-  firstNoise = noises[0];
-  updateFilenamePrefix(firstNoise.name);
-  renderRecorder(firstNoise);
+function updateNoises(noises) {
+  state.noiseList = noises.slice();
+}
+
+function selectNoise(index) { // TODO: or pass actual noise?
+  state.selectedNoise = index; // TODO: or assign actual noise?
+  noise = state.noiseList[index];
+  updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
+}
+
+function renderNoiseList(noiseList) {
+
+}
+
+function render() {
+  renderNoiseList(state.noiseList);
+  renderRecorder(state.noiseList[state.selectedNoise]);
+}
+
+function processNoises(noises) {
+  updateNoises(noises);
+  selectNoise(0); // TODO: or pass actual noise?
+
+  render();
+
   // TODO: wait until the first interaction to do this?
   navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
@@ -200,7 +225,7 @@ window
   .then(
     response => response.json()
   ).then(
-    noises => process(noises) // Handle the success response object
+    noises => processNoises(noises) // Handle the success response object
   ).catch(
     error => console.log(error) // Handle the error response object
   );
