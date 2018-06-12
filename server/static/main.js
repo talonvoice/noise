@@ -48,7 +48,7 @@ let statuses = [
 const downloadLink = document.querySelector('[data-id=download]');
 let player = document.querySelector('[data-id=player]');
 let recordButton = document.querySelector('[data-id=recordButton]');
-let recorderTime = document.querySelector('[data-id=recorderTime');
+let recorderTime = document.querySelector('[data-id=recorderTime]');
 let recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
 function renderTime(time) {

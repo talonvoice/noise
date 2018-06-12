@@ -11,6 +11,64 @@ a {
   text-decoration: none;
 }
 
+
+/* Noise List */
+
+.RecordingList {
+}
+
+.RecordingList-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.RecordingList-item {
+  display: block;
+  margin: 5px 0;
+}
+
+
+.Recording-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;  
+  display: flex;
+}
+
+.Recording {
+  background-color: #e9e9e9;
+}
+.Recording--selected {
+  background-color: #e9cccc;
+}
+
+.Recording-item {
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.Recording-name {
+}
+
+.Recording-description {
+  flex: 2;
+}
+
+.Recording-instructions {
+  flex: 4;
+}
+
+.Recording-status {
+}
+
+
+/* Recorder */
+
 .Centered {
   width: 640px;
   margin: 0 auto;
