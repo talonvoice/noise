@@ -243,7 +243,11 @@ function updateFilenamePrefix(prefix) {
 
 /* state management */
 function updateNoises(noises) {
+  // TODO: rename to initializeNoise?
   state.noiseList = noises.slice();
+  state.noiseList = state.noiseList.map(noise => Object.assign({}, noise, {
+    status: WAITING
+  }));
 }
 
 /* state management */
@@ -254,8 +258,19 @@ function selectNoise(index) { // TODO: or pass actual noise?
 }
 
 /* UI */
+const list = document.querySelector('[data-id=list]');
 function renderNoiseList(noiseList) {
+  noiseList.forEach((noise, index) => {
+    let number = index + 1;
+    let name = document.querySelector(`[data-id=list-item-${number}-name]`);
+    let description = document.querySelector(`[data-id=list-item-${number}-description]`);
+    let instructions = document.querySelector(`[data-id=list-item-${number}-instructions]`);
+    let status = document.querySelector(`[data-id=list-item-${number}-status]`);
 
+    name.innerText = noise.name;
+    instructions.innerText = noise.desc;
+    status.innerText = statuses[noise.status].description;
+  });
 }
 
 /* UI */
