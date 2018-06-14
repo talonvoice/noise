@@ -258,18 +258,44 @@ function selectNoise(index) { // TODO: or pass actual noise?
 }
 
 /* UI */
-const list = document.querySelector('[data-id=list]');
-function renderNoiseList(noiseList) {
-  noiseList.forEach((noise, index) => {
-    let number = index + 1;
-    let name = document.querySelector(`[data-id=list-item-${number}-name]`);
-    let description = document.querySelector(`[data-id=list-item-${number}-description]`);
-    let instructions = document.querySelector(`[data-id=list-item-${number}-instructions]`);
-    let status = document.querySelector(`[data-id=list-item-${number}-status]`);
+const noiseTemplate = template`
+  <li class="RecordingList-item">
+    <div class="Recording Recording--selected" data-id="list-item-${'number'}">
+      <ul class="Recording-container">
+        <li class="Recording-item Recording-name" data-id="list-item-${'number'}-name">${'name'}</li>
+        <li class="Recording-item Recording-description" data-id="list-item-${'number'}-description">${'description'}</li>
+        <li class="Recording-item Recording-instructions" data-id="list-item-${'number'}-instructions">${'instructions'}</li>
+        <li class="Recording-item Recording-status" data-id="list-item-${'number'}-status">${'status'}</li>
+      </ul>
+    </div>
+  </li>
+`;
 
-    name.innerText = noise.name;
-    instructions.innerText = noise.desc;
-    status.innerText = statuses[noise.status].description;
+// copypasta from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+function template(strings, ...keys) {
+  return (function(...values) {
+    var dict = values[values.length - 1] || {};
+    var result = [strings[0]];
+    keys.forEach(function(key, i) {
+      var value = Number.isInteger(key) ? values[key] : dict[key];
+      result.push(value, strings[i + 1]);
+    });
+    return result.join('');
+  });
+}
+
+const list = document.querySelector('[data-id=list]');
+const container = document.querySelector('[data-id=list-container]');
+function renderNoiseList(noiseList) {
+  container.innerHTML = '';
+  noiseList.forEach((noise, index) => {
+    noiseHtml = noiseTemplate({ number: index + 1, name: noise.name, description: noise.desc, status: statuses[noise.status].description });
+    container.insertAdjacentHTML('beforeend', noiseHtml);
+    let item = document.querySelector(`[data-id=list-item-${index + 1}]`);
+    item.addEventListener('click', (evt) => {
+      selectNoise(index);
+      render();
+    });
   });
 }
 
