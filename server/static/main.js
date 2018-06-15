@@ -258,14 +258,20 @@ function selectNoise(index) { // TODO: or pass actual noise?
 }
 
 /* UI */
-const noiseTemplate = template`
+const noiseTemplate = ({
+  selected,
+  number,
+  description,
+  instructions,
+  status,
+}) => `
   <li class="RecordingList-item">
-    <div class="Recording Recording--selected" data-id="list-item-${'number'}">
+    <div class="Recording${selected ? ` Recording--selected` : ``}" data-id="list-item-${number}">
       <ul class="Recording-container">
-        <li class="Recording-item Recording-name" data-id="list-item-${'number'}-name">${'name'}</li>
-        <li class="Recording-item Recording-description" data-id="list-item-${'number'}-description">${'description'}</li>
-        <li class="Recording-item Recording-instructions" data-id="list-item-${'number'}-instructions">${'instructions'}</li>
-        <li class="Recording-item Recording-status" data-id="list-item-${'number'}-status">${'status'}</li>
+        <li class="Recording-item Recording-name" data-id="list-item-${number}-name">${name}</li>
+        <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
+        <li class="Recording-item Recording-instructions" data-id="list-item-${number}-instructions">${instructions}</li>
+        <li class="Recording-item Recording-status" data-id="list-item-${number}-status">${status}</li>
       </ul>
     </div>
   </li>
@@ -284,12 +290,15 @@ function template(strings, ...keys) {
   });
 }
 
+// TODO: put our DOM references in a singular location?
 const list = document.querySelector('[data-id=list]');
 const container = document.querySelector('[data-id=list-container]');
+
 function renderNoiseList(noiseList) {
   container.innerHTML = '';
   noiseList.forEach((noise, index) => {
-    noiseHtml = noiseTemplate({ number: index + 1, name: noise.name, description: noise.desc, status: statuses[noise.status].description });
+    // TODO: add selected value to each noise instead of relying on state.selectedNoise
+    noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     let item = document.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', (evt) => {
