@@ -33,7 +33,6 @@ let filenameSessionID = generateUUID(); // TODO: let server take care of this
 // TODO: use this UUID and put it in local storage
 let chunkNumber = 0;
 
-
 /*
   UI
  */
@@ -162,7 +161,7 @@ const handleSuccess = function(stream) {
     recordButton.classList.remove('Recorder-recordButton--recording');
     
     /* state management */
-    filename = `${filenamePrefix}.${filenameSessionID}.webm`;
+    const filename = `${filenamePrefix}.${filenameSessionID}.webm`;
     state.status = UPLOADING;
     /* UI */    
     renderStatus(state.status);
@@ -254,7 +253,7 @@ function updateNoises(noises) {
 /* state management */
 function selectNoise(index) { // TODO: or pass actual noise?
   state.selectedNoise = index; // TODO: or assign actual noise?
-  noise = state.noiseList[index];
+  const noise = state.noiseList[index];
   updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
 }
 
@@ -286,7 +285,7 @@ function renderNoiseList(noiseList) {
   container.innerHTML = '';
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
-    noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
+    const noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     let item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', (evt) => {
