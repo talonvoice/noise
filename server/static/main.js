@@ -224,9 +224,10 @@ const handleSuccess = function(stream) {
 
 /* UI */
 function renderRecorder(noise) {
-  recorderTitle = document.getElementsByClassName('Recorder-title')[0];
-  recorderDescription = document.getElementsByClassName('Recorder-description')[0];
-  recorderPreview = document.getElementsByClassName('Recorder-preview')[0];
+  const recorder = document.querySelector('[data-id=recorder]');
+  const recorderTitle = recorder.querySelector('[data-id=title]');
+  const recorderDescription = recorder.querySelector('[data-id=description');
+  const recorderPreview = recorder.querySelector('[data-id=preview');
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
@@ -277,17 +278,17 @@ const noiseTemplate = ({
   </li>
 `;
 
-// TODO: put our DOM references in a singular location?
-const list = document.querySelector('[data-id=list]');
-const container = document.querySelector('[data-id=list-container]');
-
 function renderNoiseList(noiseList) {
+  // TODO: put our DOM references in a singular location?
+  const list = document.querySelector('[data-id=list]');
+  const container = document.querySelector('[data-id=list-container]');
+
   container.innerHTML = '';
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
     noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
     container.insertAdjacentHTML('beforeend', noiseHtml);
-    let item = document.querySelector(`[data-id=list-item-${index + 1}]`);
+    let item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', (evt) => {
       selectNoise(index);
       render();

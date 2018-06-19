@@ -16,19 +16,19 @@
       <ul class="RecordingList-container" data-id="list-container"></ul>
     </div>
     <div class="Centered">
-      <div class="Recorder">
-        <p class="Recorder-title"></p>
+      <div class="Recorder" data-id="recorder">
+        <p class="Recorder-title" data-id="title"></p>
         <hr>
         <div class="Recorder-info">
           <div class="Recorder-metadata">
-            <p class="Recorder-description"></p>
+            <p class="Recorder-description" data-id="description"></p>
             <!-- TODO: use this if we are going to have a long description as well -->
             <p class="Recorder-instructions" style="display: none"></p>
           </div>
           <div class="Recorder-examples">
             <p class="Recorder-exampleAudio">
               Listen to an example:<br>
-              <audio class="Recorder-preview" style="display: none" controls="">
+              <audio class="Recorder-preview" data-id="preview" style="display: none" controls="">
               </audio>
             </p>
             <!-- TODO: only show this if there are actually video examples -->
