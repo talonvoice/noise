@@ -277,19 +277,6 @@ const noiseTemplate = ({
   </li>
 `;
 
-// copypasta from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-function template(strings, ...keys) {
-  return (function(...values) {
-    var dict = values[values.length - 1] || {};
-    var result = [strings[0]];
-    keys.forEach(function(key, i) {
-      var value = Number.isInteger(key) ? values[key] : dict[key];
-      result.push(value, strings[i + 1]);
-    });
-    return result.join('');
-  });
-}
-
 // TODO: put our DOM references in a singular location?
 const list = document.querySelector('[data-id=list]');
 const container = document.querySelector('[data-id=list-container]');
