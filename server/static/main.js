@@ -1,3 +1,8 @@
+import noiseTemplate from './noise.js';
+import { generateUUID } from './utilities.js';
+import { renderRecorder, renderRecordingControls } from './recorder.js';
+import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from './constants.js';
+
 /*
   TODOS:
   - [x] load data
@@ -12,11 +17,6 @@
 /*
   State
  */
-
-const WAITING = 0;
-const RECORDING = 1;
-const UPLOADING = 2;
-const UPLOADED = 3;
 
 let state = {
   recorder: {
@@ -34,85 +34,6 @@ let state = {
   noiseList: [],
   selectedNoise: -1,
 };
-
-/*
-  UI
- */
-
-let statuses = [
-  { description: 'Waiting to record' },
-  { description: 'Recording' },
-  { description: 'Recorded and uploading' },
-  { description: 'Recorded and uploaded' },
-];
-
-function renderTime(time) {
-  /* UI */
-  const recorderTime = document.querySelector('[data-id=recorderTime]');
-
-  const timeInS = time / 1000;
-  const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
-  const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
-  recorderTime.innerText = `${minutes}:${seconds}`;
-}
-
-function renderStatus(status) {
-  /* UI */
-  const recorderStatus = document.querySelector('[data-id=recorderStatus]');
-
-  recorderStatus.innerText = `${statuses[status].description}`;
-}
-
-function renderButton(status) {
-  /* UI */
-  const recordButton = document.querySelector('[data-id=recordButton]');
-
-  let actions = {
-    [WAITING]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.remove('Recorder-recordButton--disabled'),
-      (recordButton.disabled = false)
-    ),
-    [RECORDING]: () => (
-      recordButton.classList.add('Recorder-recordButton--recording'),
-      recordButton.classList.remove('Recorder-recordButton--disabled'),
-      (recordButton.disabled = false)
-    ),
-    [UPLOADING]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.add('Recorder-recordButton--disabled'),
-      (recordButton.disabled = true)
-    ),
-    [UPLOADED]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.add('Recorder-recordButton--disabled'),
-      (recordButton.disabled = true)
-    ),
-  };
-
-  actions[status]();
-}
-
-/*
-  Utilities
- */
-
-// copypasta from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-function generateUUID() {
-  // Public Domain/MIT
-  let d = new Date().getTime();
-  if (
-    typeof performance !== 'undefined' &&
-    typeof performance.now === 'function'
-  ) {
-    d += performance.now(); //use high-precision timer if available
-  }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    let r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-  });
-}
 
 /*
   Event handlers
@@ -256,30 +177,6 @@ const handleSuccess = function(stream) {
   };
 };
 
-/* UI */
-function renderRecorder(noise, recorderState) {
-  const recorder = document.querySelector('[data-id=recorder]');
-  const recorderTitle = recorder.querySelector('[data-id=title]');
-  const recorderDescription = recorder.querySelector('[data-id=description');
-  const recorderPreview = recorder.querySelector('[data-id=preview');
-
-  recorderTitle.innerText = noise.name;
-  recorderDescription.innerText = noise.desc;
-  recorderPreview.innerHTML = `
-    <source src="${noise.preview}" type="audio/mpeg"/>    
-  `;
-  recorderPreview.load();
-  recorderPreview.style.display = 'block';
-
-  renderRecordingControls(recorderState);
-}
-
-function renderRecordingControls(recorderState) {
-  renderTime(recorderState.elapsed);
-  renderButton(recorderState.status);
-  renderStatus(recorderState.status);
-}
-
 /* state management */
 function updateFilenamePrefix(prefix) {
   state.recorder.filename.prefix = prefix;
@@ -305,27 +202,6 @@ function selectNoise(index) {
 }
 
 /* UI */
-const noiseTemplate = ({
-  selected,
-  number,
-  description,
-  instructions,
-  status,
-}) => `
-  <li class="RecordingList-item">
-    <a class="Recording${
-      selected ? ` Recording--selected` : ``
-    }" data-id="list-item-${number}">
-      <ul class="Recording-container">
-        <li class="Recording-item Recording-name" data-id="list-item-${number}-name">${name}</li>
-        <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
-        <li class="Recording-item Recording-instructions" data-id="list-item-${number}-instructions">${instructions}</li>
-        <li class="Recording-item Recording-status" data-id="list-item-${number}-status">${status}</li>
-      </ul>
-    </a>
-  </li>
-`;
-
 function renderNoiseList(noiseList) {
   // TODO: put our DOM references in a singular location?
   const list = document.querySelector('[data-id=list]');
