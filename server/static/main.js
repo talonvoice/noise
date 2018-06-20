@@ -1,6 +1,6 @@
-import noiseTemplate from './components/noise.js';
 import { generateUUID } from './utilities.js';
 import { renderRecorder, renderRecordingControls } from './components/recorder.js';
+import { renderNoiseList } from './components/list.js';
 import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from './constants.js';
 
 /*
@@ -202,34 +202,13 @@ function selectNoise(index) {
 }
 
 /* UI */
-function renderNoiseList(noiseList, itemAction, selectedNoise, statuses) {
-  // TODO: put our DOM references in a singular location?
-  const list = document.querySelector('[data-id=list]');
-  const container = document.querySelector('[data-id=list-container]');
 
-  container.innerHTML = '';
-  noiseList.forEach((noise, index) => {
-    // TODO: add selected value to each noise instead of relying on state.selectedNoise
-    const noiseHtml = noiseTemplate({
-      selected: index === selectedNoise,
-      number: index + 1,
-      name: noise.name,
-      description: noise.desc,
-      instructions: '',
-      status: statuses[noise.status].description,
-    });
-    container.insertAdjacentHTML('beforeend', noiseHtml);
-    const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
-    item.addEventListener('click', evt => {
-      itemAction(index);
-      render();
-    });
-  });
+function render() {
+  renderApp();
 }
 
-/* UI */
-function render() {
-  renderNoiseList(state.noiseList, selectNoise, state.selectedNoise, statuses);
+function renderApp() {
+  renderNoiseList(state.noiseList, selectNoise, state.selectedNoise, statuses, render);
   renderRecorder(state.noiseList[state.selectedNoise], state.recorder);
 }
 
