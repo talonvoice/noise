@@ -1,4 +1,4 @@
-import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from './constants.js';
+import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from '../constants.js';
 
 function renderRecorder(noise, recorderState) {
   const recorder = document.querySelector('[data-id=recorder]');

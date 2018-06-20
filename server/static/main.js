@@ -1,6 +1,6 @@
-import noiseTemplate from './noise.js';
+import noiseTemplate from './components/noise.js';
 import { generateUUID } from './utilities.js';
-import { renderRecorder, renderRecordingControls } from './recorder.js';
+import { renderRecorder, renderRecordingControls } from './components/recorder.js';
 import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from './constants.js';
 
 /*
