@@ -46,7 +46,7 @@ let statuses = [
 
 function renderTime(time) {
   /* UI */
-  let recorderTime = document.querySelector('[data-id=recorderTime]');
+  const recorderTime = document.querySelector('[data-id=recorderTime]');
 
   const timeInS = time / 1000;
   const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
@@ -56,7 +56,7 @@ function renderTime(time) {
 
 function renderStatus(status) {
   /* UI */
-  let recorderStatus = document.querySelector('[data-id=recorderStatus]');
+  const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
   recorderStatus.innerText = `${statuses[status].description}`;
 }
@@ -68,12 +68,12 @@ function renderStatus(status) {
 
  // copypasta from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 function generateUUID() { // Public Domain/MIT
-  var d = new Date().getTime();
+  let d = new Date().getTime();
   if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
     d += performance.now(); //use high-precision timer if available
   }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = (d + Math.random() * 16) % 16 | 0;
+    let r = (d + Math.random() * 16) % 16 | 0;
     d = Math.floor(d / 16);
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
   });
@@ -101,8 +101,8 @@ const handleSuccess = function(stream) {
 
   /* UI */
   const downloadLink = document.querySelector('[data-id=download]');
-  let player = document.querySelector('[data-id=player]');
-  let recordButton = document.querySelector('[data-id=recordButton]');
+  const player = document.querySelector('[data-id=player]');
+  const recordButton = document.querySelector('[data-id=recordButton]');
 
   recordButton.addEventListener('click', function() {
     if (state.status === WAITING) {
@@ -174,7 +174,7 @@ const handleSuccess = function(stream) {
     /* async I/O */
     let blob = new Blob(recordedChunks);
     let file = new File([blob], filename);
-    var data = new FormData(); 
+    let data = new FormData();
     data.append('noise', file);
     data.append('user', 'you'); // TODO: names in uploads?
     
@@ -292,7 +292,7 @@ function renderNoiseList(noiseList) {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
     const noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
     container.insertAdjacentHTML('beforeend', noiseHtml);
-    let item = list.querySelector(`[data-id=list-item-${index + 1}]`);
+    const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', (evt) => {
       selectNoise(index);
       render();
