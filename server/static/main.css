@@ -61,10 +61,12 @@ a {
 }
 
 .Recording-instructions {
+  display: none;
   flex: 4;
 }
 
 .Recording-status {
+  font-style: italic;
 }
 
 /* Recorder */

@@ -1,7 +1,16 @@
 import { generateUUID } from './utilities.js';
-import { renderRecorder, renderRecordingControls } from './components/recorder.js';
+import {
+  renderRecorder,
+  renderRecordingControls,
+} from './components/recorder.js';
 import { renderNoiseList } from './components/list.js';
-import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from './constants.js';
+import {
+  WAITING,
+  RECORDING,
+  UPLOADING,
+  UPLOADED,
+  statuses,
+} from './constants.js';
 
 /*
   TODOS:
@@ -35,13 +44,12 @@ let state = {
   selectedNoise: -1,
 };
 
+/* State management */
 
-/* state management */
 function updateFilenamePrefix(prefix) {
   state.recorder.filename.prefix = prefix;
 }
 
-/* state management */
 function updateNoises(noises) {
   // TODO: rename to initializeNoise?
   state.noiseList = noises.slice();
@@ -52,14 +60,21 @@ function updateNoises(noises) {
   );
 }
 
-/* state management */
 function selectNoise(index) {
-  // TODO: or pass actual noise?
-  state.selectedNoise = index; // TODO: or assign actual noise?
-  const noise = state.noiseList[index];
-  updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
-}
+  if (state.selectedNoise !== index) {
+    // TODO: or pass actual noise?
+    state.selectedNoise = index; // TODO: or assign actual noise?
+    const noise = state.noiseList[index];
+    state.recorder.status = noise.status === UPLOADED ? UPLOADED : WAITING; // TODO: the latter is a subset of the former
+    state.recorder.startTime = null; // TODO: the latter is a subset of the former
+    state.recorder.elapsed = 0; // TODO: the latter is a subset of the former
 
+    updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
+    return true;
+  } else {
+    return false; // signaling that we did not modify the state
+  }
+}
 
 /*
   Event handlers
@@ -130,6 +145,7 @@ const handleSuccess = function(stream) {
 
     /* UI */
     renderRecordingControls(state.recorder);
+    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
   });
 
   mediaRecorder.addEventListener('stop', function() {
@@ -142,6 +158,7 @@ const handleSuccess = function(stream) {
 
     /* UI */
     renderRecordingControls(state.recorder);
+    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
     /* async I/O */
     let blob = new Blob(recordedChunks);
@@ -157,7 +174,18 @@ const handleSuccess = function(stream) {
       })
       .then(response => console.log(response.statusText))
       .then(success => {
+        state.noiseList[state.selectedNoise].status = UPLOADED; // TODO: how to ensure no async probs?
         state.recorder.status = UPLOADED;
+        renderNoiseList(
+          state.noiseList,
+          selectNoise,
+          state.selectedNoise,
+          statuses,
+          render,
+          () =>
+            state.recorder.status === RECORDING ||
+            state.recorder.status === UPLOADING,
+        );
         renderRecordingControls(state.recorder);
       })
       .catch(
@@ -210,7 +238,16 @@ function render() {
 }
 
 function renderApp() {
-  renderNoiseList(state.noiseList, selectNoise, state.selectedNoise, statuses, render);
+  renderNoiseList(
+    state.noiseList,
+    selectNoise,
+    state.selectedNoise,
+    statuses,
+    render,
+    () =>
+      state.recorder.status === RECORDING ||
+      state.recorder.status === UPLOADING,
+  );
   renderRecorder(state.noiseList[state.selectedNoise], state.recorder);
 }
 
