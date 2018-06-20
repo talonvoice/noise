@@ -12,7 +12,8 @@
   - [ ] add simple keyboard shortcuts for accessibility
   - [ ] show user visual indicator that they can't change noises while recording
   - [ ] productionize
-  - [ ] test supported browsers
+  - [ ] test supported desktop browsers
+  - [ ] smoke test and fix mobile browsers
   - [ ] add polyfills and fallbacks
   - [ ] change noises data structure to allow for pauses and prompts
   - [ ] show user basic visual prompts for recording a noise

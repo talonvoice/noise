@@ -40,9 +40,11 @@ a {
   display: block;
   color: #000000;
   text-decoration: none;
+  cursor: pointer;
 }
 .Recording--selected {
   background-color: #e9cccc;
+  cursor: default;
 }
 
 .Recording-item {
