@@ -28,7 +28,7 @@ let state = {
       sessionID: generateUUID(), // TODO: let server take care of this
       // TODO: use this UUID and put it in local storage
     },
-    chunkNumber: 0
+    chunkNumber: 0,
   },
   status: WAITING,
   noiseList: [],
@@ -61,6 +61,36 @@ function renderStatus(status) {
   const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
   recorderStatus.innerText = `${statuses[status].description}`;
+}
+
+function renderButton(status) {
+  /* UI */
+  const recordButton = document.querySelector('[data-id=recordButton]');
+
+  let actions = {
+    [WAITING]: () => (
+      recordButton.classList.remove('Recorder-recordButton--recording'),
+      recordButton.classList.remove('Recorder-recordButton--disabled'),
+      (recordButton.disabled = false)
+    ),
+    [RECORDING]: () => (
+      recordButton.classList.add('Recorder-recordButton--recording'),
+      recordButton.classList.remove('Recorder-recordButton--disabled'),
+      (recordButton.disabled = false)
+    ),
+    [UPLOADING]: () => (
+      recordButton.classList.remove('Recorder-recordButton--recording'),
+      recordButton.classList.add('Recorder-recordButton--disabled'),
+      (recordButton.disabled = true)
+    ),
+    [UPLOADED]: () => (
+      recordButton.classList.remove('Recorder-recordButton--recording'),
+      recordButton.classList.add('Recorder-recordButton--disabled'),
+      (recordButton.disabled = true)
+    ),
+  };
+
+  actions[status]();
 }
 
 /*
@@ -138,45 +168,33 @@ const handleSuccess = function(stream) {
       console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
 
       /* state management */
-      state.recorder.elapsed = Date.now() - state.recorder.startTime;
-      /* UI */
-      renderTime(state.recorder.elapsed);
-
-      /* state management */
       recordedChunks.push(e.data);
+      state.recorder.elapsed = Date.now() - state.recorder.startTime;
+
+      /* UI */
+      renderRecordingControls(state.recorder);
     }
   });
 
   mediaRecorder.addEventListener('start', function() {
     /* state management */
     state.recorder.startTime = Date.now();
-
-    /* UI */
-
-    recordButton.classList.add('Recorder-recordButton--recording');
-
-    /* state management */
     state.recorder.status = RECORDING;
 
     /* UI */
-
-    renderStatus(state.recorder.status);
+    renderRecordingControls(state.recorder);
   });
 
   mediaRecorder.addEventListener('stop', function() {
     /* state management */
     state.recorder.elapsed = Date.now() - state.recorder.startTime;
-
-    /* UI */
-    renderTime(state.recorder.elapsed);
-    recordButton.classList.remove('Recorder-recordButton--recording');
-
-    /* state management */
-    const filename = `${state.recorder.filename.prefix}.${state.recorder.filename.sessionID}.webm`;
+    const filename = `${state.recorder.filename.prefix}.${
+      state.recorder.filename.sessionID
+    }.webm`;
     state.recorder.status = UPLOADING;
-    /* UI */
 
-    renderStatus(state.recorder.status);
+    /* UI */
+    renderRecordingControls(state.recorder);
 
     /* async I/O */
     let blob = new Blob(recordedChunks);
@@ -193,7 +211,7 @@ const handleSuccess = function(stream) {
       .then(response => console.log(response.statusText))
       .then(success => {
         state.recorder.status = UPLOADED;
-        renderStatus(state.recorder.status);
+        renderRecordingControls(state.recorder);
       })
       .catch(
         error => console.log(error), // Handle the error response object
@@ -239,7 +257,7 @@ const handleSuccess = function(stream) {
 };
 
 /* UI */
-function renderRecorder(noise) {
+function renderRecorder(noise, recorderState) {
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
@@ -250,7 +268,16 @@ function renderRecorder(noise) {
   recorderPreview.innerHTML = `
     <source src="${noise.preview}" type="audio/mpeg"/>    
   `;
+  recorderPreview.load();
   recorderPreview.style.display = 'block';
+
+  renderRecordingControls(recorderState);
+}
+
+function renderRecordingControls(recorderState) {
+  renderTime(recorderState.elapsed);
+  renderButton(recorderState.status);
+  renderStatus(recorderState.status);
 }
 
 /* state management */
@@ -327,7 +354,7 @@ function renderNoiseList(noiseList) {
 /* UI */
 function render() {
   renderNoiseList(state.noiseList);
-  renderRecorder(state.noiseList[state.selectedNoise]);
+  renderRecorder(state.noiseList[state.selectedNoise], state.recorder);
 }
 
 function processNoises(noises) {
