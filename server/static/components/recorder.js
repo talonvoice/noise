@@ -1,4 +1,10 @@
-import { WAITING, RECORDING, UPLOADING, UPLOADED, statuses } from '../constants.js';
+import {
+  WAITING,
+  RECORDING,
+  UPLOADING,
+  UPLOADED,
+  statuses,
+} from '../constants.js';
 
 function renderRecorder(noise, recorderState) {
   const recorder = document.querySelector('[data-id=recorder]');
@@ -33,7 +39,8 @@ function renderTime(time) {
   recorderTime.innerText = `${minutes}:${seconds}`;
 }
 
-function renderStatus(status) { // TODO: add statuses as argument?
+function renderStatus(status) {
+  // TODO: add statuses as argument?
   /* UI */
   const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 

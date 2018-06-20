@@ -13,17 +13,6 @@ import {
 } from './constants.js';
 
 /*
-  TODOS:
-  - [x] load data
-  - [ ] allow user to select mic
-  - [ ] fallback to <input>
-  - [ ] refactor
-  - [x] update UI when done recording, and uploading
-  - [ ] allow user to review and submit
-  - [x] load noise info from data json
-*/
-
-/*
   State
  */
 
@@ -55,7 +44,7 @@ function updateNoises(noises) {
   state.noiseList = noises.slice();
   state.noiseList = state.noiseList.map(noise =>
     Object.assign({}, noise, {
-      status: WAITING, // TODO: this status should technically different from the recorder status; treat it as such
+      status: WAITING, // TODO: this status should technically be different from the recorder status; treat it as such
     }),
   );
 }

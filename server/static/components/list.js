@@ -48,8 +48,10 @@ function renderNoiseList(
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', evt => {
-      if (!isDisabled()) { // TODO: put proper hooks in place and then we may not need to pass as function, although we may still want to
-        if (itemAction(index)) { // relies on modified signal
+      if (!isDisabled()) {
+        // TODO: put proper hooks in place and then we may not need to pass as function, although we may still want to
+        if (itemAction(index)) {
+          // relies on modified signal
           render();
         }
       }
