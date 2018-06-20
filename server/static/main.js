@@ -9,7 +9,6 @@
   - [x] load noise info from data json
 */
 
-
 /*
   State
  */
@@ -42,7 +41,7 @@ let statuses = [
   { description: 'Recording' },
   { description: 'Recorded and uploading' },
   { description: 'Recorded and uploaded' },
-]
+];
 
 function renderTime(time) {
   /* UI */
@@ -61,42 +60,44 @@ function renderStatus(status) {
   recorderStatus.innerText = `${statuses[status].description}`;
 }
 
-
 /*
   Utilities
  */
 
- // copypasta from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-function generateUUID() { // Public Domain/MIT
+// copypasta from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function generateUUID() {
+  // Public Domain/MIT
   let d = new Date().getTime();
-  if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+  if (
+    typeof performance !== 'undefined' &&
+    typeof performance.now === 'function'
+  ) {
     d += performance.now(); //use high-precision timer if available
   }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     let r = (d + Math.random() * 16) % 16 | 0;
     d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
   });
 }
-
 
 /*
   Event handlers
  */
 
 const handleSuccess = function(stream) {
-  const options = {mimeType: 'audio/webm'};
+  const options = { mimeType: 'audio/webm' };
   let mediaRecorder;
-  
+
   /* state management */
   state.status = WAITING;
   let recordedChunks = [];
 
   try {
     mediaRecorder = new MediaRecorder(stream, options);
-  } catch(err) {
+  } catch (err) {
     console.log('ERROR:' + err.name);
-    return err.name;     /* return the error name */
+    return err.name; /* return the error name */
   }
 
   /* UI */
@@ -112,7 +113,7 @@ const handleSuccess = function(stream) {
       /* UI */
       player.setAttribute('disabled', 'disabled');
       player.src = null;
-      downloadLink.classList.add('DownloadLink--disabled')
+      downloadLink.classList.add('DownloadLink--disabled');
       downloadLink.href = null;
 
       try {
@@ -126,18 +127,18 @@ const handleSuccess = function(stream) {
       /* I/O */
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
-  })
+  });
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
       console.log(`Pushing chunk #${++chunkNumber}`);
-      
+
       /* state management */
       elapsed = Date.now() - startTime;
       /* UI */
       renderTime(elapsed);
-      
+
       /* state management */
       recordedChunks.push(e.data);
     }
@@ -146,29 +147,32 @@ const handleSuccess = function(stream) {
   mediaRecorder.addEventListener('start', function() {
     /* state management */
     startTime = Date.now();
-    
-    /* UI */    
+
+    /* UI */
+
     recordButton.classList.add('Recorder-recordButton--recording');
 
     /* state management */
     state.status = RECORDING;
 
-    /* UI */    
-    renderStatus(state.status); 
+    /* UI */
+
+    renderStatus(state.status);
   });
-  
+
   mediaRecorder.addEventListener('stop', function() {
     /* state management */
     elapsed = Date.now() - startTime;
-    
+
     /* UI */
     renderTime(elapsed);
     recordButton.classList.remove('Recorder-recordButton--recording');
-    
+
     /* state management */
     const filename = `${filenamePrefix}.${filenameSessionID}.webm`;
     state.status = UPLOADING;
-    /* UI */    
+    /* UI */
+
     renderStatus(state.status);
 
     /* async I/O */
@@ -177,23 +181,24 @@ const handleSuccess = function(stream) {
     let data = new FormData();
     data.append('noise', file);
     data.append('user', 'you'); // TODO: names in uploads?
-    
-    window.fetch('/upload', {
-      method: 'POST',
-      body: data,
-    }).then(
-      response => console.log(response.statusText)
-    ).then(
-      success => {
+
+    window
+      .fetch('/upload', {
+        method: 'POST',
+        body: data,
+      })
+      .then(response => console.log(response.statusText))
+      .then(success => {
         state.status = UPLOADED;
         renderStatus(state.status);
-      }).catch(
-      error => console.log(error) // Handle the error response object
-    );
-    
-    /* UI */    
+      })
+      .catch(
+        error => console.log(error), // Handle the error response object
+      );
 
-    // hook up download link    
+    /* UI */
+
+    // hook up download link
     downloadLink.href = URL.createObjectURL(blob);
     downloadLink.download = filename; /* from state */
     downloadLink.classList.remove('DownloadLink--disabled');
@@ -207,20 +212,24 @@ const handleSuccess = function(stream) {
     let error = event.error;
 
     /* TODO: define showNotification() */
-    
-    switch(error.name) {
+
+    switch (error.name) {
       case InvalidStateError:
-        showNotification("You can't record the audio right " +
-                         "now. Try again later.");
+        showNotification(
+          "You can't record the audio right " + 'now. Try again later.',
+        );
         break;
       case SecurityError:
-        showNotification("Recording the specified source " +
-                         "is not allowed due to security " +
-                         "restrictions.");
+        showNotification(
+          'Recording the specified source ' +
+            'is not allowed due to security ' +
+            'restrictions.',
+        );
         break;
       default:
-        showNotification("A problem occurred while trying " +
-                         "to record the audio.");
+        showNotification(
+          'A problem occurred while trying ' + 'to record the audio.',
+        );
         break;
     }
   };
@@ -250,13 +259,16 @@ function updateFilenamePrefix(prefix) {
 function updateNoises(noises) {
   // TODO: rename to initializeNoise?
   state.noiseList = noises.slice();
-  state.noiseList = state.noiseList.map(noise => Object.assign({}, noise, {
-    status: WAITING
-  }));
+  state.noiseList = state.noiseList.map(noise =>
+    Object.assign({}, noise, {
+      status: WAITING,
+    }),
+  );
 }
 
 /* state management */
-function selectNoise(index) { // TODO: or pass actual noise?
+function selectNoise(index) {
+  // TODO: or pass actual noise?
   state.selectedNoise = index; // TODO: or assign actual noise?
   const noise = state.noiseList[index];
   updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
@@ -271,7 +283,9 @@ const noiseTemplate = ({
   status,
 }) => `
   <li class="RecordingList-item">
-    <a class="Recording${selected ? ` Recording--selected` : ``}" data-id="list-item-${number}">
+    <a class="Recording${
+      selected ? ` Recording--selected` : ``
+    }" data-id="list-item-${number}">
       <ul class="Recording-container">
         <li class="Recording-item Recording-name" data-id="list-item-${number}-name">${name}</li>
         <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
@@ -290,10 +304,17 @@ function renderNoiseList(noiseList) {
   container.innerHTML = '';
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
-    const noiseHtml = noiseTemplate({ selected: index === state.selectedNoise, number: index + 1, name: noise.name, description: noise.desc, instructions: '', status: statuses[noise.status].description });
+    const noiseHtml = noiseTemplate({
+      selected: index === state.selectedNoise,
+      number: index + 1,
+      name: noise.name,
+      description: noise.desc,
+      instructions: '',
+      status: statuses[noise.status].description,
+    });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
-    item.addEventListener('click', (evt) => {
+    item.addEventListener('click', evt => {
       selectNoise(index);
       render();
     });
@@ -324,10 +345,10 @@ function processNoises(noises) {
 /* async I/O */
 window
   .fetch('noises')
+  .then(response => response.json())
   .then(
-    response => response.json()
-  ).then(
-    noises => processNoises(noises) // Handle the success response object
-  ).catch(
-    error => console.log(error) // Handle the error response object
+    noises => processNoises(noises), // Handle the success response object
+  )
+  .catch(
+    error => console.log(error), // Handle the error response object
   );
