@@ -44,14 +44,10 @@ let statuses = [
   { description: 'Recorded and uploaded' },
 ]
 
-const downloadLink = document.querySelector('[data-id=download]');
-let player = document.querySelector('[data-id=player]');
-let recordButton = document.querySelector('[data-id=recordButton]');
-let recorderTime = document.querySelector('[data-id=recorderTime]');
-let recorderStatus = document.querySelector('[data-id=recorderStatus]');
-
 function renderTime(time) {
   /* UI */
+  let recorderTime = document.querySelector('[data-id=recorderTime]');
+
   const timeInS = time / 1000;
   const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
   const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
@@ -60,6 +56,8 @@ function renderTime(time) {
 
 function renderStatus(status) {
   /* UI */
+  let recorderStatus = document.querySelector('[data-id=recorderStatus]');
+
   recorderStatus.innerText = `${statuses[status].description}`;
 }
 
@@ -100,6 +98,11 @@ const handleSuccess = function(stream) {
     console.log('ERROR:' + err.name);
     return err.name;     /* return the error name */
   }
+
+  /* UI */
+  const downloadLink = document.querySelector('[data-id=download]');
+  let player = document.querySelector('[data-id=player]');
+  let recordButton = document.querySelector('[data-id=recordButton]');
 
   recordButton.addEventListener('click', function() {
     if (state.status === WAITING) {
@@ -143,6 +146,7 @@ const handleSuccess = function(stream) {
   mediaRecorder.addEventListener('start', function() {
     /* state management */
     startTime = Date.now();
+    
     /* UI */    
     recordButton.classList.add('Recorder-recordButton--recording');
 
@@ -156,6 +160,7 @@ const handleSuccess = function(stream) {
   mediaRecorder.addEventListener('stop', function() {
     /* state management */
     elapsed = Date.now() - startTime;
+    
     /* UI */
     renderTime(elapsed);
     recordButton.classList.remove('Recorder-recordButton--recording');
