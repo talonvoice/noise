@@ -19,18 +19,21 @@ const UPLOADING = 2;
 const UPLOADED = 3;
 
 let state = {
+  recorder: {
+    status: WAITING,
+    startTime: null,
+    elapsed: 0,
+    filename: {
+      prefix: '',
+      sessionID: generateUUID(), // TODO: let server take care of this
+      // TODO: use this UUID and put it in local storage
+    },
+    chunkNumber: 0
+  },
   status: WAITING,
   noiseList: [],
   selectedNoise: -1,
 };
-
-let stopped = false;
-let startTime;
-let elapsed = 0;
-let filenamePrefix = '';
-let filenameSessionID = generateUUID(); // TODO: let server take care of this
-// TODO: use this UUID and put it in local storage
-let chunkNumber = 0;
 
 /*
   UI
@@ -90,7 +93,7 @@ const handleSuccess = function(stream) {
   let mediaRecorder;
 
   /* state management */
-  state.status = WAITING;
+  state.recorder.status = WAITING;
   let recordedChunks = [];
 
   try {
@@ -106,9 +109,9 @@ const handleSuccess = function(stream) {
   const recordButton = document.querySelector('[data-id=recordButton]');
 
   recordButton.addEventListener('click', function() {
-    if (state.status === WAITING) {
+    if (state.recorder.status === WAITING) {
       /* state management */
-      recordedChunks = [];
+      state.recorder.recordedChunks = [];
 
       /* UI */
       player.setAttribute('disabled', 'disabled');
@@ -123,7 +126,7 @@ const handleSuccess = function(stream) {
         console.error(e);
         // TODO: reset UI
       }
-    } else if (state.status === RECORDING) {
+    } else if (state.recorder.status === RECORDING) {
       /* I/O */
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
@@ -132,12 +135,12 @@ const handleSuccess = function(stream) {
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
-      console.log(`Pushing chunk #${++chunkNumber}`);
+      console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
 
       /* state management */
-      elapsed = Date.now() - startTime;
+      state.recorder.elapsed = Date.now() - state.recorder.startTime;
       /* UI */
-      renderTime(elapsed);
+      renderTime(state.recorder.elapsed);
 
       /* state management */
       recordedChunks.push(e.data);
@@ -146,34 +149,34 @@ const handleSuccess = function(stream) {
 
   mediaRecorder.addEventListener('start', function() {
     /* state management */
-    startTime = Date.now();
+    state.recorder.startTime = Date.now();
 
     /* UI */
 
     recordButton.classList.add('Recorder-recordButton--recording');
 
     /* state management */
-    state.status = RECORDING;
+    state.recorder.status = RECORDING;
 
     /* UI */
 
-    renderStatus(state.status);
+    renderStatus(state.recorder.status);
   });
 
   mediaRecorder.addEventListener('stop', function() {
     /* state management */
-    elapsed = Date.now() - startTime;
+    state.recorder.elapsed = Date.now() - state.recorder.startTime;
 
     /* UI */
-    renderTime(elapsed);
+    renderTime(state.recorder.elapsed);
     recordButton.classList.remove('Recorder-recordButton--recording');
 
     /* state management */
-    const filename = `${filenamePrefix}.${filenameSessionID}.webm`;
-    state.status = UPLOADING;
+    const filename = `${state.recorder.filename.prefix}.${state.recorder.filename.sessionID}.webm`;
+    state.recorder.status = UPLOADING;
     /* UI */
 
-    renderStatus(state.status);
+    renderStatus(state.recorder.status);
 
     /* async I/O */
     let blob = new Blob(recordedChunks);
@@ -189,8 +192,8 @@ const handleSuccess = function(stream) {
       })
       .then(response => console.log(response.statusText))
       .then(success => {
-        state.status = UPLOADED;
-        renderStatus(state.status);
+        state.recorder.status = UPLOADED;
+        renderStatus(state.recorder.status);
       })
       .catch(
         error => console.log(error), // Handle the error response object
@@ -252,7 +255,7 @@ function renderRecorder(noise) {
 
 /* state management */
 function updateFilenamePrefix(prefix) {
-  filenamePrefix = prefix;
+  state.recorder.filename.prefix = prefix;
 }
 
 /* state management */
@@ -261,7 +264,7 @@ function updateNoises(noises) {
   state.noiseList = noises.slice();
   state.noiseList = state.noiseList.map(noise =>
     Object.assign({}, noise, {
-      status: WAITING,
+      status: WAITING, // TODO: this status should technically different from the recorder status; treat it as such
     }),
   );
 }
