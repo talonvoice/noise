@@ -35,6 +35,32 @@ let state = {
   selectedNoise: -1,
 };
 
+
+/* state management */
+function updateFilenamePrefix(prefix) {
+  state.recorder.filename.prefix = prefix;
+}
+
+/* state management */
+function updateNoises(noises) {
+  // TODO: rename to initializeNoise?
+  state.noiseList = noises.slice();
+  state.noiseList = state.noiseList.map(noise =>
+    Object.assign({}, noise, {
+      status: WAITING, // TODO: this status should technically different from the recorder status; treat it as such
+    }),
+  );
+}
+
+/* state management */
+function selectNoise(index) {
+  // TODO: or pass actual noise?
+  state.selectedNoise = index; // TODO: or assign actual noise?
+  const noise = state.noiseList[index];
+  updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
+}
+
+
 /*
   Event handlers
  */
@@ -176,30 +202,6 @@ const handleSuccess = function(stream) {
     }
   };
 };
-
-/* state management */
-function updateFilenamePrefix(prefix) {
-  state.recorder.filename.prefix = prefix;
-}
-
-/* state management */
-function updateNoises(noises) {
-  // TODO: rename to initializeNoise?
-  state.noiseList = noises.slice();
-  state.noiseList = state.noiseList.map(noise =>
-    Object.assign({}, noise, {
-      status: WAITING, // TODO: this status should technically different from the recorder status; treat it as such
-    }),
-  );
-}
-
-/* state management */
-function selectNoise(index) {
-  // TODO: or pass actual noise?
-  state.selectedNoise = index; // TODO: or assign actual noise?
-  const noise = state.noiseList[index];
-  updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
-}
 
 /* UI */
 
