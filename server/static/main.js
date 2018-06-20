@@ -202,7 +202,7 @@ function selectNoise(index) {
 }
 
 /* UI */
-function renderNoiseList(noiseList) {
+function renderNoiseList(noiseList, itemAction, selectedNoise, statuses) {
   // TODO: put our DOM references in a singular location?
   const list = document.querySelector('[data-id=list]');
   const container = document.querySelector('[data-id=list-container]');
@@ -211,7 +211,7 @@ function renderNoiseList(noiseList) {
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
     const noiseHtml = noiseTemplate({
-      selected: index === state.selectedNoise,
+      selected: index === selectedNoise,
       number: index + 1,
       name: noise.name,
       description: noise.desc,
@@ -221,7 +221,7 @@ function renderNoiseList(noiseList) {
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', evt => {
-      selectNoise(index);
+      itemAction(index);
       render();
     });
   });
@@ -229,7 +229,7 @@ function renderNoiseList(noiseList) {
 
 /* UI */
 function render() {
-  renderNoiseList(state.noiseList);
+  renderNoiseList(state.noiseList, selectNoise, state.selectedNoise, statuses);
   renderRecorder(state.noiseList[state.selectedNoise], state.recorder);
 }
 

@@ -33,7 +33,7 @@ function renderTime(time) {
   recorderTime.innerText = `${minutes}:${seconds}`;
 }
 
-function renderStatus(status) {
+function renderStatus(status) { // TODO: add statuses as argument?
   /* UI */
   const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
