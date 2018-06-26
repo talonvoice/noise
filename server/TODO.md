@@ -1,12 +1,15 @@
 # TODOS
+  - [x] add navigation arrows as a precursor to the wizard
   - [ ] test scenarios
   - [ ] add wizard (easy sequential navigation)
   - [ ] allow user to select mic
   - [ ] fallback to <input>
   - [ ] integrate new sample sounds
-  - [ ] add build step so that we can use packages more easily, minify etc
+  - [ ] add development web server for automatically reloading on save of static files
+  - [ ] add build step so that we can use packages more easily, minify, etc
   - [ ] add support for FLAC (e.g., https://github.com/mmig/speech-to-flac)
   - [ ] split out CSS by "component"
+  - [ ] add debouncing
   - [ ] allow user to review and submit
   - [ ] replace built-in audio controls with custom ones for accessibility (e.g., https://developer.mozilla.org/en-US/docs/Learn/Accessibility/Multimedia#Creating_custom_audio_and_video_controls)
   - [ ] add simple keyboard shortcuts for accessibility

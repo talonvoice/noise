@@ -6,7 +6,14 @@ import {
   statuses,
 } from '../constants.js';
 
-function renderRecorder(noise, recorderState) {
+function renderRecorder(
+  noise,
+  recorderState,
+  noiseList,
+  selectedNoise,
+  onLeftArrowClick,
+  onRightArrowClick,
+) {
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
@@ -21,6 +28,13 @@ function renderRecorder(noise, recorderState) {
   recorderPreview.style.display = 'block';
 
   renderRecordingControls(recorderState);
+  renderArrows(
+    recorderState.status,
+    noiseList,
+    selectedNoise,
+    onLeftArrowClick,
+    onRightArrowClick,
+  );
 }
 
 function renderRecordingControls(recorderState) {
@@ -45,6 +59,41 @@ function renderStatus(status) {
   const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
   recorderStatus.innerText = `${statuses[status].description}`;
+}
+
+function renderArrows(
+  status,
+  noiseList,
+  selectedNoise,
+  onLeftArrowClick,
+  onRightArrowClick,
+) {
+  /* UI */
+  // TODO: consider passing in an array that represents what kind of arrows to draw instead
+  const goBack = document.querySelector('[data-id=goBack]');
+  const goForward = document.querySelector('[data-id=goForward]');
+
+  if (status !== WAITING && status !== UPLOADED) {
+    goBack.classList.add('Arrow--disabled');
+    goForward.classList.add('Arrow--disabled');
+    goBack.removeEventListener('click', onLeftArrowClick);
+    goForward.removeEventListener('click', onRightArrowClick);
+  } else {
+    if (selectedNoise > 0) {
+      goBack.classList.remove('Arrow--disabled');
+      goBack.addEventListener('click', onLeftArrowClick);
+    } else {
+      goBack.classList.add('Arrow--disabled');
+      goBack.removeEventListener('click', onLeftArrowClick);
+    }
+    if (selectedNoise < noiseList.length - 1) {
+      goForward.classList.remove('Arrow--disabled');
+      goForward.addEventListener('click', onRightArrowClick);
+    } else {
+      goForward.classList.add('Arrow--disabled');
+      goForward.removeEventListener('click', onRightArrowClick);
+    }
+  }
 }
 
 function renderButton(status) {
@@ -77,4 +126,10 @@ function renderButton(status) {
   actions[status]();
 }
 
-export { renderTime, renderStatus, renderRecorder, renderRecordingControls };
+export {
+  renderTime,
+  renderStatus,
+  renderRecorder,
+  renderRecordingControls,
+  renderArrows,
+};

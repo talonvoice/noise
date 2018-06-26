@@ -74,7 +74,9 @@ a {
 /* Recorder */
 
 .Centered {
-  width: 640px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin: 0 auto;
 }
 
@@ -87,6 +89,8 @@ a {
   padding: 10px;
   border-radius: 5px;
   margin: 10px;
+  width: 640px;
+  box-sizing: border-box;
 }
 
 .Recorder-info {
@@ -179,4 +183,33 @@ a {
 
 .DownloadLink--disabled {
   color: #ccc;
+}
+
+
+.Arrow {
+  color: #d6d6d6;
+  width: 0;
+  height: 0;
+  border-top: 60px solid transparent;
+  border-bottom: 60px solid transparent;
+  font-size: 0px;
+  cursor: pointer;
+}
+
+.Arrow--disabled {
+  color: #efefef;
+  cursor: auto;
+}
+.Arrow:not(.Arrow--disabled):hover {
+  color: #d0d0d0;
+}
+
+.Arrow--left {
+  border-right: 60px solid currentColor;
+  border-left: none;
+}
+
+.Arrow--right {
+  border-left: 60px solid currentColor;
+  border-right: none;
 }

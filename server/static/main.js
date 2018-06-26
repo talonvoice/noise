@@ -2,6 +2,7 @@ import { generateUUID } from './utilities.js';
 import {
   renderRecorder,
   renderRecordingControls,
+  renderArrows,
 } from './components/recorder.js';
 import { renderNoiseList } from './components/list.js';
 import {
@@ -28,7 +29,6 @@ let state = {
     },
     chunkNumber: 0,
   },
-  status: WAITING,
   noiseList: [],
   selectedNoise: -1,
 };
@@ -55,6 +55,7 @@ function selectNoise(index) {
     state.selectedNoise = index; // TODO: or assign actual noise?
     const noise = state.noiseList[index];
     state.recorder.status = noise.status === UPLOADED ? UPLOADED : WAITING; // TODO: the latter is a subset of the former
+    // TODO: also rerender recorder?
     state.recorder.startTime = null; // TODO: the latter is a subset of the former
     state.recorder.elapsed = 0; // TODO: the latter is a subset of the former
 
@@ -62,6 +63,18 @@ function selectNoise(index) {
     return true;
   } else {
     return false; // signaling that we did not modify the state
+  }
+}
+
+function incrementSelectedNoise() {
+  if (selectNoise((state.selectedNoise + 1) % state.noiseList.length)) {
+    render();
+  }
+}
+
+function decrementSelectedNoise() {
+  if (selectNoise((state.selectedNoise - 1) % state.noiseList.length)) {
+    render();
   }
 }
 
@@ -75,6 +88,14 @@ const handleSuccess = function(stream) {
 
   /* state management */
   state.recorder.status = WAITING;
+  renderArrows(
+    state.recorder.status,
+    state.noiseList,
+    state.selectedNoise,
+    decrementSelectedNoise,
+    incrementSelectedNoise,
+  );
+
   let recordedChunks = [];
 
   try {
@@ -124,6 +145,13 @@ const handleSuccess = function(stream) {
 
       /* UI */
       renderRecordingControls(state.recorder);
+      renderArrows(
+        state.recorder.status,
+        state.noiseList,
+        state.selectedNoise,
+        decrementSelectedNoise,
+        incrementSelectedNoise,
+      );
     }
   });
 
@@ -134,6 +162,13 @@ const handleSuccess = function(stream) {
 
     /* UI */
     renderRecordingControls(state.recorder);
+    renderArrows(
+      state.recorder.status,
+      state.noiseList,
+      state.selectedNoise,
+      decrementSelectedNoise,
+      incrementSelectedNoise,
+    );
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
   });
 
@@ -147,6 +182,13 @@ const handleSuccess = function(stream) {
 
     /* UI */
     renderRecordingControls(state.recorder);
+    renderArrows(
+      state.recorder.status,
+      state.noiseList,
+      state.selectedNoise,
+      decrementSelectedNoise,
+      incrementSelectedNoise,
+    );
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
     /* async I/O */
@@ -165,17 +207,7 @@ const handleSuccess = function(stream) {
       .then(success => {
         state.noiseList[state.selectedNoise].status = UPLOADED; // TODO: how to ensure no async probs?
         state.recorder.status = UPLOADED;
-        renderNoiseList(
-          state.noiseList,
-          selectNoise,
-          state.selectedNoise,
-          statuses,
-          render,
-          () =>
-            state.recorder.status === RECORDING ||
-            state.recorder.status === UPLOADING,
-        );
-        renderRecordingControls(state.recorder);
+        renderApp();
       })
       .catch(
         error => console.log(error), // Handle the error response object
@@ -237,7 +269,14 @@ function renderApp() {
       state.recorder.status === RECORDING ||
       state.recorder.status === UPLOADING,
   );
-  renderRecorder(state.noiseList[state.selectedNoise], state.recorder);
+  renderRecorder(
+    state.noiseList[state.selectedNoise],
+    state.recorder,
+    state.noiseList,
+    state.selectedNoise,
+    decrementSelectedNoise,
+    incrementSelectedNoise,
+  );
 }
 
 function processNoises(noises) {
