@@ -6,6 +6,7 @@ import {
 } from './components/recorder.js';
 import { renderNoiseList } from './components/list.js';
 import {
+  NEED_PERMISSIONS,
   WAITING,
   RECORDING,
   UPLOADING,
@@ -19,7 +20,7 @@ import {
 
 let state = {
   recorder: {
-    status: WAITING,
+    status: NEED_PERMISSIONS,
     startTime: null,
     elapsed: 0,
     filename: {
@@ -82,7 +83,33 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-const handleSuccess = function(stream) {
+// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+function getUserMedia() {
+  /* async I/O */
+  return navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then(handleGetUserMediaSuccess)
+    .catch(handleGetUserMediaFailure);
+}
+
+const firstRecordClick = function() {
+  console.log(state.recorder.status);
+  // TODO: fix this when we separate out recorder status from noise status
+  // if (state.recorder.status === NEED_PERMISSIONS) {
+    getUserMedia();
+  // }
+}
+
+function initializeRecord() {
+  const recordButton = document.querySelector('[data-id=recordButton]');
+  recordButton.addEventListener('click', firstRecordClick);
+}
+
+const handleGetUserMediaFailure = function(error) {
+  // TODO: change the UI to indicate that nothing can be recorded
+  console.log(error);
+};
+const handleGetUserMediaSuccess = function(stream) {
   const options = { mimeType: 'audio/webm' };
   let mediaRecorder;
 
@@ -109,8 +136,14 @@ const handleSuccess = function(stream) {
   const downloadLink = document.querySelector('[data-id=download]');
   const player = document.querySelector('[data-id=player]');
   const recordButton = document.querySelector('[data-id=recordButton]');
+  const recordButtonClone = recordButton.cloneNode(true);
 
-  recordButton.addEventListener('click', function() {
+  // get rid of original event handler by replacing button element
+  // TODO: look into other ways of doing this, including using the original reference to the handler
+  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
+
+  function recordClickHandler() {
+    console.log(state.recorder)
     if (state.recorder.status === WAITING) {
       /* state management */
       state.recorder.recordedChunks = [];
@@ -132,7 +165,10 @@ const handleSuccess = function(stream) {
       /* I/O */
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
-  });
+  }
+
+  recordClickHandler(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
+  recordButtonClone.addEventListener('click', recordClickHandler);
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
@@ -286,12 +322,6 @@ function processNoises(noises) {
 
   /* UI */
   render();
-
-  // TODO: wait until the first interaction to do this?
-  /* async I/O */
-  navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(handleSuccess);
 }
 
 /* async I/O */
@@ -304,3 +334,5 @@ window
   .catch(
     error => console.log(error), // Handle the error response object
   );
+
+initializeRecord();

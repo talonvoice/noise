@@ -31,6 +31,8 @@
   - [x] update UI when done recording, and uploading
   - [x] load noise info from data json
   - [x] add navigation arrows as a precursor to the wizard
+  - [x] ask for microphone permission on record instead of on load (see: https://developers.google.com/web/fundamentals/media/recording-video/#ask_permission_to_use_camera_responsibly,https://developers.google.com/web/fundamentals/media/recording-video/#use_the_permissions_api_to_check_if_you_already_have_access)
+
 
 
 
@@ -40,6 +42,7 @@
 
 ### PLANNED
   - [ ] split out CSS by "component"
+  - [ ] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
   - [ ] add development web server for automatically reloading on save of static files
   - [ ] add build step so that we can use packages more easily, minify, etc
 
@@ -48,9 +51,13 @@
   - [ ] fallback to <input>
   - [ ] add debouncing
   - [ ] add polyfills and fallbacks
+    - [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
   - [ ] productionize
   - [ ] test supported desktop browsers
   - [ ] smoke test and fix mobile browsers
+  - [ ] address TODOs
+  - [ ] fix console errors
+  - [ ] remove console debugging statements
 
 ### DONE
   - [x] refactor into modules

@@ -1,9 +1,11 @@
-const WAITING = 0;
-const RECORDING = 1;
-const UPLOADING = 2;
-const UPLOADED = 3;
+const NEED_PERMISSIONS = 0;
+const WAITING = 1;
+const RECORDING = 2;
+const UPLOADING = 3;
+const UPLOADED = 4;
 
 const statuses = [
+  { description: 'Waiting to record' }, // TODO: rename this?
   { description: 'Waiting to record' },
   { description: 'Recording' },
   { description: 'Recorded and uploading' },
@@ -12,4 +14,4 @@ const statuses = [
 
 // TODO: combine the above
 
-export { WAITING, RECORDING, UPLOADING, UPLOADED, statuses };
+export { NEED_PERMISSIONS, WAITING, RECORDING, UPLOADING, UPLOADED, statuses };
