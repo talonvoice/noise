@@ -1,5 +1,12 @@
 {
   "devDependencies": {
+    "napa": "^3.0.0",
     "prettier": "1.13.5"
+  },
+  "scripts": {
+    "install": "napa"
+  },
+  "napa": {
+    "libflac-js": "mmig/libflac.js#8fb3894a08a6e8305f10e78b154d0b1844c1eeac"
   }
 }
