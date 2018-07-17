@@ -1,6 +1,7 @@
 /*
   Utilities
  */
+// TODO: move to /utilities folder
 
 // copypasta from https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 function generateUUID() {

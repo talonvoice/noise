@@ -1,5 +1,4 @@
 // TODO: we are relying on the native import(), which may not be available in our supported browsers; assess and replace with transpilation if necessary
-import './libraries/libflac-js/libflac4-1.3.2.js'; // NOTE: currently manually copied from node_modules/libflac-js/dist into /static folder; TODO: use webpack or similar
 import { generateUUID } from './utilities.js';
 import {
   renderRecorder,
@@ -15,6 +14,7 @@ import {
   UPLOADED,
   statuses,
 } from './constants.js';
+import { record } from './utilities/record.js';
 
 /*
   State
@@ -94,13 +94,26 @@ function getUserMedia() {
     .catch(handleGetUserMediaFailure);
 }
 
+let adapter = {}; // this object is used as a means to communicate with the recording code; TODO: replace with more intuitive code
+
 const firstRecordClick = function() {
   console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
   // if (state.recorder.status === NEED_PERMISSIONS) {
-    getUserMedia();
+  // getUserMedia(); // normal .webm code path
+  
+  // TODO: replace with more intuitive code
+  let { startRecording, stopRecording } = record(adapter); // new .flac code path
   // }
-}
+  startRecording();
+  const recordButton = document.querySelector('[data-id=recordButton]');
+  const recordButtonClone = recordButton.cloneNode(true);
+
+  // get rid of original event handler by replacing button element
+  // TODO: look into other ways of doing this, including using the original reference to the handler
+  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
+  recordButtonClone.addEventListener('click', stopRecording);
+};
 
 function initializeRecord() {
   const recordButton = document.querySelector('[data-id=recordButton]');
@@ -145,7 +158,7 @@ const handleGetUserMediaSuccess = function(stream) {
   recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
 
   function recordClickHandler() {
-    console.log(state.recorder)
+    console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management */
       state.recorder.recordedChunks = [];

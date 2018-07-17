@@ -3,9 +3,10 @@
 ## FEATURES
 
 ### IN PROGRESS
+  - [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
 
 ### PLANNED
-  - [ ] add support for FLAC (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
+
   - [ ] show user visual indicator that they can't change noises while recording
   - [ ] add wizard (easy sequential navigation)
   - [ ] simple text "pacing" timeline
@@ -32,6 +33,7 @@
   - [x] load noise info from data json
   - [x] add navigation arrows as a precursor to the wizard
   - [x] ask for microphone permission on record instead of on load (see: https://developers.google.com/web/fundamentals/media/recording-video/#ask_permission_to_use_camera_responsibly,https://developers.google.com/web/fundamentals/media/recording-video/#use_the_permissions_api_to_check_if_you_already_have_access)
+  - [x] get FLAC sample code working (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/speech-to-flac.js)
 
 
 
@@ -45,6 +47,7 @@
   - [ ] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
   - [ ] add development web server for automatically reloading on save of static files
   - [ ] add build step so that we can use packages more easily, minify, etc
+  - [ ] update requirements.txt
 
 ### ICEBOX
   - [ ] test scenarios
@@ -53,6 +56,8 @@
   - [ ] add polyfills and fallbacks
     - [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
   - [ ] productionize
+    - [ ] minify/uglify
+  - [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
   - [ ] test supported desktop browsers
   - [ ] smoke test and fix mobile browsers
   - [ ] address TODOs
