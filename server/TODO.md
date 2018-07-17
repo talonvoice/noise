@@ -61,3 +61,4 @@
 
 ### DONE
   - [x] refactor into modules
+  - [x] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)

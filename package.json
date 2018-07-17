@@ -7,6 +7,6 @@
     "install": "napa"
   },
   "napa": {
-    "libflac-js": "mmig/libflac.js#8fb3894a08a6e8305f10e78b154d0b1844c1eeac"
+    "libflac-js": "mmig/libflac.js#aac00bc84484f77bfe42a39303dd4ea197a59424"
   }
 }

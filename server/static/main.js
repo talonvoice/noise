@@ -1,5 +1,5 @@
 // TODO: we are relying on the native import(), which may not be available in our supported browsers; assess and replace with transpilation if necessary
-import './libraries/libflac-js/libflac3-1.3.2.strict.js'; // NOTE: currently manually copied into /static folder; TODO: use webpack or similar
+import './libraries/libflac-js/libflac4-1.3.2.js'; // NOTE: currently manually copied from node_modules/libflac-js/dist into /static folder; TODO: use webpack or similar
 import { generateUUID } from './utilities.js';
 import {
   renderRecorder,
