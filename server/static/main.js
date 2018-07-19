@@ -83,15 +83,6 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
-function getUserMedia() {
-  /* async I/O */
-  return navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(handleGetUserMediaSuccess)
-    .catch(handleGetUserMediaFailure);
-}
-
 const firstRecordClick = function() {
   console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
@@ -126,6 +117,7 @@ const handleGetUserMediaSuccess = function(stream) {
   let recordedChunks = [];
 
   try {
+    // TODO: set up audio context instead?
     mediaRecorder = new MediaRecorder(stream, options);
   } catch (err) {
     console.log('ERROR:' + err.name);
@@ -156,6 +148,7 @@ const handleGetUserMediaSuccess = function(stream) {
 
       try {
         /* I/O */
+        // start recording
         mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
       } catch (e) {
         console.error(e);
@@ -163,6 +156,7 @@ const handleGetUserMediaSuccess = function(stream) {
       }
     } else if (state.recorder.status === RECORDING) {
       /* I/O */
+      // stop recording
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
   }
@@ -325,14 +319,26 @@ function processNoises(noises) {
 }
 
 /* async I/O */
-window
-  .fetch('noises')
-  .then(response => response.json())
-  .then(
-    noises => processNoises(noises), // Handle the success response object
-  )
-  .catch(
-    error => console.log(error), // Handle the error response object
-  );
+function getNoises() {
+  window
+    .fetch('noises')
+    .then(response => response.json())
+    .then(
+      noises => processNoises(noises), // Handle the success response object
+    )
+    .catch(
+      error => console.log(error), // Handle the error response object
+    );
+}
 
+// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+function getUserMedia() {
+  /* async I/O */
+  return navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then(handleGetUserMediaSuccess)
+    .catch(handleGetUserMediaFailure);
+}
+
+getNoises()
 initializeRecord();
