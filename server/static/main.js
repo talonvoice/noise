@@ -36,6 +36,13 @@ let state = {
 
 /* State management */
 
+function updateState(changes) {
+  state = {
+    ...state,
+    ...changes,
+  };
+}
+
 function updateFilenamePrefix(prefix) {
   state.recorder.filename.prefix = prefix;
 }
@@ -105,7 +112,14 @@ const handleGetUserMediaSuccess = function(stream) {
   let mediaRecorder;
 
   /* state management */
-  state.recorder.status = WAITING;
+  updateState({
+    state: {
+      recorder: {
+        status: WAITING
+      }
+    }
+  })
+
   renderArrows(
     state.recorder.status,
     state.noiseList,
