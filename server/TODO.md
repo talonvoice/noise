@@ -4,6 +4,9 @@
 
 ### IN PROGRESS
   - [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
+    - [ ] refactor main.js so that event handling, state management, and UI updates for record/stop are more decoupled
+    - [ ] determine if we need to also refactor for list interaction
+    - [ ] merge record.js with main.js
 
 ### PLANNED
 

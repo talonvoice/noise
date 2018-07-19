@@ -85,15 +85,6 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
-function getUserMedia() {
-  /* async I/O */
-  return navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(handleGetUserMediaSuccess)
-    .catch(handleGetUserMediaFailure);
-}
-
 let adapter = {}; // this object is used as a means to communicate with the recording code; TODO: replace with more intuitive code
 
 const firstRecordClick = function() {
@@ -125,8 +116,8 @@ const handleGetUserMediaFailure = function(error) {
   console.log(error);
 };
 const handleGetUserMediaSuccess = function(stream) {
-  const options = { mimeType: 'audio/webm' };
-  let mediaRecorder;
+  // const options = { mimeType: 'audio/webm' };
+  // let mediaRecorder;
 
   /* state management */
   state.recorder.status = WAITING;
@@ -138,10 +129,11 @@ const handleGetUserMediaSuccess = function(stream) {
     incrementSelectedNoise,
   );
 
-  let recordedChunks = [];
+  // let recordedChunks = [];
 
   try {
-    mediaRecorder = new MediaRecorder(stream, options);
+    // TODO: set up audio context
+    // mediaRecorder = new MediaRecorder(stream, options);
   } catch (err) {
     console.log('ERROR:' + err.name);
     return err.name; /* return the error name */
@@ -161,7 +153,7 @@ const handleGetUserMediaSuccess = function(stream) {
     console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management */
-      state.recorder.recordedChunks = [];
+      // state.recorder.recordedChunks = [];
 
       /* UI */
       player.setAttribute('disabled', 'disabled');
@@ -171,14 +163,16 @@ const handleGetUserMediaSuccess = function(stream) {
 
       try {
         /* I/O */
-        mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
+        // TODO: start recording
+        // mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
       } catch (e) {
         console.error(e);
         // TODO: reset UI
       }
     } else if (state.recorder.status === RECORDING) {
       /* I/O */
-      mediaRecorder.stop();
+      // TODO: stop recording
+      // mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
   }
 
@@ -340,14 +334,26 @@ function processNoises(noises) {
 }
 
 /* async I/O */
-window
-  .fetch('noises')
-  .then(response => response.json())
-  .then(
-    noises => processNoises(noises), // Handle the success response object
-  )
-  .catch(
-    error => console.log(error), // Handle the error response object
-  );
+function getNoises() {
+  window
+    .fetch('noises')
+    .then(response => response.json())
+    .then(
+      noises => processNoises(noises), // Handle the success response object
+    )
+    .catch(
+      error => console.log(error), // Handle the error response object
+    );
+}
 
+// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+function getUserMedia() {
+  /* async I/O */
+  return navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then(handleGetUserMediaSuccess)
+    .catch(handleGetUserMediaFailure);
+}
+
+getNoises()
 initializeRecord();
