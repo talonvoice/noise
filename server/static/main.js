@@ -42,30 +42,50 @@ function updateState(changes) {
 }
 
 function updateFilenamePrefix(prefix) {
-  state.recorder.filename.prefix = prefix;
+  /* state management */
+  updateState({
+    recorder: {
+      ...state.recorder,
+      filename: {
+        ...state.recorder.filename,
+        prefix: prefix,
+      },
+    },
+  });
 }
 
 function updateNoises(noises) {
   // TODO: rename to initializeNoise?
-  state.noiseList = noises.slice();
-  state.noiseList = state.noiseList.map(noise =>
-    Object.assign({}, noise, {
-      status: WAITING, // TODO: this status should technically be different from the recorder status; treat it as such
-    }),
-  );
+  let updatedNoiseList = noises.map(noise => ({
+    ...noise,
+    status: WAITING, // TODO: this status should technically be different from the recorder status; treat it as such
+  }));
+
+  /* state management */
+  updateState({
+    noiseList: updatedNoiseList,
+  });
 }
 
 function selectNoise(index) {
-  if (state.selectedNoise !== index) {
-    // TODO: or pass actual noise?
-    state.selectedNoise = index; // TODO: or assign actual noise?
-    const noise = state.noiseList[index];
-    state.recorder.status = noise.status === UPLOADED ? UPLOADED : WAITING; // TODO: the latter is a subset of the former
-    // TODO: also rerender recorder?
-    state.recorder.startTime = null; // TODO: the latter is a subset of the former
-    state.recorder.elapsed = 0; // TODO: the latter is a subset of the former
+  // TODO: or pass actual noise?
 
+  if (state.selectedNoise !== index) {
+    const noise = state.noiseList[index];
+    /* state management */
+    updateState({
+      selectedNoise: index, // TODO: or assign actual noise?
+      recorder: {
+        ...state.recorder,
+        status: noise.status === UPLOADED ? UPLOADED : WAITING, // TODO: the latter is a subset of the former
+        startTime: null,
+        elapsed: 0,
+      },
+    });
+    
     updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
+    
+    // TODO: also rerender recorder?
     return true;
   } else {
     return false; // signaling that we did not modify the state
