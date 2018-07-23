@@ -1,4 +1,4 @@
-import { generateUUID } from './utilities.js';
+import { generateUUID, merge } from './utilities.js';
 import {
   renderRecorder,
   renderRecordingControls,
@@ -29,6 +29,7 @@ let state = {
       // TODO: use this UUID and put it in local storage
     },
     chunkNumber: 0,
+    chunks: [],
   },
   noiseList: [],
   selectedNoise: -1,
@@ -37,10 +38,7 @@ let state = {
 /* State management */
 
 function updateState(changes) {
-  state = {
-    ...state,
-    ...changes,
-  };
+  state = merge(state, changes);
 }
 
 function updateFilenamePrefix(prefix) {
@@ -94,9 +92,9 @@ const firstRecordClick = function() {
   console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
   // if (state.recorder.status === NEED_PERMISSIONS) {
-    getUserMedia();
+  getUserMedia();
   // }
-}
+};
 
 function initializeRecord() {
   const recordButton = document.querySelector('[data-id=recordButton]');
@@ -113,12 +111,11 @@ const handleGetUserMediaSuccess = function(stream) {
 
   /* state management */
   updateState({
-    state: {
-      recorder: {
-        status: WAITING
-      }
-    }
-  })
+    recorder: {
+      ...state.recorder,
+      status: WAITING,
+    },
+  });
 
   renderArrows(
     state.recorder.status,
@@ -127,8 +124,6 @@ const handleGetUserMediaSuccess = function(stream) {
     decrementSelectedNoise,
     incrementSelectedNoise,
   );
-
-  let recordedChunks = [];
 
   try {
     // TODO: set up audio context instead?
@@ -149,10 +144,15 @@ const handleGetUserMediaSuccess = function(stream) {
   recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
 
   function recordClickHandler() {
-    console.log(state.recorder)
+    console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management */
-      state.recorder.recordedChunks = [];
+      updateState({
+        recorder: {
+          ...state.recorder,
+          chunks: [],
+        },
+      });
 
       /* UI */
       player.setAttribute('disabled', 'disabled');
@@ -184,8 +184,13 @@ const handleGetUserMediaSuccess = function(stream) {
       console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
 
       /* state management */
-      recordedChunks.push(e.data);
-      state.recorder.elapsed = Date.now() - state.recorder.startTime;
+      updateState({
+        recorder: {
+          ...state.recorder,
+          chunks: [...state.recorder.chunks, e.data],
+          elapsed: Date.now() - state.recorder.startTime,
+        },
+      });
 
       /* UI */
       renderRecordingControls(state.recorder);
@@ -201,8 +206,13 @@ const handleGetUserMediaSuccess = function(stream) {
 
   mediaRecorder.addEventListener('start', function() {
     /* state management */
-    state.recorder.startTime = Date.now();
-    state.recorder.status = RECORDING;
+    updateState({
+      recorder: {
+        ...state.recorder,
+        startTime: Date.now(),
+        status: RECORDING,
+      },
+    });
 
     /* UI */
     renderRecordingControls(state.recorder);
@@ -218,11 +228,13 @@ const handleGetUserMediaSuccess = function(stream) {
 
   mediaRecorder.addEventListener('stop', function() {
     /* state management */
-    state.recorder.elapsed = Date.now() - state.recorder.startTime;
-    const filename = `${state.recorder.filename.prefix}.${
-      state.recorder.filename.sessionID
-    }.webm`;
-    state.recorder.status = UPLOADING;
+    updateState({
+      recorder: {
+        ...state.recorder,
+        elapsed: Date.now() - state.recorder.startTime,
+        status: UPLOADING,
+      },
+    });
 
     /* UI */
     renderRecordingControls(state.recorder);
@@ -236,7 +248,10 @@ const handleGetUserMediaSuccess = function(stream) {
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
     /* async I/O */
-    let blob = new Blob(recordedChunks);
+    const filename = `${state.recorder.filename.prefix}.${
+      state.recorder.filename.sessionID
+    }.webm`;
+    let blob = new Blob(state.recorder.chunks);
     let file = new File([blob], filename);
     let data = new FormData();
     data.append('noise', file);
@@ -354,5 +369,5 @@ function getUserMedia() {
     .catch(handleGetUserMediaFailure);
 }
 
-getNoises()
+getNoises();
 initializeRecord();
