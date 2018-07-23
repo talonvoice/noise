@@ -8,7 +8,7 @@ import {
 
 function renderRecorder(
   noise,
-  recorderState,
+  recorderState, // TODO: divorce state shape of recorder
   noiseList,
   selectedNoise,
   onLeftArrowClick,

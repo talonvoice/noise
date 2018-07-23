@@ -8,7 +8,7 @@ FEATURES:
         [ ] state management
           [ ] move state management to one place in main.js
             [x] create update state function
-            [ ] move clone() and deepMerge() out to snippets
+            [x] move clone() and deepMerge() out to snippets
             [ ] migrate state management to use update state function
           [ ] move state management into a different file
         [ ] event handling

@@ -284,8 +284,17 @@ const handleGetUserMediaSuccess = function(stream) {
       })
       .then(response => console.log(response.statusText))
       .then(success => {
-        state.noiseList[state.selectedNoise].status = UPLOADED; // TODO: how to ensure no async probs?
-        state.recorder.status = UPLOADED;
+        let updatedNoiseList = [...state.noiseList];
+        updatedNoiseList[state.selectedNoise].status = UPLOADED; // TODO: how to ensure no async probs?
+
+        updateState({
+          noiseList: updatedNoiseList,
+          recorder: {
+            ...state.recorder,
+            status: UPLOADED,
+          }
+        });
+
         renderApp();
       })
       .catch(
