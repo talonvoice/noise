@@ -15,6 +15,55 @@ import {
 } from './constants.js';
 
 /*
+  UI
+*/
+
+// TODO: merge enable/disable fns
+function disableSamplePlayer() {
+  const player = document.querySelector('[data-id=player]');
+  player.setAttribute('disabled', 'disabled');
+  player.src = null;
+}
+
+function enableSamplePlayer({ url }) {
+  // hook up player
+  const player = document.querySelector('[data-id=player]');
+
+  player.src = url;
+  player.removeAttribute('disabled');
+}
+
+function disableDownloadLink() {
+  const downloadLink = document.querySelector('[data-id=download]');
+  downloadLink.classList.add('DownloadLink--disabled');
+  downloadLink.href = null;
+}
+
+function enableDownloadLink({ url, filename }) {
+  // hook up download link
+  const downloadLink = document.querySelector('[data-id=download]');
+
+  downloadLink.href = url;
+  downloadLink.download = filename;
+  downloadLink.classList.remove('DownloadLink--disabled');
+}
+
+function initializeRecord(onFirstClick) {
+  const recordButton = document.querySelector('[data-id=recordButton]');
+  recordButton.addEventListener('click', onFirstClick);
+}
+
+function updateRecordButton(onRecordClick) {
+  const recordButton = document.querySelector('[data-id=recordButton]');
+  const recordButtonClone = recordButton.cloneNode(true);
+
+  // get rid of original event handler by replacing button element
+  // TODO: look into other ways of doing this, including using the original reference to the handler
+  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
+  recordButtonClone.addEventListener('click', onRecordClick);
+}
+
+/*
   State
  */
 
@@ -82,9 +131,9 @@ function selectNoise(index) {
         elapsed: 0,
       },
     });
-    
+
     updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
-    
+
     // TODO: also rerender recorder?
     return true;
   } else {
@@ -115,11 +164,6 @@ const firstRecordClick = function() {
   getUserMedia();
   // }
 };
-
-function initializeRecord() {
-  const recordButton = document.querySelector('[data-id=recordButton]');
-  recordButton.addEventListener('click', firstRecordClick);
-}
 
 const handleGetUserMediaFailure = function(error) {
   // TODO: change the UI to indicate that nothing can be recorded
@@ -153,16 +197,6 @@ const handleGetUserMediaSuccess = function(stream) {
     return err.name; /* return the error name */
   }
 
-  /* UI */
-  const downloadLink = document.querySelector('[data-id=download]');
-  const player = document.querySelector('[data-id=player]');
-  const recordButton = document.querySelector('[data-id=recordButton]');
-  const recordButtonClone = recordButton.cloneNode(true);
-
-  // get rid of original event handler by replacing button element
-  // TODO: look into other ways of doing this, including using the original reference to the handler
-  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
-
   function recordClickHandler() {
     console.log(state.recorder);
     if (state.recorder.status === WAITING) {
@@ -175,10 +209,8 @@ const handleGetUserMediaSuccess = function(stream) {
       });
 
       /* UI */
-      player.setAttribute('disabled', 'disabled');
-      player.src = null;
-      downloadLink.classList.add('DownloadLink--disabled');
-      downloadLink.href = null;
+      disableSamplePlayer();
+      disableDownloadLink();
 
       try {
         /* I/O */
@@ -196,7 +228,9 @@ const handleGetUserMediaSuccess = function(stream) {
   }
 
   recordClickHandler(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
-  recordButtonClone.addEventListener('click', recordClickHandler);
+  
+  /* UI */
+  updateRecordButton(recordClickHandler);
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
@@ -277,6 +311,17 @@ const handleGetUserMediaSuccess = function(stream) {
     data.append('noise', file);
     data.append('user', 'you'); // TODO: names in uploads?
 
+    let url = URL.createObjectURL(blob);
+
+    enableDownloadLink({
+      url,
+      filename, /* from state */
+    });
+
+    enableSamplePlayer({
+      url,
+    });
+
     window
       .fetch('/upload', {
         method: 'POST',
@@ -292,7 +337,7 @@ const handleGetUserMediaSuccess = function(stream) {
           recorder: {
             ...state.recorder,
             status: UPLOADED,
-          }
+          },
         });
 
         renderApp();
@@ -300,17 +345,6 @@ const handleGetUserMediaSuccess = function(stream) {
       .catch(
         error => console.log(error), // Handle the error response object
       );
-
-    /* UI */
-
-    // hook up download link
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = filename; /* from state */
-    downloadLink.classList.remove('DownloadLink--disabled');
-
-    // hook up player
-    player.src = downloadLink.href;
-    player.removeAttribute('disabled');
   });
 
   mediaRecorder.onerror = function(event) {
@@ -399,4 +433,4 @@ function getUserMedia() {
 }
 
 getNoises();
-initializeRecord();
+initializeRecord(firstRecordClick);
