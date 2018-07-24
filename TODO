@@ -14,7 +14,7 @@ FEATURES:
         [ ] componentize
           [ ] separate UI code out from main.js
             [x] move UI code to own functions
-            [ ] move functions to own file
+            [x] move functions to own file
         [ ] event handling
         [ ] I/O and effects
         [ ] determine if we need to also refactor for list interaction
