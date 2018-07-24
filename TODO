@@ -70,6 +70,7 @@ TECHNICAL HEALTH:
     [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
   [ ] productionize
     [ ] minify/uglify
+    [ ] bust caches!
   [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
   [ ] test supported desktop browsers
   [ ] smoke test and fix mobile browsers
