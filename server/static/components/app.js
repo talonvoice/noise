@@ -5,6 +5,7 @@ import {
   renderArrows,
 } from './recorder.js';
 
+// TODO: simplify and investigate if direct DOM manipulation is needed for any of this UI (e.g., rerendering players or recorders may wipe out local stae)
 // TODO: merge enable/disable fns
 function disableSamplePlayer() {
   const player = document.querySelector('[data-id=player]');

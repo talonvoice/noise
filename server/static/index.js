@@ -58,6 +58,35 @@ function renderApp() {
 }
 
 /*
+  async I/O (recorder)
+*/
+
+// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+function getUserMedia() {
+  /* async I/O */
+  return navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then(handleGetUserMediaSuccess)
+    .catch(handleGetUserMediaFailure);
+}
+
+/*
+  async I/O (network request)
+*/
+
+function getNoises() {
+  window
+    .fetch('noises')
+    .then(response => response.json())
+    .then(
+      noises => processNoises(noises), // Handle the success response object
+    )
+    .catch(
+      error => console.log(error), // Handle the error response object
+    );
+}
+
+/*
   State
  */
 
@@ -78,14 +107,12 @@ let state = {
   selectedNoise: -1,
 };
 
-/* State management */
-
 function updateState(changes) {
   state = merge(state, changes);
 }
 
 function updateFilenamePrefix(prefix) {
-  /* state management */
+  /* state management dispatch */
   updateState({
     recorder: {
       ...state.recorder,
@@ -104,7 +131,7 @@ function updateNoises(noises) {
     status: WAITING, // TODO: this status should technically be different from the recorder status; treat it as such
   }));
 
-  /* state management */
+  /* state management dispatch */
   updateState({
     noiseList: updatedNoiseList,
   });
@@ -115,7 +142,7 @@ function selectNoise(index) {
 
   if (state.selectedNoise !== index) {
     const noise = state.noiseList[index];
-    /* state management */
+    /* state management dispatch */
     updateState({
       selectedNoise: index, // TODO: or assign actual noise?
       recorder: {
@@ -164,10 +191,7 @@ const handleGetUserMediaFailure = function(error) {
   console.log(error);
 };
 const handleGetUserMediaSuccess = function(stream) {
-  const options = { mimeType: 'audio/webm' };
-  let mediaRecorder;
-
-  /* state management */
+  /* state management dispatch */
   updateState({
     recorder: {
       ...state.recorder,
@@ -175,13 +199,14 @@ const handleGetUserMediaSuccess = function(stream) {
     },
   });
 
-  renderArrows(
-    state.recorder.status,
-    state.noiseList,
-    state.selectedNoise,
-    decrementSelectedNoise,
-    incrementSelectedNoise,
-  );
+  /* UI dispatch */
+  renderRecorderAndArrows();
+
+  /*
+    async I/O (recorder)
+  */
+  const options = { mimeType: 'audio/webm' };
+  let mediaRecorder;
 
   try {
     // TODO: set up audio context instead?
@@ -194,7 +219,7 @@ const handleGetUserMediaSuccess = function(stream) {
   function recordClickHandler() {
     console.log(state.recorder);
     if (state.recorder.status === WAITING) {
-      /* state management */
+      /* state management dispatch */
       updateState({
         recorder: {
           ...state.recorder,
@@ -202,12 +227,14 @@ const handleGetUserMediaSuccess = function(stream) {
         },
       });
 
-      /* UI */
+      /* UI dispatch */
       disableSamplePlayer();
       disableDownloadLink();
 
       try {
-        /* I/O */
+        /*
+          async I/O (recorder)
+        */
         // start recording
         mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
       } catch (e) {
@@ -215,7 +242,9 @@ const handleGetUserMediaSuccess = function(stream) {
         // TODO: reset UI
       }
     } else if (state.recorder.status === RECORDING) {
-      /* I/O */
+      /*
+        async I/O (recorder)
+      */
       // stop recording
       mediaRecorder.stop();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
@@ -223,7 +252,7 @@ const handleGetUserMediaSuccess = function(stream) {
 
   recordClickHandler(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
 
-  /* UI */
+  /* UI dispatch */
   updateRecordButton(recordClickHandler);
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
@@ -231,7 +260,7 @@ const handleGetUserMediaSuccess = function(stream) {
       // add this chunk of data to the recorded chunks
       console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
 
-      /* state management */
+      /* state management dispatch */
       updateState({
         recorder: {
           ...state.recorder,
@@ -240,7 +269,7 @@ const handleGetUserMediaSuccess = function(stream) {
         },
       });
 
-      /* UI */
+      /* UI dispatch */
       renderRecorderAndArrows();
     }
   });
@@ -248,7 +277,7 @@ const handleGetUserMediaSuccess = function(stream) {
   mediaRecorder.addEventListener('start', function() {
     console.log(`Recording started...`);
 
-    /* state management */
+    /* state management dispatch */
     updateState({
       recorder: {
         ...state.recorder,
@@ -257,7 +286,7 @@ const handleGetUserMediaSuccess = function(stream) {
       },
     });
 
-    /* UI */
+    /* UI dispatch */
     renderRecorderAndArrows();
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
   });
@@ -265,7 +294,7 @@ const handleGetUserMediaSuccess = function(stream) {
   mediaRecorder.addEventListener('stop', function() {
     console.log(`Recording stopped...`);
 
-    /* state management */
+    /* state management dispatch */
     updateState({
       recorder: {
         ...state.recorder,
@@ -274,30 +303,38 @@ const handleGetUserMediaSuccess = function(stream) {
       },
     });
 
-    /* UI */
+    /* UI dispatch */
     renderRecorderAndArrows();
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
-    /* async I/O */
+    // generate filename from session ID and create blob out of chunks for:
+    // 1) display download link on screen (currently hidden functionality)
+    // 2) uploading to server
     const filename = `${state.recorder.filename.prefix}.${
       state.recorder.filename.sessionID
     }.webm`;
     let blob = new Blob(state.recorder.chunks);
-    let file = new File([blob], filename);
-    let data = new FormData();
-    data.append('noise', file);
-    data.append('user', 'you'); // TODO: names in uploads?
 
+    /* UI dispatch */
     let url = URL.createObjectURL(blob);
 
     enableDownloadLink({
       url,
-      filename /* from state */,
+      filename, // from state
     });
 
     enableSamplePlayer({
       url,
     });
+
+    /*
+      async I/O (network request)
+    */
+
+    let file = new File([blob], filename);
+    let data = new FormData();
+    data.append('noise', file);
+    data.append('user', 'you'); // TODO: names in uploads?
 
     window
       .fetch('/upload', {
@@ -326,7 +363,7 @@ const handleGetUserMediaSuccess = function(stream) {
 
   mediaRecorder.onerror = function(event) {
     console.log(`Recorder encountered error...`);
-    
+
     let error = event.error;
 
     /* TODO: define showNotification() */
@@ -353,41 +390,17 @@ const handleGetUserMediaSuccess = function(stream) {
   };
 };
 
-/* UI */
-
 function render() {
   renderApp();
 }
 
 function processNoises(noises) {
-  /* state management */
+  /* state management dispatch */
   updateNoises(noises);
   selectNoise(0); // TODO: or pass actual noise?
 
-  /* UI */
+  /* UI dispatch */
   render();
-}
-
-/* async I/O */
-function getNoises() {
-  window
-    .fetch('noises')
-    .then(response => response.json())
-    .then(
-      noises => processNoises(noises), // Handle the success response object
-    )
-    .catch(
-      error => console.log(error), // Handle the error response object
-    );
-}
-
-// TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
-function getUserMedia() {
-  /* async I/O */
-  return navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(handleGetUserMediaSuccess)
-    .catch(handleGetUserMediaFailure);
 }
 
 getNoises();
