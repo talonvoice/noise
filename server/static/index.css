@@ -159,9 +159,12 @@ a {
 }
 
 .Recorder-time {
-  font-family: sans-serif;
+  font-family: monospace;
   font-size: 20px;
   margin-bottom: 10px;
+}
+.Recorder-time--disabled {
+  color: #ccc;
 }
 
 .Recorder-description {

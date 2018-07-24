@@ -1,3 +1,10 @@
+import { renderNoiseList } from './list.js';
+import {
+  renderRecorder,
+  renderRecordingControls,
+  renderArrows,
+} from './recorder.js';
+
 // TODO: merge enable/disable fns
 function disableSamplePlayer() {
   const player = document.querySelector('[data-id=player]');
@@ -28,11 +35,13 @@ function enableDownloadLink({ url, filename }) {
   downloadLink.classList.remove('DownloadLink--disabled');
 }
 
+// TODO: merge with renderRecorder()
 function initializeRecord(onFirstClick) {
   const recordButton = document.querySelector('[data-id=recordButton]');
   recordButton.addEventListener('click', onFirstClick);
 }
 
+// TODO: merge with renderRecorder()
 function updateRecordButton(onRecordClick) {
   const recordButton = document.querySelector('[data-id=recordButton]');
   const recordButtonClone = recordButton.cloneNode(true);
@@ -50,4 +59,8 @@ export {
   enableDownloadLink,
   initializeRecord,
   updateRecordButton,
-}
+  renderNoiseList,
+  renderRecorder,
+  renderRecordingControls,
+  renderArrows,
+};

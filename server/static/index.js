@@ -1,18 +1,16 @@
 import { generateUUID, merge } from './utilities.js';
 import {
-  renderRecorder,
-  renderRecordingControls,
-  renderArrows,
-} from './components/recorder.js';
-import {
   disableSamplePlayer,
   enableSamplePlayer,
   disableDownloadLink,
   enableDownloadLink,
   initializeRecord,
   updateRecordButton,
+  renderNoiseList,
+  renderRecorder,
+  renderRecordingControls,
+  renderArrows,
 } from './components/app.js';
-import { renderNoiseList } from './components/list.js';
 import {
   NEED_PERMISSIONS,
   WAITING,
@@ -26,6 +24,7 @@ import {
   UI
 */
 
+// TODO: simplify and merge the below code
 function renderRecorderAndArrows() {
   renderRecordingControls(state.recorder);
   renderArrows(
@@ -247,6 +246,8 @@ const handleGetUserMediaSuccess = function(stream) {
   });
 
   mediaRecorder.addEventListener('start', function() {
+    console.log(`Recording started...`);
+
     /* state management */
     updateState({
       recorder: {
@@ -262,6 +263,8 @@ const handleGetUserMediaSuccess = function(stream) {
   });
 
   mediaRecorder.addEventListener('stop', function() {
+    console.log(`Recording stopped...`);
+
     /* state management */
     updateState({
       recorder: {
@@ -272,14 +275,7 @@ const handleGetUserMediaSuccess = function(stream) {
     });
 
     /* UI */
-    renderRecordingControls(state.recorder);
-    renderArrows(
-      state.recorder.status,
-      state.noiseList,
-      state.selectedNoise,
-      decrementSelectedNoise,
-      incrementSelectedNoise,
-    );
+    renderRecorderAndArrows();
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
     /* async I/O */
@@ -329,6 +325,8 @@ const handleGetUserMediaSuccess = function(stream) {
   });
 
   mediaRecorder.onerror = function(event) {
+    console.log(`Recorder encountered error...`);
+    
     let error = event.error;
 
     /* TODO: define showNotification() */

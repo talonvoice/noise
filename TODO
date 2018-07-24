@@ -12,9 +12,10 @@ FEATURES:
             [x] migrate state management to use update state function
           [ ] move state management into a different file
         [ ] componentize
-          [ ] separate UI code out from main.js
+          [x] separate UI code out from main.js
             [x] move UI code to own functions
             [x] move functions to own file
+            [x] move "sub-component" references to new file
         [ ] event handling
         [ ] I/O and effects
         [ ] determine if we need to also refactor for list interaction

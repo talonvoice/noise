@@ -38,19 +38,25 @@ function renderRecorder(
 }
 
 function renderRecordingControls(recorderState) {
-  renderTime(recorderState.elapsed);
+  renderTime(recorderState.elapsed, recorderState.status !== UPLOADED);
   renderButton(recorderState.status);
   renderStatus(recorderState.status);
 }
 
-function renderTime(time) {
+function renderTime(time, isEnabled) {
   /* UI */
   const recorderTime = document.querySelector('[data-id=recorderTime]');
 
-  const timeInS = time / 1000;
-  const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
-  const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
-  recorderTime.innerText = `${minutes}:${seconds}`;
+  if (isEnabled) {
+    const timeInS = time / 1000;
+    const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
+    const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
+    recorderTime.innerText = `${minutes}:${seconds}`;
+  recorderTime.classList.remove('Recorder-time--disabled');
+  } else {
+    recorderTime.innerText = `--:--`;
+  recorderTime.classList.add('Recorder-time--disabled');
+  }
 }
 
 function renderStatus(status) {
