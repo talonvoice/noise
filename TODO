@@ -27,8 +27,8 @@ FEATURES:
               [x] tag what to do with each piece
               [x] move code within record.js 
               [x] move other code back into app.js
-              [ ] test for regressions and fix bugs
-              [ ] clean up
+              [x] test for regressions and fix bugs
+              [ ] clean up relevant TODOs
         [ ] determine if we need to also refactor for list interaction
       [ ] merge record.js with main.js
   

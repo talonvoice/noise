@@ -218,6 +218,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   /* UI dispatch */
   renderRecorderAndArrows();
 
+  // TODO: set up audio context instead?
   let { startRecorder, stopRecorder } = initializeRecorder({
     stream,
     onRecordStart,
