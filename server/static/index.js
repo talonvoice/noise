@@ -1,10 +1,9 @@
-import { generateUUID, merge } from './utilities.js';
+import { generateUUID, merge, showNotification } from './utilities.js';
 import {
   disableSamplePlayer,
   enableSamplePlayer,
   disableDownloadLink,
   enableDownloadLink,
-  initializeRecord,
   updateRecordButton,
   renderNoiseList,
   renderRecorder,
@@ -191,7 +190,6 @@ function decrementSelectedNoise() {
  */
 
 const onFirstRecordClick = function() {
-  console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
   // if (state.recorder.status === NEED_PERMISSIONS) {
   requestMediaPermissions(
@@ -234,7 +232,6 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   updateRecordButton(onRecordClick);
 
   function onRecordClick() {
-    console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management dispatch */
       updateState({
@@ -250,15 +247,11 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       disableDownloadLink();
 
       /* I/O dispatch */
-      startRecorder(); // TODO: no ref ... need ref passed in? perhaps initialize recorder and return the reference to the function as a result of that
+      startRecorder();
     } else if (state.recorder.status === RECORDING) {
-      stopRecorder(); // TODO: no ref ... need ref passed in? perhaps initialize recorder and return the reference to the function as a result of that
+      stopRecorder();
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
   }
-
-  /*
-    NOT async I/O (recorder)
-  */
 
   function onRecordStart() {
     console.log(`Recording started...`);
@@ -368,8 +361,6 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     let error = event.error;
 
-    /* TODO: define showNotification() */
-
     // TODO: move into UI component?
     switch (error.name) {
       case InvalidStateError:
@@ -407,4 +398,4 @@ function processNoises(noises) {
 }
 
 getNoises();
-initializeRecord(onFirstRecordClick);
+updateRecordButton(onFirstRecordClick);

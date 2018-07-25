@@ -27,4 +27,10 @@ function merge(a, b) {
   };
 }
 
-export { generateUUID, merge };
+// show user notification
+function showNotification(message) {
+  // TODO: replace with something nicer
+  alert(message);
+}
+
+export { generateUUID, merge, showNotification };

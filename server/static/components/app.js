@@ -37,14 +37,6 @@ function enableDownloadLink({ url, filename }) {
 }
 
 // TODO: merge with renderRecorder()
-// TODO: merge with updateRecordButton()
-function initializeRecord(onFirstClick) {
-  const recordButton = document.querySelector('[data-id=recordButton]');
-  recordButton.addEventListener('click', onFirstClick);
-}
-
-// TODO: merge with renderRecorder()
-// TODO: merge with initializeRecord()
 function updateRecordButton(onRecordClick) {
   const recordButton = document.querySelector('[data-id=recordButton]');
   const recordButtonClone = recordButton.cloneNode(true);
@@ -60,7 +52,6 @@ export {
   enableSamplePlayer,
   disableDownloadLink,
   enableDownloadLink,
-  initializeRecord,
   updateRecordButton,
   renderNoiseList,
   renderRecorder,
