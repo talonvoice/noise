@@ -19,6 +19,7 @@ import {
   UPLOADED,
   statuses,
 } from './constants.js';
+import { initializeRecorder } from './record/record.js';
 
 /*
   UI
@@ -62,12 +63,12 @@ function renderApp() {
 */
 
 // TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
-function getUserMedia() {
-  /* async I/O */
+function requestMediaPermissions(onSuccess, onFailure) {
+  /* async I/O dispatch */
   return navigator.mediaDevices
     .getUserMedia({ audio: true, video: false })
-    .then(handleGetUserMediaSuccess)
-    .catch(handleGetUserMediaFailure);
+    .then(onSuccess)
+    .catch(onFailure);
 }
 
 /*
@@ -84,6 +85,17 @@ function getNoises() {
     .catch(
       error => console.log(error), // Handle the error response object
     );
+}
+
+function upload(file) {
+  let data = new FormData();
+  data.append('noise', file);
+  data.append('user', 'you'); // TODO: names in uploads?
+
+  return window.fetch('/upload', {
+    method: 'POST',
+    body: data,
+  });
 }
 
 /*
@@ -178,19 +190,23 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-const firstRecordClick = function() {
+const onFirstRecordClick = function() {
   console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
   // if (state.recorder.status === NEED_PERMISSIONS) {
-  getUserMedia();
+  requestMediaPermissions(
+    handleRequestMediaPermissionsSuccess,
+    handleRequestMediaPermissionsFailure,
+  );
   // }
 };
 
-const handleGetUserMediaFailure = function(error) {
+const handleRequestMediaPermissionsFailure = function(error) {
   // TODO: change the UI to indicate that nothing can be recorded
   console.log(error);
 };
-const handleGetUserMediaSuccess = function(stream) {
+
+const handleRequestMediaPermissionsSuccess = function(stream) {
   /* state management dispatch */
   updateState({
     recorder: {
@@ -202,21 +218,21 @@ const handleGetUserMediaSuccess = function(stream) {
   /* UI dispatch */
   renderRecorderAndArrows();
 
-  /*
-    async I/O (recorder)
-  */
-  const options = { mimeType: 'audio/webm' };
-  let mediaRecorder;
+  let { startRecorder, stopRecorder } = initializeRecorder({
+    stream,
+    onRecordStart,
+    onDataAvailable,
+    onRecordStop,
+    onRecordError,
+  });
 
-  try {
-    // TODO: set up audio context instead?
-    mediaRecorder = new MediaRecorder(stream, options);
-  } catch (err) {
-    console.log('ERROR:' + err.name);
-    return err.name; /* return the error name */
-  }
+  onRecordClick(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
 
-  function recordClickHandler() {
+  /* UI dispatch */
+  // TODO: move into UI component?
+  updateRecordButton(onRecordClick);
+
+  function onRecordClick() {
     console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management dispatch */
@@ -228,34 +244,40 @@ const handleGetUserMediaSuccess = function(stream) {
       });
 
       /* UI dispatch */
+      // TODO: move into UI component?
       disableSamplePlayer();
       disableDownloadLink();
 
-      try {
-        /*
-          async I/O (recorder)
-        */
-        // start recording
-        mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
-      } catch (e) {
-        console.error(e);
-        // TODO: reset UI
-      }
+      /* I/O dispatch */
+      startRecorder(); // TODO: no ref ... need ref passed in? perhaps initialize recorder and return the reference to the function as a result of that
     } else if (state.recorder.status === RECORDING) {
-      /*
-        async I/O (recorder)
-      */
-      // stop recording
-      mediaRecorder.stop();
+      stopRecorder(); // TODO: no ref ... need ref passed in? perhaps initialize recorder and return the reference to the function as a result of that
     } // TODO: what do we do if it's starting or stopping? disable the interactions?
   }
 
-  recordClickHandler(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
+  /*
+    NOT async I/O (recorder)
+  */
 
-  /* UI dispatch */
-  updateRecordButton(recordClickHandler);
+  function onRecordStart() {
+    console.log(`Recording started...`);
 
-  mediaRecorder.addEventListener('dataavailable', function(e) {
+    /* state management dispatch */
+    updateState({
+      recorder: {
+        ...state.recorder,
+        startTime: Date.now(),
+        status: RECORDING,
+      },
+    });
+
+    /* UI dispatch */
+    // TODO: move into UI component?
+    renderRecorderAndArrows();
+    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
+  }
+
+  function onDataAvailable(e) {
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
       console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
@@ -270,28 +292,12 @@ const handleGetUserMediaSuccess = function(stream) {
       });
 
       /* UI dispatch */
+      // TODO: move into UI component?
       renderRecorderAndArrows();
     }
-  });
+  }
 
-  mediaRecorder.addEventListener('start', function() {
-    console.log(`Recording started...`);
-
-    /* state management dispatch */
-    updateState({
-      recorder: {
-        ...state.recorder,
-        startTime: Date.now(),
-        status: RECORDING,
-      },
-    });
-
-    /* UI dispatch */
-    renderRecorderAndArrows();
-    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
-  });
-
-  mediaRecorder.addEventListener('stop', function() {
+  function onRecordStop() {
     console.log(`Recording stopped...`);
 
     /* state management dispatch */
@@ -304,6 +310,7 @@ const handleGetUserMediaSuccess = function(stream) {
     });
 
     /* UI dispatch */
+    // TODO: move into UI component?
     renderRecorderAndArrows();
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
@@ -328,19 +335,12 @@ const handleGetUserMediaSuccess = function(stream) {
     });
 
     /*
-      async I/O (network request)
+     async I/O (network request)
     */
 
     let file = new File([blob], filename);
-    let data = new FormData();
-    data.append('noise', file);
-    data.append('user', 'you'); // TODO: names in uploads?
 
-    window
-      .fetch('/upload', {
-        method: 'POST',
-        body: data,
-      })
+    upload(file)
       .then(response => console.log(response.statusText))
       .then(success => {
         let updatedNoiseList = [...state.noiseList];
@@ -354,20 +354,22 @@ const handleGetUserMediaSuccess = function(stream) {
           },
         });
 
+        // TODO: move into UI component?
         renderApp();
       })
       .catch(
         error => console.log(error), // Handle the error response object
       );
-  });
+  }
 
-  mediaRecorder.onerror = function(event) {
+  function onRecordError(event) {
     console.log(`Recorder encountered error...`);
 
     let error = event.error;
 
     /* TODO: define showNotification() */
 
+    // TODO: move into UI component?
     switch (error.name) {
       case InvalidStateError:
         showNotification(
@@ -387,7 +389,7 @@ const handleGetUserMediaSuccess = function(stream) {
         );
         break;
     }
-  };
+  }
 };
 
 function render() {
@@ -404,4 +406,4 @@ function processNoises(noises) {
 }
 
 getNoises();
-initializeRecord(firstRecordClick);
+initializeRecord(onFirstRecordClick);

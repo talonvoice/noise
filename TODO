@@ -19,8 +19,16 @@ FEATURES:
         [ ] event handling
         [ ] I/O and effects
           [x] identify I/O
-          [ ] move to same place in index.js
-          [ ] move out of index.js
+          [ ] move recorder I/O outside of index.js
+            [x] move to same place in index.js
+            [ ] move out of index.js
+              [x] move recording code to new file record.js
+              [x] isolate recorder-specific code from other code
+              [x] tag what to do with each piece
+              [x] move code within record.js 
+              [x] move other code back into app.js
+              [ ] test for regressions and fix bugs
+              [ ] clean up
         [ ] determine if we need to also refactor for list interaction
       [ ] merge record.js with main.js
   
