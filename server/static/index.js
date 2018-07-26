@@ -1,9 +1,7 @@
 import { generateUUID, merge, showNotification } from './utilities.js';
 import {
-  disableSamplePlayer,
-  enableSamplePlayer,
-  disableDownloadLink,
-  enableDownloadLink,
+  updateSamplePlayer,
+  updateDownloadLink,
   updateRecordButton,
   renderNoiseList,
   renderRecorder,
@@ -243,8 +241,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
       /* UI dispatch */
       // TODO: move into UI component?
-      disableSamplePlayer();
-      disableDownloadLink();
+      updateSamplePlayer({ disabled: true });
+      updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
       startRecorder();
@@ -319,12 +317,12 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     /* UI dispatch */
     let url = URL.createObjectURL(blob);
 
-    enableDownloadLink({
+    updateDownloadLink({
       url,
       filename, // from state
     });
 
-    enableSamplePlayer({
+    updateSamplePlayer({
       url,
     });
 

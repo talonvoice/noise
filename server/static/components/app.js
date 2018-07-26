@@ -6,34 +6,32 @@ import {
 } from './recorder.js';
 
 // TODO: simplify and investigate if direct DOM manipulation is needed for any of this UI (e.g., rerendering players or recorders may wipe out local stae)
-// TODO: merge enable/disable fns
-function disableSamplePlayer() {
-  const player = document.querySelector('[data-id=player]');
-  player.setAttribute('disabled', 'disabled');
-  player.src = null;
-}
+// TODO: merge with render() functions if possible
 
-function enableSamplePlayer({ url }) {
+function updateSamplePlayer({ url = null, disabled = false }) {
   // hook up player
   const player = document.querySelector('[data-id=player]');
 
   player.src = url;
-  player.removeAttribute('disabled');
+  if (disabled) {
+    player.setAttribute('disabled', 'disabled');
+  } else {
+    player.removeAttribute('disabled');
+  }
 }
 
-function disableDownloadLink() {
-  const downloadLink = document.querySelector('[data-id=download]');
-  downloadLink.classList.add('DownloadLink--disabled');
-  downloadLink.href = null;
-}
-
-function enableDownloadLink({ url, filename }) {
+function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   // hook up download link
   const downloadLink = document.querySelector('[data-id=download]');
 
   downloadLink.href = url;
   downloadLink.download = filename;
-  downloadLink.classList.remove('DownloadLink--disabled');
+
+  if (disabled) {
+    downloadLink.classList.add('DownloadLink--disabled');
+  } else {
+    downloadLink.classList.remove('DownloadLink--disabled');
+  }
 }
 
 // TODO: merge with renderRecorder()
@@ -48,10 +46,8 @@ function updateRecordButton(onRecordClick) {
 }
 
 export {
-  disableSamplePlayer,
-  enableSamplePlayer,
-  disableDownloadLink,
-  enableDownloadLink,
+  updateSamplePlayer,
+  updateDownloadLink,
   updateRecordButton,
   renderNoiseList,
   renderRecorder,
