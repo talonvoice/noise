@@ -1,19 +1,15 @@
-import {
-  WAITING,
-  RECORDING,
-  UPLOADING,
-  UPLOADED,
-  statuses,
-} from '../constants.js';
-
-function renderRecorder(
+function renderRecorder({
   noise,
-  recorderState,
+  recorderState, // TODO: divorce state shape of recorder
+  recording,
+  disabled,
+  arrowsDisabled,
   noiseList,
   selectedNoise,
+  onButtonClick,
   onLeftArrowClick,
   onRightArrowClick,
-) {
+}) {
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
@@ -27,9 +23,14 @@ function renderRecorder(
   recorderPreview.load();
   recorderPreview.style.display = 'block';
 
-  renderRecordingControls(recorderState);
+  renderRecordingControls({
+    recorderState,
+    recording,
+    disabled,
+    onButtonClick,
+  });
   renderArrows(
-    recorderState.status,
+    arrowsDisabled,
     noiseList,
     selectedNoise,
     onLeftArrowClick,
@@ -37,32 +38,51 @@ function renderRecorder(
   );
 }
 
-function renderRecordingControls(recorderState) {
-  renderTime(recorderState.elapsed);
-  renderButton(recorderState.status);
-  renderStatus(recorderState.status);
+function renderRecordingControls({
+  recorderState,
+  recording,
+  disabled,
+  onButtonClick,
+}) {
+  renderTime({
+    time: recorderState.elapsed,
+    disabled,
+  });
+  renderButton({ recording, disabled, onButtonClick });
+  renderStatus({ status: recorderState.status.description, disabled });
 }
 
-function renderTime(time) {
+function renderTime({ time = 0, disabled = false }) {
   /* UI */
   const recorderTime = document.querySelector('[data-id=recorderTime]');
 
-  const timeInS = time / 1000;
-  const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
-  const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
-  recorderTime.innerText = `${minutes}:${seconds}`;
+  if (!disabled) {
+    // TODO: put this code in utilities as a formatter
+    const timeInS = time / 1000;
+    const minutes = ('' + Math.floor(timeInS / 60)).padStart(2, '0');
+    const seconds = ('' + Math.floor(timeInS % 60)).padStart(2, '0');
+    recorderTime.innerText = `${minutes}:${seconds}`;
+    recorderTime.classList.remove('Recorder-time--disabled');
+  } else {
+    recorderTime.innerText = `--:--`;
+    recorderTime.classList.add('Recorder-time--disabled');
+  }
 }
 
-function renderStatus(status) {
-  // TODO: add statuses as argument?
-  /* UI */
+function renderStatus({ status = '', disabled = false }) {
   const recorderStatus = document.querySelector('[data-id=recorderStatus]');
 
-  recorderStatus.innerText = `${statuses[status].description}`;
+  recorderStatus.innerText = `${status}`;
+  if (!disabled) {
+    recorderStatus.classList.remove('Recorder-status--disabled');
+  } else {
+    recorderStatus.classList.add('Recorder-status--disabled');
+  }
 }
 
+// TODO: move this out to its own file (since it is not technically part of the recorder)
 function renderArrows(
-  status,
+  disabled,
   noiseList,
   selectedNoise,
   onLeftArrowClick,
@@ -73,7 +93,7 @@ function renderArrows(
   const goBack = document.querySelector('[data-id=goBack]');
   const goForward = document.querySelector('[data-id=goForward]');
 
-  if (status !== WAITING && status !== UPLOADED) {
+  if (disabled) {
     goBack.classList.add('Arrow--disabled');
     goForward.classList.add('Arrow--disabled');
     goBack.removeEventListener('click', onLeftArrowClick);
@@ -96,38 +116,38 @@ function renderArrows(
   }
 }
 
-function renderButton(status) {
+function renderButton({
+  recording = false,
+  disabled = false,
+  onButtonClick = () => {},
+}) {
   /* UI */
+
+  // get rid of original event handler by replacing button element
+  // TODO: look into other ways of doing this, including using the original reference to the handler
   const recordButton = document.querySelector('[data-id=recordButton]');
+  const recordButtonClone = recordButton.cloneNode(true);
 
-  let actions = {
-    [WAITING]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.remove('Recorder-recordButton--disabled'),
-      (recordButton.disabled = false)
-    ),
-    [RECORDING]: () => (
-      recordButton.classList.add('Recorder-recordButton--recording'),
-      recordButton.classList.remove('Recorder-recordButton--disabled'),
-      (recordButton.disabled = false)
-    ),
-    [UPLOADING]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.add('Recorder-recordButton--disabled'),
-      (recordButton.disabled = true)
-    ),
-    [UPLOADED]: () => (
-      recordButton.classList.remove('Recorder-recordButton--recording'),
-      recordButton.classList.add('Recorder-recordButton--disabled'),
-      (recordButton.disabled = true)
-    ),
-  };
+  if (disabled) {
+    recordButtonClone.classList.add('Recorder-recordButton--disabled');
+  } else {
+    recordButtonClone.classList.remove('Recorder-recordButton--disabled');
+    recordButtonClone.addEventListener('click', onButtonClick);
+  }
+  recordButtonClone.disabled = disabled;
 
-  actions[status]();
+  if (recording) {
+    recordButtonClone.classList.add('Recorder-recordButton--recording');
+  } else {
+    recordButtonClone.classList.remove('Recorder-recordButton--recording');
+  }
+
+  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
 }
 
 export {
   renderTime,
+  renderButton,
   renderStatus,
   renderRecorder,
   renderRecordingControls,

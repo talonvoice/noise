@@ -24,7 +24,6 @@ function renderNoiseList(
   noiseList,
   itemAction,
   selectedNoise,
-  statuses,
   render,
   isDisabled,
 ) {
@@ -43,7 +42,7 @@ function renderNoiseList(
       name: noise.name,
       description: noise.desc,
       instructions: '',
-      status: statuses[noise.status].description,
+      status: noise.status.description,
     });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);

@@ -10,7 +10,7 @@ function generateUUID() {
     typeof performance !== 'undefined' &&
     typeof performance.now === 'function'
   ) {
-    d += performance.now(); //use high-precision timer if available
+    d += performance.now(); //use high-precision timer ifj available
   }
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     let r = (d + Math.random() * 16) % 16 | 0;
@@ -19,4 +19,18 @@ function generateUUID() {
   });
 }
 
-export { generateUUID };
+// shallow merge
+function merge(a, b) {
+  return {
+    ...a,
+    ...b
+  };
+}
+
+// show user notification
+function showNotification(message) {
+  // TODO: replace with something nicer
+  alert(message);
+}
+
+export { generateUUID, merge, showNotification };
