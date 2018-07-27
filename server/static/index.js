@@ -2,20 +2,13 @@ import { generateUUID, merge, showNotification } from './utilities.js';
 import {
   updateSamplePlayer,
   updateDownloadLink,
-  updateRecordButton,
+  renderButton,
   renderNoiseList,
   renderRecorder,
   renderRecordingControls,
   renderArrows,
 } from './components/app.js';
-import {
-  NEED_PERMISSIONS,
-  WAITING,
-  RECORDING,
-  UPLOADING,
-  UPLOADED,
-  statuses,
-} from './constants.js';
+import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
 import { initializeRecorder } from './record/record.js';
 
 /*
@@ -24,9 +17,19 @@ import { initializeRecorder } from './record/record.js';
 
 // TODO: simplify and merge the below code
 function renderRecorderAndArrows() {
-  renderRecordingControls(state.recorder);
+  renderRecordingControls({
+    recorderState: state.recorder,
+    recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
+    disabled:
+      state.noiseList[state.selectedNoise].status ===
+        NOISE_STATUS_VALUES.RECORDED ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED,
+    onButtonClick: onRecordClick,
+  }); // TODO: must also point to onRecordClick, which is stuck inside a closure
   renderArrows(
-    state.recorder.status,
+    state.recorder.status !== RECORDER_STATUS_VALUES.WAITING &&
+      state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
     state.noiseList,
     state.selectedNoise,
     decrementSelectedNoise,
@@ -39,20 +42,29 @@ function renderApp() {
     state.noiseList,
     selectNoise,
     state.selectedNoise,
-    statuses,
     render,
     () =>
-      state.recorder.status === RECORDING ||
-      state.recorder.status === UPLOADING,
+      state.recorder.status === RECORDER_STATUS_VALUES.RECORDING ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
   );
-  renderRecorder(
-    state.noiseList[state.selectedNoise],
-    state.recorder,
-    state.noiseList,
-    state.selectedNoise,
-    decrementSelectedNoise,
-    incrementSelectedNoise,
-  );
+  renderRecorder({
+    noise: state.noiseList[state.selectedNoise],
+    recorderState: state.recorder, // TODO: divorce state shape of recorder
+    recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
+    disabled:
+      state.noiseList[state.selectedNoise].status ===
+        NOISE_STATUS_VALUES.RECORDED ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED,
+    arrowsDisabled:
+      state.recorder.status !== RECORDER_STATUS_VALUES.WAITING &&
+      state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
+    noiseList: state.noiseList,
+    selectedNoise: state.selectedNoise,
+    onButtonClick: onRecordClick,
+    onLeftArrowClick: decrementSelectedNoise,
+    onRightArrowClick: incrementSelectedNoise,
+  });
 }
 
 /*
@@ -101,7 +113,8 @@ function upload(file) {
 
 let state = {
   recorder: {
-    status: NEED_PERMISSIONS,
+    explicitlyPermitted: false,
+    status: RECORDER_STATUS_VALUES.WAITING,
     startTime: null,
     elapsed: 0,
     filename: {
@@ -111,6 +124,8 @@ let state = {
     },
     chunkNumber: 0,
     chunks: [],
+    startRecorder: () => {}, // TODO: currently abusing state to have a reference to startRecorder(); figure out a better way to do this
+    stopRecorder: () => {}, // TODO: currently abusing state to have a reference to stopRecorder(); figure out a better way to do this
   },
   noiseList: [],
   selectedNoise: -1,
@@ -133,11 +148,10 @@ function updateFilenamePrefix(prefix) {
   });
 }
 
-function updateNoises(noises) {
-  // TODO: rename to initializeNoise?
+function initializeNoises(noises) {
   let updatedNoiseList = noises.map(noise => ({
     ...noise,
-    status: WAITING, // TODO: this status should technically be different from the recorder status; treat it as such
+    status: NOISE_STATUS_VALUES.UNRECORDED, // TODO: eventually, get this information from the server
   }));
 
   /* state management dispatch */
@@ -156,18 +170,17 @@ function selectNoise(index) {
       selectedNoise: index, // TODO: or assign actual noise?
       recorder: {
         ...state.recorder,
-        status: noise.status === UPLOADED ? UPLOADED : WAITING, // TODO: the latter is a subset of the former
+        status: noise.status === NOISE_STATUS_VALUES.UNRECORDED ? RECORDER_STATUS_VALUES.WAITING : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
         startTime: null,
         elapsed: 0,
       },
     });
-
-    updateFilenamePrefix(noise.name); // TODO: store in state instead of using global variable
+    updateFilenamePrefix(noise.name);
 
     // TODO: also rerender recorder?
-    return true;
+    return true; // NOTE: signaling that we DID modify the state
   } else {
-    return false; // signaling that we did not modify the state
+    return false; // NOTE: signaling that we did NOT modify the state
   }
 }
 
@@ -187,50 +200,17 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-const onFirstRecordClick = function() {
-  // TODO: fix this when we separate out recorder status from noise status
-  // if (state.recorder.status === NEED_PERMISSIONS) {
-  requestMediaPermissions(
-    handleRequestMediaPermissionsSuccess,
-    handleRequestMediaPermissionsFailure,
-  );
-  // }
-};
+// TODO: consider making this a function generator where we pass in startRecorder() and stopRecorder()
+const onRecordClick = function() {
+  if (state.recorder.status === RECORDER_STATUS_VALUES.WAITING) {
+    if (!state.recorder.explicitlyPermitted) {
+      requestMediaPermissions(
+        handleRequestMediaPermissionsSuccess,
+        handleRequestMediaPermissionsFailure,
+      );
 
-const handleRequestMediaPermissionsFailure = function(error) {
-  // TODO: change the UI to indicate that nothing can be recorded
-  console.log(error);
-};
-
-const handleRequestMediaPermissionsSuccess = function(stream) {
-  /* state management dispatch */
-  updateState({
-    recorder: {
-      ...state.recorder,
-      status: WAITING,
-    },
-  });
-
-  /* UI dispatch */
-  renderRecorderAndArrows();
-
-  // TODO: set up audio context instead?
-  let { startRecorder, stopRecorder } = initializeRecorder({
-    stream,
-    onRecordStart,
-    onDataAvailable,
-    onRecordStop,
-    onRecordError,
-  });
-
-  onRecordClick(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
-
-  /* UI dispatch */
-  // TODO: move into UI component?
-  updateRecordButton(onRecordClick);
-
-  function onRecordClick() {
-    if (state.recorder.status === WAITING) {
+      // TODO: how to run the code below even when permissions are requested? Pass it along into the requestsMediaPermissions call?
+    } else {
       /* state management dispatch */
       updateState({
         recorder: {
@@ -245,11 +225,57 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
-      startRecorder();
-    } else if (state.recorder.status === RECORDING) {
-      stopRecorder();
-    } // TODO: what do we do if it's starting or stopping? disable the interactions?
-  }
+      state.recorder.startRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+    }
+  } else if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
+    state.recorder.stopRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+  } // TODO: what do we do if it's starting or stopping? disable the interactions?
+};
+
+const handleRequestMediaPermissionsFailure = function(error) {
+  // TODO: change the UI to indicate that nothing can be recorded
+  // TODO: change explicitlyPermitted to be 3-valued or record the permission denial in some other way; keep in mind that we may not ever get an answer from the user if they dismiss the request
+  console.log(error);
+};
+
+const handleRequestMediaPermissionsSuccess = function(stream) {
+  /* state management dispatch */
+  updateState({
+    recorder: {
+      ...state.recorder,
+      explicitlyPermitted: true,
+    },
+  });
+
+  /* UI dispatch */
+  renderRecorderAndArrows();
+
+  let { startRecorder, stopRecorder } = initializeRecorder({
+    stream,
+    onRecordStart,
+    onDataAvailable,
+    onRecordStop,
+    onRecordError,
+  });
+
+  // TODO: set up audio context instead?
+  updateState({
+    recorder: {
+      ...state.recorder,
+      startRecorder,
+      stopRecorder,
+    },
+  });
+
+  onRecordClick(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
+
+  /* UI dispatch */
+  // TODO: move into UI component?
+  renderButton({
+    recording: false,
+    disabled: false,
+    onButtonClick: onRecordClick,
+  });
 
   function onRecordStart() {
     console.log(`Recording started...`);
@@ -259,7 +285,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       recorder: {
         ...state.recorder,
         startTime: Date.now(),
-        status: RECORDING,
+        status: RECORDER_STATUS_VALUES.RECORDING,
       },
     });
 
@@ -297,7 +323,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       recorder: {
         ...state.recorder,
         elapsed: Date.now() - state.recorder.startTime,
-        status: UPLOADING,
+        status: RECORDER_STATUS_VALUES.UPLOADING,
       },
     });
 
@@ -332,30 +358,42 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     let file = new File([blob], filename);
 
+    // TODO: upload progress meter
     upload(file)
       .then(response => console.log(response.statusText))
       .then(success => {
         let updatedNoiseList = [...state.noiseList];
-        updatedNoiseList[state.selectedNoise].status = UPLOADED; // TODO: how to ensure no async probs?
+        updatedNoiseList[state.selectedNoise].status =
+          NOISE_STATUS_VALUES.RECORDED; // TODO: how to ensure no async probs?
 
         updateState({
           noiseList: updatedNoiseList,
           recorder: {
             ...state.recorder,
-            status: UPLOADED,
+            status: RECORDER_STATUS_VALUES.UPLOADED,
           },
         });
 
         // TODO: move into UI component?
         renderApp();
       })
-      .catch(
-        error => console.log(error), // Handle the error response object
-      );
+      .catch(error => {
+        console.log(error); // TODO: Handle the error response object (notify the user that uploading failed)
+
+        updateState({
+          recorder: {
+            ...state.recorder,
+            status: RECORDER_STATUS_VALUES.WAITING,
+          },
+        });
+
+        // TODO: move into UI component?
+        renderApp();
+      });
   }
 
   function onRecordError(event) {
-    console.log(`Recorder encountered error...`);
+    console.log(`Recorder encountered error...`); // TODO: Handle the error  (notify the user that uploading failed)
 
     let error = event.error;
 
@@ -379,6 +417,17 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
         );
         break;
     }
+
+    updateState({
+      noiseList: updatedNoiseList,
+      recorder: {
+        ...state.recorder,
+        status: RECORDER_STATUS_VALUES.WAITING,
+      },
+    });
+
+    // TODO: move into UI component?
+    renderApp();
   }
 };
 
@@ -388,7 +437,7 @@ function render() {
 
 function processNoises(noises) {
   /* state management dispatch */
-  updateNoises(noises);
+  initializeNoises(noises);
   selectNoise(0); // TODO: or pass actual noise?
 
   /* UI dispatch */
@@ -396,4 +445,8 @@ function processNoises(noises) {
 }
 
 getNoises();
-updateRecordButton(onFirstRecordClick);
+renderButton({
+  recording: false,
+  disabled: false,
+  onButtonClick: onRecordClick,
+});

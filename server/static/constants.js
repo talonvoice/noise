@@ -1,17 +1,16 @@
-const NEED_PERMISSIONS = 0;
-const WAITING = 1;
-const RECORDING = 2;
-const UPLOADING = 3;
-const UPLOADED = 4;
+const RECORDER_STATUS_VALUES = {
+  'NEED_PERMISSIONS': { description: 'Waiting to record' },
+  'WAITING': { description: 'Waiting to record' },
+  'RECORDING': { description: 'Recording' },
+  'UPLOADING': { description: 'Uploading' },
+  'UPLOADED': { description: 'Done uploading' },
+  'ALREADY_RECORDED': { description: 'Already recorded' },
+};
 
-const statuses = [
-  { description: 'Waiting to record' }, // TODO: rename this?
-  { description: 'Waiting to record' },
-  { description: 'Recording' },
-  { description: 'Recorded and uploading' },
-  { description: 'Recorded and uploaded' },
-];
+// TODO: convert this to boolean
+const NOISE_STATUS_VALUES = {
+  'UNRECORDED': { description: 'Not yet recorded' },
+  'RECORDED': { description: 'Recorded' },
+};
 
-// TODO: combine the above
-
-export { NEED_PERMISSIONS, WAITING, RECORDING, UPLOADING, UPLOADED, statuses };
+export { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES };

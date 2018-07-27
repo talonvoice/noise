@@ -180,6 +180,9 @@ a {
 .Recorder-status {
   font-style: italic;
 }
+.Recorder-status--disabled {
+  color: #ccc;
+}
 
 .Player {
 }
