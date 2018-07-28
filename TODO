@@ -4,10 +4,10 @@ FEATURES:
   IN PROGRESS:
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
-        [ ] refactor index.js (see: TECHNICAL HEALTH)
+        [x] refactor index.js (see: TECHNICAL HEALTH)
         [x] merge refactor branch into master branch
-        [ ] merge record.js with main.js
         [ ] rebase FLAC branch on top of master branch @est(30 minutes)
+        [ ] merge record.js with main.js
   
   PLANNED:
     [ ] show user visual indicator that they can't change noises while recording @ux
@@ -44,22 +44,66 @@ FEATURES:
 TECHNICAL HEALTH:
 
   IN PROGRESS:
-    [ ] refactor index.js so that event handling, state management, and UI updates for record/stop are more decoupled
+
+  PLANNED:
+    [ ] refactor index.js further
       [ ] state management
+        [ ] move state management into a different file
+        [ ] make it so that selected noise points to one of the actual noises? and that "selected" is a property of one of them
+      [ ] componentize
+        [ ] move arrows out of recorder.js
+      [ ] event handling
+      [ ] I/O and effects
+        [ ] figure out the correct data flow for recorder I/O
+          [ ] fix the workarounds that abuse state
+          [ ] test above
+        [ ] move rest of I/O out
+    [ ] fix weird remote branch
+    [ ] auto-rerender on state change    
+    [ ] split out CSS by "component"
+    [ ] determine if we need to also refactor for list interaction
+    [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
+    [ ] add development web server for automatically reloading on save of static files
+    [ ] add build step so that we can use packages more easily, minify, etc
+    [-] update requirements.txt
+
+  ICEBOX:
+    [ ] test scenarios
+    [ ] fallback to <input>
+    [ ] add debouncing
+    [ ] add polyfills and fallbacks
+      [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+    [ ] productionize
+      [ ] minify/uglify
+      [ ] bust caches!
+      [ ] gzip
+    [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
+    [ ] test supported desktop browsers
+    [ ] smoke test and fix mobile browsers
+    [ ] address TODOs
+      [ ] convert noise constants to simple boolean
+    [ ] fix console errors
+    [ ] remove console debugging statements
+    [ ] rename on<Action> arguments to be different from parameters
+    [ ] optimize
+      [ ] event delegation
+      [ ] DOM manipulation with fragments
+      [ ] virtual DOM
+      [ ] DOM diffing
+
+  DONE:
+    [x] refactor index.js so that event handling, state management, and UI updates for record/stop are more decoupled
+      [x] state management
         [x] move state management to one place in main.js
           [x] create update state function
           [x] move clone() and deepMerge() out to snippets
           [x] migrate state management to use update state function
-        [ ] move state management into a different file
-        [ ] make it so that selected noise points to one of the actual noises? and that "selected" is a property of one of them
-      [ ] componentize
+      [x] componentize
         [x] separate UI code out from main.js
           [x] move UI code to own functions
           [x] move functions to own file
           [x] move "sub-component" references to new file
-        [ ] move arrows out of recorder.js
-      [ ] event handling
-      [ ] I/O and effects
+      [x] I/O and effects
         [x] identify I/O
         [x] move recorder I/O outside of index.js
           [x] move to same place in index.js
@@ -92,47 +136,6 @@ TECHNICAL HEALTH:
                   [x] fix button to be record "circle" when done uploading
                   [x] fix record button being enabled when the sound is already recorded
                   [x] fix status saying "already recorded" instead of "uploaded" too soon
-        [ ] figure out the correct data flow for recorder I/O
-          [ ] fix the workarounds that abuse state
-          [ ] test above
-        [ ] move rest of I/O out
-      [ ] fix weird remote branch
-      [ ] auto-rerender on state change
-      [ ] determine if we need to also refactor for list interaction
-
-  PLANNED:
-    [ ] refactor index.js further
-    [ ] split out CSS by "component"
-    [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
-    [ ] add development web server for automatically reloading on save of static files
-    [ ] add build step so that we can use packages more easily, minify, etc
-    [-] update requirements.txt
-
-  ICEBOX:
-    [ ] test scenarios
-    [ ] fallback to <input>
-    [ ] add debouncing
-    [ ] add polyfills and fallbacks
-      [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
-    [ ] productionize
-      [ ] minify/uglify
-      [ ] bust caches!
-      [ ] gzip
-    [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
-    [ ] test supported desktop browsers
-    [ ] smoke test and fix mobile browsers
-    [ ] address TODOs
-      [ ] convert noise constants to simple boolean
-    [ ] fix console errors
-    [ ] remove console debugging statements
-    [ ] rename on<Action> arguments to be different from parameters
-    [ ] optimize
-      [ ] event delegation
-      [ ] DOM manipulation with fragments
-      [ ] virtual DOM
-      [ ] DOM diffing
-
-  DONE:
     [x] refactor into modules
     [x] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
 
