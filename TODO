@@ -6,10 +6,17 @@ FEATURES:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
         [x] merge refactor branch into master branch
-        [ ] rebase FLAC branch on top of master branch @est(30 minutes)
+        [ ] rebase FLAC branch on top of master branch
+          [x] automatically merge
+          [x] fix conflicts
+          [ ] fix any logical errors to restore functionality of branch
         [ ] merge record.js with main.js
   
   PLANNED:
+    [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
+    [ ] license agreement akin to Mozilla's (Ryan is taking care of this for now)
+    
+  ICEBOX:
     [ ] show user visual indicator that they can't change noises while recording @ux
     [ ] show user (a more obvious) visual indicator that a noise has been recorded @ux
     [ ] add wizard (easy sequential navigation) @ux
@@ -18,8 +25,6 @@ FEATURES:
       [ ] show user a timeline for visual prompts
       [ ] show user basic visual prompts for recording a noise
       [ ] integrate new sample sounds
-
-  ICEBOX:
     [ ] fix status and time being disabled right after upload (they shouldn't be) @ux
     [ ] complex graphic timeline @ux
       [ ] show user an animated timeline a la rhythm games
@@ -62,7 +67,6 @@ TECHNICAL HEALTH:
     [ ] auto-rerender on state change    
     [ ] split out CSS by "component"
     [ ] determine if we need to also refactor for list interaction
-    [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
     [ ] add development web server for automatically reloading on save of static files
     [ ] add build step so that we can use packages more easily, minify, etc
     [-] update requirements.txt
@@ -138,6 +142,7 @@ TECHNICAL HEALTH:
                   [x] fix status saying "already recorded" instead of "uploaded" too soon
     [x] refactor into modules
     [x] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
+    [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
 
 
 Archive:

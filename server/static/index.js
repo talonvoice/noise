@@ -1,4 +1,4 @@
-import { generateUUID, merge, showNotification } from './utilities.js';
+import { generateUUID, merge, showNotification } from './utilities/utilities.js';
 import {
   updateSamplePlayer,
   updateDownloadLink,
