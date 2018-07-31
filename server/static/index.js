@@ -134,8 +134,6 @@ let state = {
     chunks: [],
     callbacks: {
       // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
-      startRecorder: () => {},
-      stopRecorder: () => {},
       startRecording: () => {},
       stopRecording: () => {},
     },
@@ -218,18 +216,21 @@ function decrementSelectedNoise() {
  */
 const onFlacClick = function(e) {
   e.preventDefault();
-  
+
+  // TODO: clean up after current recorders, if any, and allow for toggling on/off after first recording occurs (currently broken)
   updateState({
     recorder: {
       ...state.recorder,
+      chunks: [],
+      status: RECORDER_STATUS_VALUES.WAITING,
       isFlac: !state.recorder.isFlac,
     },
   });
 
-  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
+  renderApp();
 };
 
-// TODO: consider making this a function generator where we pass in startRecorder() and stopRecorder()
+// TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 const onRecordClick = function() {
   if (state.recorder.status === RECORDER_STATUS_VALUES.WAITING) {
     if (!state.recorder.explicitlyPermitted) {
@@ -255,10 +256,13 @@ const onRecordClick = function() {
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
-      state.recorder.callbacks.startRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+      state.recorder.callbacks.startRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+
+      // TODO: temp force this state for now; should rely on callback setting it from inside record.js, though
+      state.recorder.status = RECORDER_STATUS_VALUES.RECORDING;
     }
   } else if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
-    state.recorder.callbacks.stopRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+    state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
   } // TODO: what do we do if it's starting or stopping? disable the interactions?
 };
 
@@ -282,16 +286,20 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   /* UI dispatch */
   renderRecorderAndArrows();
 
-  let { startRecorder, stopRecorder } = initializeRecorder({
-    stream,
-    onRecordStart,
-    onDataAvailable,
-    onRecordStop,
-    onRecordError,
-  }); // old code path: MediaRecorder and WEBM
+  let initialized = {};
 
-  // TODO: replace with more intuitive code
-  let { startRecording, stopRecording } = record(adapter); // new code path: libflac.js and FLAC
+  if (!state.recorder.isFlac) {
+    initialized = initializeRecorder({
+      stream,
+      onRecordStart,
+      onDataAvailable,
+      onRecordStop,
+      onRecordError,
+    }); // old code path: MediaRecorder and WEBM
+  } else {
+    // TODO: replace with more intuitive code
+    initialized = record(adapter); // new code path: libflac.js and FLAC
+  }
 
   // TODO: set up audio context instead?
   updateState({
@@ -299,10 +307,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       ...state.recorder,
       callbacks: {
         ...state.recorder.callbacks,
-        startRecorder,
-        stopRecorder,
-        startRecording,
-        stopRecording,
+        startRecording: initialized.startRecording,
+        stopRecording: initialized.stopRecording
       },
     },
   });

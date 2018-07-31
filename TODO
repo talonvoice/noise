@@ -6,12 +6,17 @@ FEATURES:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
         [x] merge refactor branch into master branch
-        [ ] rebase FLAC branch on top of master branch
+        [x] rebase FLAC branch on top of master branch @done(18-07-31 12:25)
           [x] automatically merge
           [x] fix conflicts
           [x] diff file(s) from original branch to current branch
-          [ ] fix any logical errors to restore functionality of branch
-        [ ] merge record.js with main.js
+          [x] fix any logical errors to restore functionality of branch
+          [x] merge temporary rebase branch back to FLAC branch @started(18-07-31 11:01) @done(18-07-31 12:25) @lasted(1h24m10s)
+        [ ] hook up record.js events to UI using record/record.js as a guide
+          [ ] figure out next steps
+          [ ] ...
+          [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
+        [-] merge record.js with main.js
   
   PLANNED:
     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP

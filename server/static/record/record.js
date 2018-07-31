@@ -15,7 +15,7 @@ function initializeRecorder({
     // TODO: let user know there was an error initializing the recorder
   }
 
-  function startRecorder() {
+  function startRecording() {
     try {
       // start recording
       mediaRecorder.start(1000); // NOTE: if an argument is not provided, the "dataavailable" event will not fire until the media recorder is stopped
@@ -25,7 +25,7 @@ function initializeRecorder({
     }
   }
 
-  function stopRecorder() {
+  function stopRecording() {
     try {
       // stop recording
       mediaRecorder.stop();
@@ -41,8 +41,8 @@ function initializeRecorder({
   mediaRecorder.addEventListener('error', onRecordError);
 
   return {
-    startRecorder,
-    stopRecorder,
+    startRecording,
+    stopRecording,
   };
 }
 
