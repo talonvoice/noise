@@ -130,8 +130,12 @@ let state = {
     },
     chunkNumber: 0,
     chunks: [],
-    startRecorder: () => {}, // TODO: currently abusing state to have a reference to startRecorder(); figure out a better way to do this
-    stopRecorder: () => {}, // TODO: currently abusing state to have a reference to stopRecorder(); figure out a better way to do this
+    callbacks: { // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
+      startRecorder: () => {},
+      stopRecorder: () => {},
+      startRecording: () => {},
+      stopRecording: () => {},
+    }
   },
   noiseList: [],
   selectedNoise: -1,
@@ -234,10 +238,10 @@ const onRecordClick = function() {
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
-      state.recorder.startRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+      state.recorder.callbacks.startRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
     }
   } else if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
-    state.recorder.stopRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+    state.recorder.callbacks.stopRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
   } // TODO: what do we do if it's starting or stopping? disable the interactions?
 };
 
@@ -276,8 +280,13 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   updateState({
     recorder: {
       ...state.recorder,
-      startRecorder,
-      stopRecorder,
+      callbacks: {
+        ...state.recorder.callbacks,
+        startRecorder,
+        stopRecorder,
+        startRecording,
+        stopRecording,
+      },
     },
   });
 
