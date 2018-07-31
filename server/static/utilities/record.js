@@ -1,4 +1,4 @@
-function record(container) {
+function record(container, { onRecordStart }) {
   container.audio_context = null;
   container.stream = null;
   container.recording = false;
@@ -42,7 +42,7 @@ function record(container) {
   };
 
   container.startRecording = function(e) {
-    console.log('attempt to start recording ...');//DEBUG
+    console.log('attempt to start recording ...'); //DEBUG
     if (container.recording) return;
 
     console.log('start recording'); //DEBUG
@@ -75,6 +75,11 @@ function record(container) {
         container.encoder = null;
       } else if (e.data.cmd == 'debug') {
         console.log(e.data);
+      } else if (e.data.cmd == 'initialized') {
+        console.log('Initialized...');
+        onRecordStart(); // TODO: should this be here? seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+      } else if (e.data.cmd == 'initialization_error') {
+        console.error('Initialization error from encoder (WebWorker)');
       } else {
         console.error(
           'Unknown event from encoder (WebWorker): "' + e.data.cmd + '"!',
@@ -166,6 +171,8 @@ function record(container) {
     });
 
     container.node.onaudioprocess = function(e) {
+      // TODO: trigger onDataAvailable here
+
       if (!container.recording) return;
       // see also: http://typedarray.org/from-microphone-to-wav-with-getusermedia-and-web-audio/
       var channelLeft = e.inputBuffer.getChannelData(0);
@@ -178,11 +185,13 @@ function record(container) {
   };
 
   container.stopRecording = function() {
-    console.log('attempt to stop recording ...');//DEBUG
+    console.log('attempt to stop recording ...'); //DEBUG
     if (!container.recording) {
       return;
     }
-    console.log('stop recording');//DEBUG
+    // onRecordStart(); // TODO: should this be here or inside of startRecording() .onmessage()?
+
+    console.log('stop recording'); //DEBUG
     // TODO: pass this in at the top then uncomment:
     // onStop();
     var tracks = container.stream.getAudioTracks();

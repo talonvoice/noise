@@ -298,7 +298,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }); // old code path: MediaRecorder and WEBM
   } else {
     // TODO: replace with more intuitive code
-    initialized = record(adapter); // new code path: libflac.js and FLAC
+    initialized = record(adapter, { onRecordStart }); // new code path: libflac.js and FLAC
   }
 
   // TODO: set up audio context instead?
@@ -308,7 +308,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       callbacks: {
         ...state.recorder.callbacks,
         startRecording: initialized.startRecording,
-        stopRecording: initialized.stopRecording
+        stopRecording: initialized.stopRecording,
       },
     },
   });
@@ -337,7 +337,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     /* UI dispatch */
     // TODO: move into UI component?
-    renderRecorderAndArrows();
+    renderRecorderAndArrows(); // TODO: here or onRecordClick()?
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
   }
 
@@ -375,7 +375,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     /* UI dispatch */
     // TODO: move into UI component?
-    renderRecorderAndArrows();
+    renderRecorderAndArrows(); // TODO: here or onRecordClick()?
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
 
     // generate filename from session ID and create blob out of chunks for:

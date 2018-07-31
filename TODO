@@ -14,15 +14,43 @@ FEATURES:
           [x] merge temporary rebase branch back to FLAC branch @started(18-07-31 11:01) @done(18-07-31 12:25) @lasted(1h24m10s)
         [ ] hook up record.js events to UI using record/record.js as a guide
           [x] figure out next steps
-          [ ] study code
-          [ ] figure out additional steps
-          [ ] change Record button and disable other controls when recording starts
+          [x] study code
+          [x] figure out additional steps
+          [x] change Record button and disable other controls when recording starts @started(18-07-31 13:31) @done(18-07-31 14:45) @lasted(1h14m33s)
+            [x] record.js: pass in onRecordStart
+            [x] record.js: add logic to execute onRecordStart
+            [x] index.js: hook up above
+            [x] test
+            [x] fix bugs
           [ ] change Record button and enable other controls when recording stops
+            [ ] record.js: pass in onRecordStop
+            [ ] record.js: add logic to execute onRecordStop
+            [ ] index.js: hook up above
+            [ ] test
+            [ ] fix bugs
+          [ ] attempt to move container object inside of record.js
+          [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
+          [ ] change UI when there is an error
+            [ ] record.js: pass in onRecordError
+            [ ] record.js: add logic to execute onRecordError
+            [ ] index.js: hook up above
+            [ ] test
+            [ ] fix bugs
           [ ] figure out additional steps
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
         [ ] upload FLAC file instead of forcing a download
+          [ ] record.js: do not call forceDownload(), but consider exposing it for later usage
+        [ ] update UI timer while recording
+          [ ] record.js: pass in onDataAvailable
+          [ ] record.js: add logic to execute onDataAvailable
+          [ ] index.js: hook up above
+          [ ] test
+          [ ] fix bugs
+        [ ] update UI (especially timer) independent of onDataAvailable
+        [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
         [ ] clean up
         [-] merge record.js with main.js
+      [ ] check if we are changing the UI without relying on the recorder response (changing the state of the Record button immediately, for instance)
   
   PLANNED:
     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
