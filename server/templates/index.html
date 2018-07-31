@@ -1,56 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Noise Sample Collection</title>
-    <meta name="description" content="" />
-    <link rel="stylesheet" type="text/css" href="static/index.css" />
-  </head>
-  <body>
-    <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
-    <form style="display: none" enctype="multipart/form-data" action="/upload" method="POST">
-      <input name="noise" type="file" accept="audio/*;capture=microphone">
-      <br>
-      <input type="submit">
-    </form>
-    <div class="RecordingList" data-id="list">
-      <ul class="RecordingList-container" data-id="list-container"></ul>
-    </div>
-    <div class="Centered">
-      <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
-      <div class="Recorder" data-id="recorder">
-        <p class="Recorder-title" data-id="title"></p>
-        <hr>
-        <div class="Recorder-info">
-          <div class="Recorder-metadata">
-            <p class="Recorder-description" data-id="description"></p>
-            <!-- TODO: use this if we are going to have a long description as well -->
-            <p class="Recorder-instructions" style="display: none"></p>
-          </div>
-          <div class="Recorder-examples">
-            <p class="Recorder-exampleAudio">
-              Listen to an example:<br>
-              <!-- TODO: convert to accessible custom controls -->
-              <audio class="Recorder-preview" data-id="preview" style="display: none" controls="">
-              </audio>
-            </p>
-            <!-- TODO: only show this if there are actually video examples -->
-            <p class="Recorder-exampleVideo" style="display: none">
-              Watch a video of the mouth movement:<br><a href="#">Video of mouth movement</a>
-            </p>
-          </div>
+
+<head>
+  <title>Noise Sample Collection</title>
+  <meta name="description" content="" />
+  <link rel="stylesheet" type="text/css" href="static/index.css" />
+</head>
+
+<body>
+  <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
+  <form style="display: none" enctype="multipart/form-data" action="/upload" method="POST">
+    <input name="noise" type="file" accept="audio/*;capture=microphone">
+    <br>
+    <input type="submit">
+  </form>
+  <div class="RecordingList" data-id="list">
+    <ul class="RecordingList-container" data-id="list-container"></ul>
+  </div>
+  <div class="Centered">
+    <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
+    <div class="Recorder" data-id="recorder">
+      <p class="Recorder-title" data-id="title"></p>
+      <hr>
+      <div class="Recorder-info">
+        <div class="Recorder-metadata">
+          <p class="Recorder-description" data-id="description"></p>
+          <!-- TODO: use this if we are going to have a long description as well -->
+          <p class="Recorder-instructions" style="display: none"></p>
         </div>
-        <div class="Recorder-actions">
-          <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
-          <audio style="display: none" data-id="player" class="Player" controls disabled></audio>
-          <a style="display: none" data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
-          <button data-id="recordButton" class="Recorder-recordButton">Record</button>
-          <p data-id="recorderTime" class="Recorder-time">00:00</p>
-          <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
+        <div class="Recorder-examples">
+          <p class="Recorder-exampleAudio">
+            Listen to an example:
+            <br>
+            <!-- TODO: convert to accessible custom controls -->
+            <audio class="Recorder-preview" data-id="preview" style="display: none" controls="">
+            </audio>
+          </p>
+          <!-- TODO: only show this if there are actually video examples -->
+          <p class="Recorder-exampleVideo" style="display: none">
+            Watch a video of the mouth movement:
+            <br>
+            <a href="#">Video of mouth movement</a>
+          </p>
         </div>
       </div>
-      <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
+      <div class="Recorder-actions">
+        <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
+        <audio style="display: none" data-id="player" class="Player" controls disabled></audio>
+        <a style="display: none" data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
+        <button data-id="recordButton" class="Recorder-recordButton">Record</button>
+        <p data-id="recorderTime" class="Recorder-time">00:00</p>
+        <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
+      </div>
     </div>
+    <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
   </div>
+  </div>
+  <form class="IsFlac">
+    <label class="IsFlac-label" data-id="is-flac-label" for="is-flac-checkbox">FLAC</label>
+    <input class="IsFlac-checkbox" data-id="is-flac-checkbox" name="is-flac-checkbox" type="checkbox" checked="checked"></input>
+  </form>
   <script type="module" src="static/index.js"></script>
-  </body>
+</body>
+
 </html>

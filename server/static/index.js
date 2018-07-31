@@ -4,6 +4,7 @@ import {
   showNotification,
 } from './utilities/utilities.js';
 import {
+  updateApp,
   updateSamplePlayer,
   updateDownloadLink,
   renderButton,
@@ -44,6 +45,7 @@ function renderRecorderAndArrows() {
 }
 
 function renderApp() {
+  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
   renderNoiseList(
     state.noiseList,
     selectNoise,
@@ -130,12 +132,14 @@ let state = {
     },
     chunkNumber: 0,
     chunks: [],
-    callbacks: { // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
+    callbacks: {
+      // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
       startRecorder: () => {},
       stopRecorder: () => {},
       startRecording: () => {},
       stopRecording: () => {},
-    }
+    },
+    isFlac: true,
   },
   noiseList: [],
   selectedNoise: -1,
@@ -212,11 +216,24 @@ function decrementSelectedNoise() {
 /*
   Event handlers
  */
+const onFlacClick = function(e) {
+  e.preventDefault();
+  
+  updateState({
+    recorder: {
+      ...state.recorder,
+      isFlac: !state.recorder.isFlac,
+    },
+  });
+
+  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
+};
 
 // TODO: consider making this a function generator where we pass in startRecorder() and stopRecorder()
 const onRecordClick = function() {
   if (state.recorder.status === RECORDER_STATUS_VALUES.WAITING) {
     if (!state.recorder.explicitlyPermitted) {
+      // TODO: consider doing this reacting to state change instead
       requestMediaPermissions(
         handleRequestMediaPermissionsSuccess,
         handleRequestMediaPermissionsFailure,

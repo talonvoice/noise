@@ -1,5 +1,7 @@
 import { renderNoiseList } from './list.js';
 import { updateSamplePlayer } from './player.js';
+import { updateIsFlac } from './is-flac.js';
+
 import {
   renderRecorder,
   renderRecordingControls,
@@ -24,7 +26,13 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   }
 }
 
+// TODO: move everything UI into here eventually from index.js
+function updateApp({ isFlac, onFlacClick }) {
+  updateIsFlac({ checked: isFlac, disabled: false, onClick: onFlacClick});
+}
+
 export {
+  updateApp,
   updateSamplePlayer,
   updateDownloadLink,
   renderButton,

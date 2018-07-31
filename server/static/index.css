@@ -191,7 +191,6 @@ a {
   color: #ccc;
 }
 
-
 .Arrow {
   color: #d6d6d6;
   width: 0;
@@ -218,4 +217,22 @@ a {
 .Arrow--right {
   border-left: 60px solid currentColor;
   border-right: none;
+}
+
+.IsFlac {
+  top: 0;
+  right: 0;
+  position: absolute;
+  padding: 10px;
+  border: solid 1px #ccc;
+  background-color: rgba(255, 255, 255, 0.50);
+}
+
+.IsFlac-label {
+}
+.IsFlac-label--disabled {
+  color: #ccc;
+}
+
+.IsFlac-checkbox {
 }
