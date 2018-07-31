@@ -85,8 +85,8 @@ function decrementSelectedNoise() {
   Event handlers
  */
 
-let adapter = {}; // this object is used as a means to communicate with the recording code; TODO: replace with more intuitive code
 
+let adapter = {}; // this object is used as a mea != ns to communicate with the recording code; TODO: replace with more intuitive code
 const firstRecordClick = function() {
   console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status

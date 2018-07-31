@@ -1,4 +1,8 @@
-import { generateUUID, merge, showNotification } from './utilities/utilities.js';
+import {
+  generateUUID,
+  merge,
+  showNotification,
+} from './utilities/utilities.js';
 import {
   updateSamplePlayer,
   updateDownloadLink,
@@ -9,7 +13,9 @@ import {
   renderArrows,
 } from './components/app.js';
 import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
-import { initializeRecorder } from './record/record.js';
+
+import { initializeRecorder } from './record/record.js'; // old code path: MediaRecorder and WEBM
+import { record } from './utilities/record.js'; // new code path: libflac.js and FLAC
 
 /*
   UI
@@ -170,7 +176,10 @@ function selectNoise(index) {
       selectedNoise: index, // TODO: or assign actual noise?
       recorder: {
         ...state.recorder,
-        status: noise.status === NOISE_STATUS_VALUES.UNRECORDED ? RECORDER_STATUS_VALUES.WAITING : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
+        status:
+          noise.status === NOISE_STATUS_VALUES.UNRECORDED
+            ? RECORDER_STATUS_VALUES.WAITING
+            : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
         startTime: null,
         elapsed: 0,
       },
@@ -238,6 +247,8 @@ const handleRequestMediaPermissionsFailure = function(error) {
   console.log(error);
 };
 
+let adapter = {}; // this object is used as a means to communicate with the recording code; TODO: replace with more intuitive code
+
 const handleRequestMediaPermissionsSuccess = function(stream) {
   /* state management dispatch */
   updateState({
@@ -256,7 +267,10 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     onDataAvailable,
     onRecordStop,
     onRecordError,
-  });
+  }); // old code path: MediaRecorder and WEBM
+
+  // TODO: replace with more intuitive code
+  let { startRecording, stopRecording } = record(adapter); // new code path: libflac.js and FLAC
 
   // TODO: set up audio context instead?
   updateState({

@@ -9,6 +9,7 @@ FEATURES:
         [ ] rebase FLAC branch on top of master branch
           [x] automatically merge
           [x] fix conflicts
+          [x] diff file(s) from original branch to current branch
           [ ] fix any logical errors to restore functionality of branch
         [ ] merge record.js with main.js
   
