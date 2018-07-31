@@ -13,9 +13,15 @@ FEATURES:
           [x] fix any logical errors to restore functionality of branch
           [x] merge temporary rebase branch back to FLAC branch @started(18-07-31 11:01) @done(18-07-31 12:25) @lasted(1h24m10s)
         [ ] hook up record.js events to UI using record/record.js as a guide
-          [ ] figure out next steps
-          [ ] ...
+          [x] figure out next steps
+          [ ] study code
+          [ ] figure out additional steps
+          [ ] change Record button and disable other controls when recording starts
+          [ ] change Record button and enable other controls when recording stops
+          [ ] figure out additional steps
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
+        [ ] upload FLAC file instead of forcing a download
+        [ ] clean up
         [-] merge record.js with main.js
   
   PLANNED:
