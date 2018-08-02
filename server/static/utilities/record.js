@@ -1,4 +1,6 @@
-function record(container, { onRecordStart, onRecordStop }) {
+function record({ onRecordStart, onRecordStop }) {
+  let container = {};
+
   container.audio_context = null;
   container.stream = null;
   container.recording = false;

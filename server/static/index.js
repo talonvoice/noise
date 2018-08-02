@@ -272,8 +272,6 @@ const handleRequestMediaPermissionsFailure = function(error) {
   console.log(error);
 };
 
-let adapter = {}; // this object is used as a means to communicate with the recording code; TODO: replace with more intuitive code
-
 const handleRequestMediaPermissionsSuccess = function(stream) {
   /* state management dispatch */
   updateState({
@@ -298,7 +296,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }); // old code path: MediaRecorder and WEBM
   } else {
     // TODO: replace with more intuitive code
-    initialized = record(adapter, { onRecordStart, onRecordStop }); // new code path: libflac.js and FLAC
+    initialized = record({ onRecordStart, onRecordStop }); // new code path: libflac.js and FLAC
   }
 
   // TODO: set up audio context instead?

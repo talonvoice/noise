@@ -28,7 +28,15 @@ FEATURES:
             [x] index.js: hook up above
             [x] test
             [x] fix bugs
-          [ ] attempt to move container object inside of record.js
+          [x] attempt to move container object inside of record.js @started(18-08-02 10:55) @done(18-08-02 11:25) @lasted(30m42s)
+            [x] identify steps
+            [x] record.js: override with local copy of container, fix any return value
+            [x] test
+            [x] index.js: do not pass in container, fix handling of return value
+            [x] test
+            [x] record.js: delete parameter for container
+            [x] index.js: delete argument for container
+            [x] test
           [ ] update UI timer while recording
             [ ] record.js: pass in onDataAvailable
             [ ] record.js: add logic to execute onDataAvailable
@@ -45,6 +53,7 @@ FEATURES:
             [ ] test
             [ ] fix bugs
           [ ] figure out additional steps
+          [ ] make the two record.js APIs look alike as possible
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
           [ ] update UI (especially timer) independent of onDataAvailable
         [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
