@@ -132,8 +132,10 @@ self.onmessage = function(e) {
       } else {
         if (!Flac.isReady()) {
           console.error('Flac was not initialized: could not encode data!');
+          self.postMessage({ cmd: 'finish_error'});
         } else {
           flac_ok &= Flac.FLAC__stream_encoder_finish(flac_encoder);
+          self.postMessage({ cmd: 'finished'});
           console.log('flac finish: ' + flac_ok); //DEBUG
           data = exportFlacFile(flacBuffers, flacLength, mergeBuffersUint8);
 

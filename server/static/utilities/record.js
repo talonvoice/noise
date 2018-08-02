@@ -1,4 +1,4 @@
-function record(container, { onRecordStart }) {
+function record(container, { onRecordStart, onRecordStop }) {
   container.audio_context = null;
   container.stream = null;
   container.recording = false;
@@ -55,6 +55,7 @@ function record(container, { onRecordStart }) {
 
     container.encoder.onmessage = function(e) {
       console.log(e.data.cmd);
+      
       if (e.data.cmd == 'end') {
         var resultMode = container.result_mode;
 
@@ -80,6 +81,11 @@ function record(container, { onRecordStart }) {
         onRecordStart(); // TODO: should this be here? seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
       } else if (e.data.cmd == 'initialization_error') {
         console.error('Initialization error from encoder (WebWorker)');
+      } else if (e.data.cmd == 'finished') {
+        console.log('Finished...');
+        onRecordStop(); // TODO: should this be here? might take a while before encoding is complete; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+      } else if (e.data.cmd == 'finish_error') {
+        console.error('Finish error from encoder (WebWorker)');
       } else {
         console.error(
           'Unknown event from encoder (WebWorker): "' + e.data.cmd + '"!',

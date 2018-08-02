@@ -298,7 +298,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }); // old code path: MediaRecorder and WEBM
   } else {
     // TODO: replace with more intuitive code
-    initialized = record(adapter, { onRecordStart }); // new code path: libflac.js and FLAC
+    initialized = record(adapter, { onRecordStart, onRecordStop }); // new code path: libflac.js and FLAC
   }
 
   // TODO: set up audio context instead?

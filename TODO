@@ -22,13 +22,21 @@ FEATURES:
             [x] index.js: hook up above
             [x] test
             [x] fix bugs
-          [ ] change Record button and enable other controls when recording stops
-            [ ] record.js: pass in onRecordStop
-            [ ] record.js: add logic to execute onRecordStop
+          [x] change Record button and enable other controls when recording stops
+            [x] record.js: pass in onRecordStop
+            [x] record.js: add logic to execute onRecordStop
+            [x] index.js: hook up above
+            [x] test
+            [x] fix bugs
+          [ ] attempt to move container object inside of record.js
+          [ ] update UI timer while recording
+            [ ] record.js: pass in onDataAvailable
+            [ ] record.js: add logic to execute onDataAvailable
             [ ] index.js: hook up above
             [ ] test
             [ ] fix bugs
-          [ ] attempt to move container object inside of record.js
+          [ ] upload FLAC file instead of forcing a download
+            [ ] record.js: do not call forceDownload(), but consider exposing it for later usage
           [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
           [ ] change UI when there is an error
             [ ] record.js: pass in onRecordError
@@ -38,15 +46,7 @@ FEATURES:
             [ ] fix bugs
           [ ] figure out additional steps
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
-        [ ] upload FLAC file instead of forcing a download
-          [ ] record.js: do not call forceDownload(), but consider exposing it for later usage
-        [ ] update UI timer while recording
-          [ ] record.js: pass in onDataAvailable
-          [ ] record.js: add logic to execute onDataAvailable
-          [ ] index.js: hook up above
-          [ ] test
-          [ ] fix bugs
-        [ ] update UI (especially timer) independent of onDataAvailable
+          [ ] update UI (especially timer) independent of onDataAvailable
         [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
         [ ] clean up
         [-] merge record.js with main.js
