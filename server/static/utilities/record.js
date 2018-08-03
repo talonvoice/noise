@@ -1,4 +1,4 @@
-function record({ onRecordStart, onRecordStop }) {
+function record({ onRecordStart, onRecordStop, onDataAvailable }) {
   let container = {};
 
   container.audio_context = null;
@@ -179,7 +179,7 @@ function record({ onRecordStart, onRecordStop }) {
     });
 
     container.node.onaudioprocess = function(e) {
-      // TODO: trigger onDataAvailable here
+      onDataAvailable(e);
 
       if (!container.recording) return;
       // see also: http://typedarray.org/from-microphone-to-wav-with-getusermedia-and-web-audio/

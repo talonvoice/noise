@@ -211,6 +211,44 @@ function decrementSelectedNoise() {
   }
 }
 
+function updateRecorderTime() {
+  // TODO: rename to advanceRecorderTime()?
+
+  /* state management dispatch */
+  if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
+    if (state.recorder.startTime === null) {
+      updateState({
+        recorder: {
+          ...state.recorder,
+          startTime: Date.now(),
+          elapsed: 0,
+        },
+      });
+    } else {
+      updateState({
+        recorder: {
+          ...state.recorder,
+          elapsed: Date.now() - state.recorder.startTime, // TODO: update UI (especially timer) independent of onDataAvailable
+        },
+      });
+    }
+  }
+}
+
+function updateRecorderStatus() {
+  // TODO: rename to advanceRecorderStatus() and do a state machine that takes in status as a parameter?
+
+  /* state management dispatch */
+  if (state.recorder.status !== RECORDER_STATUS_VALUES.RECORDING) {
+    updateState({
+      recorder: {
+        ...state.recorder,
+        status: RECORDER_STATUS_VALUES.RECORDING,
+      },
+    });
+  }
+}
+
 /*
   Event handlers
  */
@@ -231,7 +269,9 @@ const onFlacClick = function(e) {
 };
 
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
+// TODO: refactor this big time
 const onRecordClick = function() {
+  console.log(state.recorder.status);
   if (state.recorder.status === RECORDER_STATUS_VALUES.WAITING) {
     if (!state.recorder.explicitlyPermitted) {
       // TODO: consider doing this reacting to state change instead
@@ -296,7 +336,11 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }); // old code path: MediaRecorder and WEBM
   } else {
     // TODO: replace with more intuitive code
-    initialized = record({ onRecordStart, onRecordStop }); // new code path: libflac.js and FLAC
+    initialized = record({
+      onRecordStart,
+      onRecordStop,
+      onDataAvailable: onDataAvailableFlac,
+    }); // new code path: libflac.js and FLAC
   }
 
   // TODO: set up audio context instead?
@@ -325,13 +369,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     console.log(`Recording started...`);
 
     /* state management dispatch */
-    updateState({
-      recorder: {
-        ...state.recorder,
-        startTime: Date.now(),
-        status: RECORDER_STATUS_VALUES.RECORDING,
-      },
-    });
+    updateRecorderStatus();
+    updateRecorderTime();
 
     /* UI dispatch */
     // TODO: move into UI component?
@@ -339,17 +378,33 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
   }
 
+  // TODO: merge the two functions below
+  function onDataAvailableFlac(e) {
+    // e: AudioProcessingEvent
+    //console.log(e);
+    // if (e.data.size > 0) {
+    /* state management dispatch */
+    updateRecorderTime();
+
+    /* UI dispatch */
+    // TODO: move into UI component?
+    renderRecorderAndArrows();
+    // }
+  }
+
   function onDataAvailable(e) {
+    // e: BlobEvent
+    //console.log(e);
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
-      console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
+      console.log(`Pushing chunk #${++state.recorder.chunkNumber}`); // TODO: handle this elsewhere
 
       /* state management dispatch */
       updateState({
         recorder: {
           ...state.recorder,
-          chunks: [...state.recorder.chunks, e.data],
-          elapsed: Date.now() - state.recorder.startTime,
+          chunks: [...state.recorder.chunks, e.data], // TODO: handle this elsewhere
+          elapsed: Date.now() - state.recorder.startTime, // TODO: update UI (especially timer) independent of onDataAvailable
         },
       });
 

@@ -37,12 +37,11 @@ FEATURES:
             [x] record.js: delete parameter for container
             [x] index.js: delete argument for container
             [x] test
-          [ ] update UI timer while recording
-            [ ] record.js: pass in onDataAvailable
-            [ ] record.js: add logic to execute onDataAvailable
-            [ ] index.js: hook up above
-            [ ] test
-            [ ] fix bugs
+          [x] update UI timer while recording @started(18-08-02 15:34) @done(18-08-02 17:36) @lasted(2h2m26s)
+            [x] record.js: pass in onDataAvailable
+            [x] record.js: add logic to execute onDataAvailable
+            [x] index.js: hook up above
+            [x] test
           [ ] upload FLAC file instead of forcing a download
             [ ] record.js: do not call forceDownload(), but consider exposing it for later usage
           [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
@@ -52,21 +51,32 @@ FEATURES:
             [ ] index.js: hook up above
             [ ] test
             [ ] fix bugs
+          [ ] fix bugs introduced by UI timer
+            [ ] clicking record and then stop repeatedly immediately after seems to cause a hang
+            [ ] consider using "recording" flag if async issue
+            [ ] update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
           [ ] figure out additional steps
           [ ] make the two record.js APIs look alike as possible
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
-          [ ] update UI (especially timer) independent of onDataAvailable
+          [ ] merge two onDataAvailable functions
+          [ ] look into if multiple web workers are spawned
         [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+        [ ] fix rerendering
         [ ] clean up
         [-] merge record.js with main.js
+      [ ] test for async issues
+      [ ] map out the data flow to ferret out issues
+      [ ] show user visual indicator that they can't change noises while recording @ux
       [ ] check if we are changing the UI without relying on the recorder response (changing the state of the Record button immediately, for instance)
+
+
+
   
   PLANNED:
     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
     [ ] license agreement akin to Mozilla's (Ryan is taking care of this for now)
     
   ICEBOX:
-    [ ] show user visual indicator that they can't change noises while recording @ux
     [ ] show user (a more obvious) visual indicator that a noise has been recorded @ux
     [ ] add wizard (easy sequential navigation) @ux
     [ ] simple text "pacing" timeline @ux
@@ -118,6 +128,7 @@ TECHNICAL HEALTH:
     [ ] determine if we need to also refactor for list interaction
     [ ] add development web server for automatically reloading on save of static files
     [ ] add build step so that we can use packages more easily, minify, etc
+      [ ] alternatively, append version number to everything
     [-] update requirements.txt
 
   ICEBOX:
