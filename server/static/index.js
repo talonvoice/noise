@@ -190,7 +190,7 @@ function selectNoise(index) {
         elapsed: 0,
       },
     });
-    updateFilenamePrefix(noise.name);
+    updateFilenamePrefix(noise.name); // TODO: this can be a calculated value instead
 
     // TODO: also rerender recorder?
     return true; // NOTE: signaling that we DID modify the state
@@ -338,8 +338,9 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     // TODO: replace with more intuitive code
     initialized = record({
       onRecordStart,
-      onRecordStop,
       onDataAvailable: onDataAvailableFlac,
+      onRecordStop: onRecordStopFlac,
+      onFileReady: onFileReadyFlac,
     }); // new code path: libflac.js and FLAC
   }
 
@@ -379,6 +380,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   }
 
   // TODO: merge the two functions below
+
   function onDataAvailableFlac(e) {
     // e: AudioProcessingEvent
     //console.log(e);
@@ -414,6 +416,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }
   }
 
+  // TODO: merge the two functions below
+
   function onRecordStop() {
     console.log(`Recording stopped...`);
 
@@ -434,9 +438,12 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     // generate filename from session ID and create blob out of chunks for:
     // 1) display download link on screen (currently hidden functionality)
     // 2) uploading to server
+
+    // TODO: move into own function
+    const extension = state.recorder.isFlac ? 'flac' : 'webm';
     const filename = `${state.recorder.filename.prefix}.${
       state.recorder.filename.sessionID
-    }.webm`;
+    }.${extension}`;
     let blob = new Blob(state.recorder.chunks);
 
     /* UI dispatch */
@@ -447,9 +454,96 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       filename, // from state
     });
 
-    updateSamplePlayer({
-      url,
+    // TODO: implement this so that the user can play back the sound they just recorded
+    // updateRecordingPlayer({
+    //   url,
+    // });
+
+    /*
+     async I/O (network request)
+    */
+
+    let file = new File([blob], filename);
+
+    // TODO: upload progress meter
+    upload(file)
+      .then(response => console.log(response.statusText))
+      .then(success => {
+        console.log('Successfully uploaded.');
+        let updatedNoiseList = [...state.noiseList];
+        updatedNoiseList[state.selectedNoise].status =
+          NOISE_STATUS_VALUES.RECORDED; // TODO: how to ensure no async probs?
+
+        updateState({
+          noiseList: updatedNoiseList,
+          recorder: {
+            ...state.recorder,
+            status: RECORDER_STATUS_VALUES.UPLOADED,
+          },
+        });
+
+        // TODO: move into UI component?
+        renderApp();
+      })
+      .catch(error => {
+        console.log(error); // TODO: Handle the error response object (notify the user that uploading failed)
+
+        updateState({
+          recorder: {
+            ...state.recorder,
+            status: RECORDER_STATUS_VALUES.WAITING,
+          },
+        });
+
+        // TODO: move into UI component?
+        renderApp();
+      });
+  }
+
+  function onRecordStopFlac() {
+    console.log(`Recording stopped...`);
+  }
+
+  function onFileReadyFlac(blob) {
+    console.log(`File ready to upload...`);
+
+    /* state management dispatch */
+    updateState({
+      recorder: {
+        ...state.recorder,
+        elapsed: Date.now() - state.recorder.startTime,
+        status: RECORDER_STATUS_VALUES.UPLOADING, // TODO: add state for encoding?
+      },
     });
+
+    /* UI dispatch */
+    // TODO: move into UI component?
+    renderRecorderAndArrows(); // TODO: here or onRecordClick()?
+    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
+
+    // generate filename from session ID and create blob out of chunks for:
+    // 1) display download link on screen (currently hidden functionality)
+    // 2) uploading to server
+
+    // TODO: move into own function
+    const extension = state.recorder.isFlac ? 'flac' : 'webm';
+    const filename = `${state.recorder.filename.prefix}.${
+      state.recorder.filename.sessionID
+    }.${extension}`;
+    // let blob = new Blob(state.recorder.chunks);
+
+    /* UI dispatch */
+    let url = URL.createObjectURL(blob);
+
+    updateDownloadLink({
+      url,
+      filename, // from state
+    });
+
+    // TODO: implement this so that the user can play back the sound they just recorded
+    // updateRecordingPlayer({
+    //   url,
+    // });
 
     /*
      async I/O (network request)

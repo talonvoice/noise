@@ -1,4 +1,9 @@
-function record({ onRecordStart, onRecordStop, onDataAvailable }) {
+function record({
+  onRecordStart,
+  onDataAvailable,
+  onRecordStop,
+  onFileReady,
+}) {
   let container = {};
 
   container.audio_context = null;
@@ -57,7 +62,7 @@ function record({ onRecordStart, onRecordStop, onDataAvailable }) {
 
     container.encoder.onmessage = function(e) {
       console.log(e.data.cmd);
-      
+
       if (e.data.cmd == 'end') {
         var resultMode = container.result_mode;
 
@@ -65,7 +70,8 @@ function record({ onRecordStart, onRecordStop, onDataAvailable }) {
           var fname = container.wav_format
             ? container.outfilename_wav
             : container.outfilename_flac;
-          container.forceDownload(e.data.buf, fname);
+          onFileReady(e.data.buf);
+          // container.forceDownload(e.data.with blob, fname); %
         } else {
           console.error(
             'Unknown mode for processing STOP RECORDING event: "' +
@@ -179,7 +185,7 @@ function record({ onRecordStart, onRecordStop, onDataAvailable }) {
     });
 
     container.node.onaudioprocess = function(e) {
-      onDataAvailable(e);
+      onDataAvailable(e); // TODO: update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
 
       if (!container.recording) return;
       // see also: http://typedarray.org/from-microphone-to-wav-with-getusermedia-and-web-audio/
@@ -247,6 +253,7 @@ function record({ onRecordStart, onRecordStop, onDataAvailable }) {
   return {
     startRecording: container.startRecording,
     stopRecording: container.stopRecording,
+    forceDownload: container.forceDownload,
   };
 }
 

@@ -17,6 +17,8 @@ function renderRecorder({
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
+
+  // TODO: seems like this is duplicating functionality from player.js updateSamplePlayer()
   recorderPreview.innerHTML = `
     <source src="${noise.preview}" type="audio/mpeg"/>    
   `;

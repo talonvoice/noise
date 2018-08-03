@@ -42,8 +42,10 @@ FEATURES:
             [x] record.js: add logic to execute onDataAvailable
             [x] index.js: hook up above
             [x] test
-          [ ] upload FLAC file instead of forcing a download
-            [ ] record.js: do not call forceDownload(), but consider exposing it for later usage
+          [x] upload FLAC file instead of forcing a download
+            [x] record.js: do not call forceDownload()
+            [x] expose forceDownload() for later usage
+            [x] hook up upload
           [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
           [ ] change UI when there is an error
             [ ] record.js: pass in onRecordError
@@ -55,11 +57,13 @@ FEATURES:
             [ ] clicking record and then stop repeatedly immediately after seems to cause a hang
             [ ] consider using "recording" flag if async issue
             [ ] update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
+              [ ] just use setTimeout() instead
           [ ] figure out additional steps
           [ ] make the two record.js APIs look alike as possible
           [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
           [ ] merge two onDataAvailable functions
-          [ ] look into if multiple web workers are spawned
+          [x] look into if multiple web workers are spawned
+            [x] yes
         [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
         [ ] fix rerendering
         [ ] clean up
