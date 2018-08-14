@@ -46,6 +46,9 @@ a {
   background-color: #e9cccc;
   cursor: default;
 }
+.Recording--recorded {
+  opacity: 0.5;
+}
 
 .Recording-item {
   padding: 10px;

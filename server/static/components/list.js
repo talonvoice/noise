@@ -1,20 +1,25 @@
+import { NOISE_STATUS_VALUES } from '../constants.js'; // TODO: remove reliance on this by passing in a noise list that is meant for this component instead of the noise list from state
+
 const noiseTemplate = ({
   selected,
+  recorded,
   number,
   name,
   description,
   instructions,
-  status,
+  statusText,
 }) => `
   <li class="RecordingList-item">
     <a class="Recording${
       selected ? ` Recording--selected` : ``
+    }${
+      recorded ? ` Recording--recorded` : ``
     }" data-id="list-item-${number}">
       <ul class="Recording-container">
         <li class="Recording-item Recording-name" data-id="list-item-${number}-name">${name}</li>
         <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
         <li class="Recording-item Recording-instructions" data-id="list-item-${number}-instructions">${instructions}</li>
-        <li class="Recording-item Recording-status" data-id="list-item-${number}-status">${status}</li>
+        <li class="Recording-item Recording-status" data-id="list-item-${number}-status">${statusText}</li>
       </ul>
     </a>
   </li>
@@ -38,11 +43,12 @@ function renderNoiseList(
     // TODO: render differently depending on if disabled or not; will need this to be called more frequently by the consumer first, however
     const noiseHtml = noiseTemplate({
       selected: index === selectedNoise,
+      recorded: noise.status === NOISE_STATUS_VALUES.RECORDED, // TODO: remove reliance on constants in this file, and ideally, the actual noise list as well (it ought to conform to this API rather than be a straight representation of the state)
       number: index + 1,
       name: noise.name,
       description: noise.desc,
       instructions: '',
-      status: noise.status.description,
+      statusText: noise.status.description,
     });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);

@@ -11,7 +11,7 @@ FEATURES:
   
   PLANNED:
     [ ] show user visual indicator that they can't change noises while recording @ux
-    [ ] show user (a more obvious) visual indicator that a noise has been recorded @ux
+    [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
     [ ] add wizard (easy sequential navigation) @ux
     [ ] simple text "pacing" timeline @ux
       [ ] change noises data structure to allow for pauses and prompts
