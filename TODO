@@ -123,7 +123,8 @@ FEATURES:
     [ ] license agreement akin to Mozilla's (Ryan is taking care of this for now)
     
   ICEBOX:
-    [ ] show user (a more obvious) visual indicator that a noise has been recorded @ux
+    [ ] show user visual indicator that they can't change noises while recording @ux
+    [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
     [ ] add wizard (easy sequential navigation) @ux
     [ ] simple text "pacing" timeline @ux
       [ ] change noises data structure to allow for pauses and prompts
