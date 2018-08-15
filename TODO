@@ -38,12 +38,29 @@ FEATURES:
       Features:
         [ ] integrate noises.json
         [ ] landing page/interstitial
+          [ ] intro and instructions (pause at beginning and in between each sound)
+          [ ] license agreement akin to Mozilla's (Ryan is taking care of the content for now)
         [ ] associate with user across sessions
+          [ ] store UUID in JSON blob
+          [ ] store noise list data in JSON blob
+          [ ] save JSON blob to local storage
+            [ ] decide best local storage method
+            [ ] utilize storage API
+              [ ] do we need permissions?
+              [ ] if so, decide when to ask for permissions (on load? on record?)
+              [ ] implement perms request
+          [ ] on load, load data from local storage
       Pre-Deployment:
         [ ] cache-busting solution
-        [ ] user testing
-        [ ] open pull request
-      
+          [ ] append build timestamp to everything
+          [ ] webpack ftw
+        [ ] merge to master
+          [ ] open PR against talonvoice/noise
+          [ ] review and address feedback
+          [ ] get PR merged in 
+      Post-Deployment:
+          [ ] user testing
+
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
@@ -120,7 +137,6 @@ FEATURES:
   
   PLANNED:
     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
-    [ ] license agreement akin to Mozilla's (Ryan is taking care of this for now)
     
   ICEBOX:
     [ ] show user visual indicator that they can't change noises while recording @ux
