@@ -4,41 +4,45 @@ FEATURES:
   IN PROGRESS:
     MVP:
       [x] get branch back to working state
+      [x] test and identify highest priority bugs
+      [ ] address showstoppers, maybe perf
+      [ ] address first two features
+      [ ] do pre-deployment tasks
       Bugs:
-      [x] test and identify highest priority bugs:
-      Showstoppers:
-        [ ] stop button sometimes doesn't work (this could actually just be a performance problem, see below)
-          [ ] console.log or debugger statement in click handler
-          [ ] get VSCode Chrome debugging working
-          [ ] could be solved by state machine/flag
-        [ ] audio artifacts
-          [ ] reproducible?
+        Showstoppers:
+          [ ] stop button sometimes doesn't work (this could actually just be a performance problem, see below)
+            [ ] console.log or debugger statement in click handler
+            [ ] get VSCode Chrome debugging working
+            [ ] could be solved by state machine/flag
+          [ ] audio artifacts
+            [ ] reproducible?
         Performance:
-        [ ] stop button (and perhaps some other UI) is noticeably slow to respond (this could be causing the showstopper above)
-          [ ] could be caused by refreshing too often (have not divorced time from data availability yet)
-          [ ] if it is because we are busy encoding, add a state for STOPPING where the Stop button is greyed out as soon as the user clicks it, thus feeling like a more responsive UI
-            - CONTEXT: we are using a web worker, so the UI shouldn't be blocking, but we are not indicating to the user that they press the button yet
-            [ ] huge files to download
-            [ ] currently using non-minified version of libflac.js
-          [ ] other files are not minified in any meaningful way
-          [ ] no gzipping on server-side
-          [ ] dead code
-          [ ] multiple web workers being spawned
-        [ ] other testing scenarios
-          [x] test recording all three samples in sequence
-          [x] test recording all three samples in reverse sequence
-          [x] test recording all three samples out of order
-          [x] test 2+ minute recording
-        [ ] incorporate old testing scenarios here
-          [ ] find previous testing scenarios
+          [ ] stop button (and perhaps some other UI) is noticeably slow to respond (this could be causing the showstopper above)
+            [ ] could be caused by refreshing too often (have not divorced time from data availability yet)
+            [ ] if it is because we are busy encoding, add a state for STOPPING where the Stop button is greyed out as soon as the user clicks it, thus feeling like a more responsive UI
+              - CONTEXT: we are using a web worker, so the UI shouldn't be blocking, but we are not indicating to the user that they press the button yet
+              [ ] huge files to download
+              [ ] currently using non-minified version of libflac.js
+            [ ] other files are not minified in any meaningful way
+            [ ] no gzipping on server-side
+            [ ] dead code
+            [ ] multiple web workers being spawned
+          [ ] other testing scenarios
+            [x] test recording all three samples in sequence
+            [x] test recording all three samples in reverse sequence
+            [x] test recording all three samples out of order
+            [x] test 2+ minute recording
+            [ ] ...
+          [-] incorporate old testing scenarios here
+            [-] find previous testing scenarios
       Features:
-      [ ] landing page/interstitial
-      [ ] integrate noises.json
-      [ ] associate with user across sessions
+        [ ] integrate noises.json
+        [ ] landing page/interstitial
+        [ ] associate with user across sessions
       Pre-Deployment:
-      [ ] cache-busting solution
-      [ ] user testing
-      [ ] open pull request
+        [ ] cache-busting solution
+        [ ] user testing
+        [ ] open pull request
       
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
