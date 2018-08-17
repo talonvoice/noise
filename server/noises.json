@@ -1,5 +1,5 @@
 [
-    {"name": "hiss", "desc": "hiss like a cat", "preview": "/static/hiss.mp3"},
-    {"name": "pop", "desc": "like popping a bubble", "preview": "/static/pop.mp3"},
-    {"name": "screech", "desc": "screech like a banshee", "preview": "/static/screech.mp3"}
+    {"name": "hiss", "desc": "hiss like a cat", "preview": "/static/previews/hiss.mp3"},
+    {"name": "pop", "desc": "like popping a bubble", "preview": "/static/previews/pop.mp3"},
+    {"name": "screech", "desc": "screech like a banshee", "preview": "/static/previews/screech.mp3"}
 ]

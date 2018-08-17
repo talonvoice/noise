@@ -18,7 +18,7 @@ function renderRecorder({
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
   recorderPreview.innerHTML = `
-    <source src="${noise.preview}" type="audio/mpeg"/>    
+    <source src="${noise.preview}" type="audio/mpeg"/>
   `;
   recorderPreview.load();
   recorderPreview.style.display = 'block';

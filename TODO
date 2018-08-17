@@ -15,14 +15,16 @@ FEATURES:
         [x] get app to work again (missing sounds)
           [x] rename pop-f.mp3 and hiss-f.mp3
           [x] bring screech.mp3 back from the dead for testing
-        [ ] simplify noises.json to make converting markdown file easier
-          [ ] change `sound` to `noise`
-          [ ] change `sound.preview` so that '/static' can be omitted
-            [ ] remove '/static' from any values
-            [ ] add code to handle `sound.preview` no longer having '/static', probably by having a "base path" constant that points to it
-          [ ] move sounds to /static/previews
-          [ ] test
-          [ ] remove screech.mp3
+        [x] change `noise.preview` so that '/static/' is now '/static/previews'
+          [x] change '/static/' to '/static/previews' in any values
+          [x] move sounds to /static/previews
+          [x] test
+        [-] simplify noises.json to make converting markdown file easier
+          [-] change `noise` to `sound` in code
+          [-] change `noise.preview` so that '/static' can be omitted
+            [-] remove '/static' from any values
+            [-] add code to handle `noise.preview` no longer having '/static', probably by having a "base path" constant that points to it
+          [-] test
         [ ] convert markdown file according to mapping rules below
           [x] figure out mapping rules
           [x] identify filename exceptions
@@ -31,26 +33,29 @@ FEATURES:
           [ ] rules
             [ ] exceptions to rules
               [ ] smooches.mp3 (also part of `smooch`)
-              [ ] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
-              [ ] pop-fail.mp3 (part of `pop`), duplicate?
+              [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
+                [x] renamed to pop.mp3
+              [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
+              [ ] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
               [ ] uh.mp3 (also part of `glottals`, alongside glottals.mp3)
               [ ] uh-oh.mp3 (also part of `glottals`, alongside glottals.mp3)
-              [ ] hiss-f.mp3 (`hiss`),  '-f' due to naming conflict?
-            [ ] `sound`:
-              [ ] `sound.category`: any H2 (new property)
+              [x] hiss-f.mp3 (`hiss`),  '-f' due to naming conflict?
+                [x] renamed to hiss.mp3
+            [ ] `noise`:
+              [ ] `noise.category`: any H2 (new property)
                 [ ] 'Various hisses' => 'hiss'
                 [ ] 'Voiceless noises' => 'noise'
                 [ ] 'Other Sounds' => 'noise'
                 [ ] 'Combined hiss and voiceless noises' => 'combined'
                 [ ] 'Click Sounds' => 'click'
-              [ ] `sound.desc`: the text below any H3 header
+              [ ] `noise.desc`: the text below any H3 header
                 [ ] formatting
                   [ ] '-' => '<li>'
                   [ ] newline not part of list item => <br>
                   [ ] URL => <a>
                   [ ] handle empty
                   [ ] alternatively, store as markdown in JSON and convert on-the-fly
-              [ ] `sound.name`: same rule for each category, all in H3
+              [ ] `noise.name`: same rule for each category, all in H3
                 [ ] Rule: H3 contains full name ("### <name>")
                 [ ] Categories
                   [ ] 'Various hisses'
@@ -63,11 +68,11 @@ FEATURES:
                     [ ] "### Trot (X Click, Lateral Click)" => "Trot (X Click, Lateral Click)"
                   [ ] 'Other Sounds'
                     [ ] "### Sucking Teeth" => "Sucking Teeth")
-              [ ] `sound.preview`: different rules for each category, all in H3
+              [ ] `noise.preview`: different rules for each category, all in H3
                 [ ] Rules
                   [ ] append ".mp3" to end of name to get preview A.K.A. filename
                     [ ] write code to handle this case
-                  [ ] since a sound might have more than one .mp3 file allow `sound.preview` to optionally be an array
+                  [ ] since a sound might have more than one .mp3 file allow `noise.preview` to optionally be an array
                     [ ] write code to handle this case (UI too)
                   [ ] Category-specific rules
                     [ ] IN PARENTHESES: filename embedded in H3 in parentheses ("### rest_of_name (<filename>)")
@@ -89,11 +94,12 @@ FEATURES:
                   [ ] 'Other Sounds'
                     [ ] H3-EQUIVALENT
                     [ ] "### Sucking Teeth" => "sucking-teeth")
-        [ ] add code to handle `sound.preview` optionally being an array
+        [ ] add code to handle `noise.preview` optionally being an array
           [ ] attempt with in-editor tools
           [ ] ...
         [ ] identify any missing sounds
         [ ] identify any orphan sounds
+          [ ] remove screech.mp3
         [ ] test
         [ ] merge
         [ ] post-MVP: group sounds in UI by category
