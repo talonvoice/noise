@@ -33,7 +33,7 @@ def upload():
 
 @app.route('/noises')
 def noises():
-    with open('noises.json', 'r') as f:
+    with open('sounds.json', 'r') as f:
         noises = f.read()
     return Response(noises, mimetype='application/json')
 

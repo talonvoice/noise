@@ -41,20 +41,26 @@ FEATURES:
             [ ] clean up formatting
             [ ] test
             [ ] fix issues
-          [ ] should some files have names/descriptions?
-            [ ] for now, consider labeling each media player by its name
-          [ ] rules
-            [ ] exceptions to rules
-              [ ] tsk.mp3 is for `Tut aka Tsk`
+          [ ] integrate sounds.json into code
+            [x] point app.py to sounds.json
+            [x] change index.js to read from `sounds` property of sounds.json
+            [ ] handle noise w/multiple previews
+            [ ] address exceptions to rules
+              [ ] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
+              [ ] hiss.mp3 instead of sss.mp3
+              [ ] sst.mp3 appears to be missing
               [ ] smooches.mp3 (also part of `smooch`)
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
                 [x] renamed to pop.mp3
               [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
               [ ] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
-              [ ] uh.mp3 (also part of `glottals`, alongside glottals.mp3)
-              [ ] uh-oh.mp3 (also part of `glottals`, alongside glottals.mp3)
+              [ ] uh.mp3 (part of `glottals`, not glottals.mp3)
+              [ ] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
               [x] hiss-f.mp3 (`hiss`), '-f' due to naming conflict?
                 [x] renamed to hiss.mp3
+          [ ] should some files have names/descriptions?
+            [ ] for now, consider labeling each media player by its name
+          [ ] rules
             [ ] `noise`:
               [ ] `noise.category`: any H2 (new property)
                 [ ] 'Various hisses' => 'hiss'

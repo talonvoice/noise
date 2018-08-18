@@ -89,7 +89,7 @@ function getNoises() {
     .fetch('noises')
     .then(response => response.json())
     .then(
-      noises => processNoises(noises), // Handle the success response object
+      json => processNoises(json.sounds), // TODO: handle categories
     )
     .catch(
       error => console.log(error), // Handle the error response object
