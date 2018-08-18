@@ -25,7 +25,7 @@
         <div class="Recorder-metadata">
           <div class="Recorder-examples">
             <p class="Recorder-exampleAudio">
-              Listen to an example:
+              <h4 class="Subheader">Listen to an example:</h4>
               <br>
               <div data-id="recorder-examples-list"></div>
             </p>
@@ -56,14 +56,12 @@
           <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
         </div>
       </div>
-      <div class="Review" style="display: none">
+      <div class="Review" style="display: block">
         <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
         <p class="Review-player">
           <!-- TODO: convert to accessible custom controls -->
-          <label class="Review-playbackLabel" data-id="playback-label" for="playback">Review your recording:</label>
-          <br>
-          <audio class="Review-playback" id="playback" data-id="playback" controls="" disabled>
-          </audio>
+          <h4 class="Subheader">Review your recording:</h4>
+          <div data-id="review-player-list"></div>
         </p>
         <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
       </div>

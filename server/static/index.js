@@ -1,6 +1,6 @@
 import { generateUUID, merge, showNotification } from './utilities.js';
 import {
-  updatePlayer,
+  updatePlaybackPlayer,
   updateDownloadLink,
   renderButton,
   renderNoiseList,
@@ -224,11 +224,11 @@ const onRecordClick = function() {
 
       /* UI dispatch */
       // TODO: move into UI component?
-      updatePlayer({
-        title: 'Review your recording:',
+      updatePlaybackPlayer({
+        title: '',
         disabled: true,
-        target: 'playback',
       });
+
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
@@ -355,9 +355,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       filename, // from state
     });
 
-    updatePlayer({
-      title: 'Review your recording:',
-      target: 'playback',
+    updatePlaybackPlayer({
+      title: '',
       url,
     });
 

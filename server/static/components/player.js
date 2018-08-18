@@ -1,32 +1,6 @@
 // TODO: find or create more accessible player
-function updatePlayer({
-  url = null,
-  urls = [],
-  title = 'example',
-  disabled = false,
-  target = 'preview', // TODO: remove this if/when we move the logic of selecting components outside (AKA start working with true "components")
-}) {
-  // hook up player
-  const player = document.querySelector(`[data-id=${target}]`);
-  const label = document.querySelector(`[data-id=${target}-label`);
-  label.innerHTML = `${title}`;
-
-  // player.src = url; // TODO: alternative to below; which is better?
-  player.innerHTML = `
-    <source src="${url}" type="audio/mpeg"/>
-  `;
-  player.load();
-
-  if (disabled) {
-    player.setAttribute('disabled', 'disabled');
-  } else {
-    player.removeAttribute('disabled');
-  }
-}
-
-// TODO: find or create more accessible player
 function renderPlayer({
-  id = 0,
+  id = 0, // TODO: autogenerate these as static counter ... one day ...
   url = null,
   title = 'example',
   disabled = false,
@@ -49,4 +23,4 @@ function renderPlayer({
   return template;
 }
 
-export { updatePlayer, renderPlayer };
+export { renderPlayer };
