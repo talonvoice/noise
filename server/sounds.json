@@ -1,5 +1,5 @@
-[
-  [
+{
+  "categories": [
     {
       "short_name": "Various hisses",
       "name": "Various hisses",
@@ -18,7 +18,7 @@
     { "short_name": "Other Sounds", "name": "Other Sounds", "description": "" },
     { "short_name": "Click Sounds", "name": "Click Sounds", "description": "" }
   ],
-  [
+  "sounds": [
     {
       "name": "Hiss (sss)",
       "desc":
@@ -225,4 +225,4 @@
       "category": "Other Sounds"
     }
   ]
-]
+}
