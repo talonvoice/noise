@@ -9,7 +9,6 @@ FEATURES:
         [x] target "recorded" player instead
         [x] hide "recorded" player b/c WIP
         [x] rename updateSamplePlayer() to updatePlayer()
-        [ ] rehide WIP "recorded" player
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
@@ -32,7 +31,7 @@ FEATURES:
             [-] remove '/static' from any values
             [-] add code to handle `noise.preview` no longer having '/static', probably by having a "base path" constant that points to it
           [-] test
-        [ ] convert markdown file according to mapping rules below
+        [x] convert markdown file according to mapping rules below
           [x] figure out mapping rules
           [x] identify filename exceptions
           [x] implement conversion
@@ -48,10 +47,10 @@ FEATURES:
             [-] clean up formatting
             [x] test
             [x] fix issues
-          [ ] integrate sounds.json into code
+          [x] integrate sounds.json into code
             [x] point app.py to sounds.json
             [x] change index.js to read from `sounds` property of sounds.json
-            [ ] handle noise w/multiple previews
+            [x] handle noise w/multiple previews
               [x] change JSON format
               [x] display preview title
               [x] merge duplicate rendering code
@@ -60,7 +59,7 @@ FEATURES:
               [x] modify JSON to address exceptions that have multiple previews; test multiple previews
               [x] change recording playback code to use new code path
               [x] remove old code
-              [ ] rehide WIP "recorded" player
+              [x] rehide WIP "recorded" player
             [x] address exceptions to rules
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3
