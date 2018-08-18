@@ -55,7 +55,7 @@ FEATURES:
               [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
               [ ] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
               [ ] uh.mp3 (part of `glottals`, not glottals.mp3)
-              [ ] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
+              [x] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
               [x] hiss-f.mp3 (`hiss`), '-f' due to naming conflict?
                 [x] renamed to hiss.mp3
           [ ] should some files have names/descriptions?
