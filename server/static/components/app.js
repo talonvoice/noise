@@ -1,5 +1,5 @@
 import { renderNoiseList } from './list.js';
-import { updateSamplePlayer } from './player.js';
+import { updatePlayer } from './player.js';
 import {
   renderRecorder,
   renderRecordingControls,
@@ -25,7 +25,7 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
 }
 
 export {
-  updateSamplePlayer,
+  updatePlayer,
   updateDownloadLink,
   renderButton,
   renderNoiseList,

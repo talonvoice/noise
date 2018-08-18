@@ -1,4 +1,4 @@
-import { updateSamplePlayer } from './player.js';
+import { updatePlayer } from './player.js';
 
 function renderRecorder({
   noise,
@@ -16,7 +16,7 @@ function renderRecorder({
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
 
-  updateSamplePlayer({
+  updatePlayer({
     url: noise.preview.path,
     title: noise.preview.title,
     target: 'preview',

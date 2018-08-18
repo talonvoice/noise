@@ -1,5 +1,5 @@
 // TODO: find or create more accessible player
-function updateSamplePlayer({
+function updatePlayer({
   url = null,
   title = 'example',
   disabled = false,
@@ -23,4 +23,4 @@ function updateSamplePlayer({
   }
 }
 
-export { updateSamplePlayer };
+export { updatePlayer };
