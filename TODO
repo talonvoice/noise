@@ -31,13 +31,13 @@ FEATURES:
           [x] implement conversion
             [x] create placeholder JSON from noises.md
             [x] make placeholder JSON valid JSON w/Comments
-            [ ] make placeholder JSON valid JSON
-            [ ] make placeholder JSON same properties as noises.json (w/perhaps an added one)
-            [ ] create object for each `noise`
-            [ ] extract `noise.name`
-            [ ] extract `noise.preview`
-            [ ] extract `noise.desc`
-            [ ] extract `noise.category`
+            [x] make placeholder JSON valid JSON
+            [x] make placeholder JSON same properties as noises.json (w/perhaps an added one)
+            [x] create object for each `noise`
+            [x] extract `noise.name`
+            [x] extract `noise.preview`
+            [x] extract `noise.desc`
+            [x] extract `noise.category`
             [ ] clean up formatting
             [ ] test
             [ ] fix issues
@@ -45,6 +45,7 @@ FEATURES:
             [ ] for now, consider labeling each media player by its name
           [ ] rules
             [ ] exceptions to rules
+              [ ] tsk.mp3 is for `Tut aka Tsk`
               [ ] smooches.mp3 (also part of `smooch`)
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
                 [x] renamed to pop.mp3
