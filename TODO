@@ -44,9 +44,9 @@ FEATURES:
             [x] extract `noise.preview`
             [x] extract `noise.desc`
             [x] extract `noise.category`
-            [ ] clean up formatting
-            [ ] test
-            [ ] fix issues
+            [-] clean up formatting
+            [x] test
+            [x] fix issues
           [ ] integrate sounds.json into code
             [x] point app.py to sounds.json
             [x] change index.js to read from `sounds` property of sounds.json
@@ -56,26 +56,25 @@ FEATURES:
               [x] merge duplicate rendering code
               [x] add code that can render multiple previews
               [x] change recorder code to use new preview code
-              [ ] modify JSON to address exceptions that have multiple previews; test multiple previews
+              [x] modify JSON to address exceptions that have multiple previews; test multiple previews
               [ ] change recording playback code to use new code path
               [ ] remove old code
-            [ ] address exceptions to rules
+            [x] address exceptions to rules
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3
-              [ ] sst.mp3 appears to be missing
               [x] smooches.mp3 (also part of `smooch`), would need multiple previews supported
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
                 [x] renamed to pop.mp3
-              [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
-              [ ] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
-              [ ] uh.mp3 (part of `glottals`, not glottals.mp3), , would need multiple previews supported
+              [x] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
+              [x] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
+              [x] uh.mp3 (part of `glottals`, not glottals.mp3), , would need multiple previews supported
               [x] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
               [x] hiss-f.mp3 (`hiss`), '-f' due to naming conflict?
                 [x] renamed to hiss.mp3
-          [ ] should some files have names/descriptions?
-            [ ] for now, consider labeling each media player by its name
-          [ ] rules
-            [ ] `noise`:
+          [x] should some files have names/descriptions?
+            [x] for now, consider labeling each media player by its name
+          [x] rules
+            [x] `noise`:
               [x] `noise.category`: any H2 (new property)
                 [x] 'Various hisses' => 'hiss'
                 [x] 'Voiceless noises' => 'noise'
@@ -89,8 +88,8 @@ FEATURES:
                   [-] newline not part of list item => <br>
                   [-] URL => <a>
                   [-] handle empty
-                  [ ] alternatively, store as markdown in JSON and convert on-the-fly
-                    [ ] we may opt for this, with \n for the list items for now, but no markdown conversion yet
+                  [x] alternatively, decide to store as markdown in JSON and convert on-the-fly
+                    [x] we may opt for this, with \n for the list items for now, but no markdown conversion yet
               [x] `noise.name`: same rule for each category, all in H3
                 [x] Rule: H3 contains full name ("### <name>")
                 [x] By category
@@ -104,12 +103,12 @@ FEATURES:
                     [x] e.g., "### Trot (X Click, Lateral Click)" => "Trot (X Click, Lateral Click)"
                   [x] 'Other Sounds'
                     [x] e.g., "### Sucking Teeth" => "Sucking Teeth")
-              [ ] `noise.preview`: different rules for each category, all in H3
-                [ ] Rules
+              [x] `noise.preview`: different rules for each category, all in H3
+                [x] Rules
                   [x] append ".mp3" to end of name to get preview A.K.A. filename
                     [x] write code to handle this case
-                  [ ] since a sound might have more than one .mp3 file allow `noise.preview` to optionally be an array
-                    [ ] write code to handle this case (UI too)
+                  [x] since a sound might have more than one .mp3 file allow `noise.preview` to optionally be an array
+                    [x] write code to handle this case (UI too)
                   [x] Category-specific rules
                     [x] IN PARENTHESES: filename embedded in H3 in parentheses ("### rest_of_name (<filename>)")
                     [x] BEFORE PARENTHESES: filename embedded in first part of H3 before parentheses ("### <filename>(<rest_of_name_1>) <rest_of_name_2>")
@@ -130,16 +129,23 @@ FEATURES:
                   [x] 'Other Sounds'
                     [x] H3-EQUIVALENT
                     [x] e.g., "### Sucking Teeth" => "sucking-teeth")
-        [ ] remap 'other' => 'noise' when appropriate
-        [ ] add code to handle `noise.preview` optionally being an array
-          [ ] attempt with in-editor tools
-          [ ] ...
-        [ ] identify any missing sounds
-        [ ] identify any orphan sounds
-          [ ] remove screech.mp3
+        [ ] convert `noise.desc` from markdown to HTML on-the-fly (in other words, clean up formatting)
+        [x] add code to   handle `noise.preview` optionally being an array
+          [x] attempt with in-editor tools
+          [x] ...
+        [x] identify any missing sounds
+        [ ] address missing sounds
+          [ ] sst.mp3 appears to be missing
+        [x] identify any orphan sounds
+        [ ] address orphan sounds
+          [ ] screech.mp3, remove in cleanup
+          [ ] pop-fail.mp3 (added to `pop`, OK? @open-question)
+          [ ] pop-old.mp3 (added to `pop`, OK? @open-question)
+          [ ] uh.mp3 (added to `glottals`, OK? @open-question)
         [ ] test
         [ ] merge
         [ ] post-MVP?: group sounds in UI by category
+          [ ] remap 'other' => 'noise' when appropriate
         [ ] post-MVP?: consider adding versioning to uploads (tag w/app version)
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
