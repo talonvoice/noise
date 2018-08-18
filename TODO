@@ -54,7 +54,11 @@ FEATURES:
               [x] change JSON format
               [x] display preview title
               [x] merge duplicate rendering code
-              [ ] render multiple previews
+              [x] add code that can render multiple previews
+              [x] change recorder code to use new preview code
+              [ ] modify JSON to address exceptions that have multiple previews; test multiple previews
+              [ ] change recording playback code to use new code path
+              [ ] remove old code
             [ ] address exceptions to rules
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3

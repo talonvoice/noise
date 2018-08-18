@@ -1,4 +1,4 @@
-import { updatePlayer } from './player.js';
+import { renderPlayer } from './player.js';
 
 function renderRecorder({
   noise,
@@ -15,12 +15,26 @@ function renderRecorder({
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
+  const examples = document.querySelector('[data-id=recorder-examples-list]');
+  let players = '';
 
-  updatePlayer({
-    url: noise.preview.path,
-    title: noise.preview.title,
-    target: 'preview',
-  });
+  if (noise.preview && Array.isArray(noise.preview)) {
+    players = noise.preview.map(({path, title}, index) => {
+      renderPlayer({
+        id: index,
+        url: path,
+        title: title,
+      });
+    }).join('');
+  } else {
+    let { path, title } = noise.preview;
+    players = renderPlayer({
+      id: 0,
+      url: path,
+      title: title,
+    });
+  }
+  examples.innerHTML = players;
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;

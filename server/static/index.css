@@ -134,12 +134,6 @@ a {
   margin-bottom: 10px;
 }
 
-.Recorder-previewLabel {
-  font-weight: bold;
-  text-align: center;
-  display: block;
-}
-
 .Recorder-exampleVideo {
   /* border: solid 1px #999;
   height: 240px;
@@ -200,6 +194,12 @@ a {
 }
 .Recorder-status--disabled {
   color: #ccc;
+}
+
+.Player-label {
+  font-weight: bold;
+  text-align: center;
+  display: block;
 }
 
 .Review {
