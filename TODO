@@ -3,6 +3,7 @@ FEATURES:
   
   IN PROGRESS:
     MVP:
+      [ ] fix sample player so that it's not replaced by recording
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
