@@ -49,12 +49,12 @@ FEATURES:
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3
               [ ] sst.mp3 appears to be missing
-              [ ] smooches.mp3 (also part of `smooch`)
+              [ ] smooches.mp3 (also part of `smooch`), would need multiple previews supported
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
                 [x] renamed to pop.mp3
               [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
               [ ] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
-              [ ] uh.mp3 (part of `glottals`, not glottals.mp3)
+              [ ] uh.mp3 (part of `glottals`, not glottals.mp3), , would need multiple previews supported
               [x] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
               [x] hiss-f.mp3 (`hiss`), '-f' due to naming conflict?
                 [x] renamed to hiss.mp3
@@ -62,58 +62,61 @@ FEATURES:
             [ ] for now, consider labeling each media player by its name
           [ ] rules
             [ ] `noise`:
-              [ ] `noise.category`: any H2 (new property)
-                [ ] 'Various hisses' => 'hiss'
-                [ ] 'Voiceless noises' => 'noise'
-                [ ] 'Other Sounds' => 'noise'
-                [ ] 'Combined hiss and voiceless noises' => 'combined'
-                [ ] 'Click Sounds' => 'click'
-              [ ] `noise.desc`: the text below any H3 header
-                [ ] formatting
-                  [ ] '-' => '<li>'
-                  [ ] newline not part of list item => <br>
-                  [ ] URL => <a>
-                  [ ] handle empty
+              [x] `noise.category`: any H2 (new property)
+                [x] 'Various hisses' => 'hiss'
+                [x] 'Voiceless noises' => 'noise'
+                [x] 'Other Sounds' => 'other' (to be remapped to 'noise' later)
+                [x] 'Combined hiss and voiceless noises' => 'combined'
+                [x] 'Click Sounds' => 'click'
+              [x] `noise.desc`: the text below any H3 header
+                [x] formatting
+                  [-] '-' => '<li>'
+                  [x] '-' => '\n-' for now
+                  [-] newline not part of list item => <br>
+                  [-] URL => <a>
+                  [-] handle empty
                   [ ] alternatively, store as markdown in JSON and convert on-the-fly
-              [ ] `noise.name`: same rule for each category, all in H3
-                [ ] Rule: H3 contains full name ("### <name>")
-                [ ] Categories
-                  [ ] 'Various hisses'
-                    [ ] "### Hiss (sss)" => "Hiss (sss)"
-                  [ ] 'Voiceless noises'
-                    [ ] "### P (puh)" => "P (puh)"
-                  [ ] 'Combined hiss and voiceless noises'
-                    [ ] "### Retracting Tape Measure (ssk)" => "Retracting Tape Measure (ssk)"
-                  [ ] 'Click Sounds'
-                    [ ] "### Trot (X Click, Lateral Click)" => "Trot (X Click, Lateral Click)"
-                  [ ] 'Other Sounds'
-                    [ ] "### Sucking Teeth" => "Sucking Teeth")
+                    [ ] we may opt for this, with \n for the list items for now, but no markdown conversion yet
+              [x] `noise.name`: same rule for each category, all in H3
+                [x] Rule: H3 contains full name ("### <name>")
+                [x] By category
+                  [x] 'Various hisses'
+                    [x] e.g., "### Hiss (sss)" => "Hiss (sss)"
+                  [x] 'Voiceless noises'
+                    [x] e.g., "### P (puh)" => "P (puh)"
+                  [x] 'Combined hiss and voiceless noises'
+                    [x] e.g., "### Retracting Tape Measure (ssk)" => "Retracting Tape Measure (ssk)"
+                  [x] 'Click Sounds'
+                    [x] e.g., "### Trot (X Click, Lateral Click)" => "Trot (X Click, Lateral Click)"
+                  [x] 'Other Sounds'
+                    [x] e.g., "### Sucking Teeth" => "Sucking Teeth")
               [ ] `noise.preview`: different rules for each category, all in H3
                 [ ] Rules
-                  [ ] append ".mp3" to end of name to get preview A.K.A. filename
-                    [ ] write code to handle this case
+                  [x] append ".mp3" to end of name to get preview A.K.A. filename
+                    [x] write code to handle this case
                   [ ] since a sound might have more than one .mp3 file allow `noise.preview` to optionally be an array
                     [ ] write code to handle this case (UI too)
-                  [ ] Category-specific rules
-                    [ ] IN PARENTHESES: filename embedded in H3 in parentheses ("### rest_of_name (<filename>)")
-                    [ ] BEFORE PARENTHESES: filename embedded in first part of H3 before parentheses ("### <filename>(<rest_of_name_1>) <rest_of_name_2>")
-                    [ ] H3-EQUIVALENT: the H3 content is exactly the same as the filename, except that the filename will be lowercased and spine-cased. ("### filename" 
-                [ ] Categories
-                  [ ] 'Various hisses'
-                    [ ] IN PARENTHESES
-                    [ ] "### Hiss (sss)") => "sss"
-                  [ ] 'Voiceless noises'
-                    [ ] IN PARENTHESES
-                    [ ] "### P (puh)" => "puh"
-                  [ ] 'Combined hiss and voiceless noises'
-                    [ ] IN PARENTHESES
-                    [ ] "### Retracting Tape Measure (ssk)") => "ssk"
-                  [ ] 'Click Sounds'
-                    [ ] BEFORE PARENTHESES
-                    [ ] "### Trot (X Click, Lateral Click)" => "trot"
-                  [ ] 'Other Sounds'
-                    [ ] H3-EQUIVALENT
-                    [ ] "### Sucking Teeth" => "sucking-teeth")
+                  [x] Category-specific rules
+                    [x] IN PARENTHESES: filename embedded in H3 in parentheses ("### rest_of_name (<filename>)")
+                    [x] BEFORE PARENTHESES: filename embedded in first part of H3 before parentheses ("### <filename>(<rest_of_name_1>) <rest_of_name_2>")
+                    [x] H3-EQUIVALENT: the H3 content is exactly the same as the filename, except that the filename will be lowercased and spine-cased. ("### filename" 
+                [x] Categories
+                  [x] 'Various hisses'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### Hiss (sss)") => "sss"
+                  [x] 'Voiceless noises'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### P (puh)" => "puh"
+                  [x] 'Combined hiss and voiceless noises'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### Retracting Tape Measure (ssk)") => "ssk"
+                  [x] 'Click Sounds'
+                    [x] BEFORE PARENTHESES
+                    [x] e.g., "### Trot (X Click, Lateral Click)" => "trot"
+                  [x] 'Other Sounds'
+                    [x] H3-EQUIVALENT
+                    [x] e.g., "### Sucking Teeth" => "sucking-teeth")
+        [ ] remap 'other' => 'noise' when appropriate
         [ ] add code to handle `noise.preview` optionally being an array
           [ ] attempt with in-editor tools
           [ ] ...
@@ -122,7 +125,7 @@ FEATURES:
           [ ] remove screech.mp3
         [ ] test
         [ ] merge
-        [ ] post-MVP: group sounds in UI by category
+        [ ] post-MVP?: group sounds in UI by category
 
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
