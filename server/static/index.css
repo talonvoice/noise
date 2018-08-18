@@ -75,12 +75,23 @@ a {
 }
 
 /* Recorder */
+.Tray {
+  position: fixed;
+  position: sticky;
+  bottom: 0;
+  margin-left: 15%;
+  margin-right: 15%;
+}
 
 .Centered {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin: 0 auto;
+  justify-content: center;
+}
+.Centered-column--fill {
+  flex: 1;
 }
 
 .Recorder {
@@ -104,10 +115,6 @@ a {
   flex: 2;
 }
 
-.Recorder-examples {
-  flex: 1;
-}
-
 .Recorder-title {
   font-size: 24px;
   margin-bottom: 10px;
@@ -116,9 +123,11 @@ a {
 .Recorder-examples {
   border-radius: 5px;
   padding: 10px;
-  background-color: #f6f6f6;
-  font-style: 16px;
+  background-color: rgba(216,216,216,0.5);
+  font-size: 18px;
   margin-bottom: 10px;
+  margin-left: 10px;
+  float: right;
 }
 
 .Recorder-exampleAudio {
@@ -196,21 +205,22 @@ a {
 
 
 .Arrow {
-  color: #d6d6d6;
+  color: rgba(183,183,183,0.5);
   width: 0;
   height: 0;
   border-top: 60px solid transparent;
   border-bottom: 60px solid transparent;
   font-size: 0px;
   cursor: pointer;
+  background-color: transparent;
 }
 
 .Arrow--disabled {
-  color: #efefef;
+  color: rgba(207,207,207,0.5);
   cursor: auto;
 }
 .Arrow:not(.Arrow--disabled):hover {
-  color: #d0d0d0;
+  color: rgba(159,159,159,0.5);
 }
 
 .Arrow--left {
