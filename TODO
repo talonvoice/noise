@@ -63,7 +63,7 @@ FEATURES:
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3
               [ ] sst.mp3 appears to be missing
-              [ ] smooches.mp3 (also part of `smooch`), would need multiple previews supported
+              [x] smooches.mp3 (also part of `smooch`), would need multiple previews supported
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
                 [x] renamed to pop.mp3
               [ ] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question

@@ -19,13 +19,15 @@ function renderRecorder({
   let players = '';
 
   if (noise.preview && Array.isArray(noise.preview)) {
-    players = noise.preview.map(({path, title}, index) => {
-      renderPlayer({
-        id: index,
-        url: path,
-        title: title,
-      });
-    }).join('');
+    players = noise.preview
+      .map(({ path, title }, index) =>
+        renderPlayer({
+          id: index,
+          url: path,
+          title: title,
+        }),
+      )
+      .join('');
   } else {
     let { path, title } = noise.preview;
     players = renderPlayer({
