@@ -8,15 +8,22 @@ app = Flask('noise_data')
 @app.route('/upload', methods=['POST'])
 def upload():
     form = request.form
+    user = form.get('user')
     noise = request.files.get('noise')
-    if not noise:
+    if not noise or not user:
         return abort(400)
 
     # TODO: group uploads by user?
+    userdir = secure_filename(user)
+    fulldir = os.path.join('upload', userdir)
+    if not os.path.exists(fulldir):
+        os.makedirs(fulldir)
+
     path = secure_filename(noise.filename)
-    path = os.path.join('upload', path)
+    path = os.path.join('upload', userdir, path)
     base, ext = os.path.splitext(path)
     n = 0
+    
     while os.path.exists(path):
         n += 1
         path = '{}-{}{}'.format(base, n, ext)

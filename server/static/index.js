@@ -96,10 +96,10 @@ function getNoises() {
     );
 }
 
-function upload(file) {
+function upload(file, sessionID) {
   let data = new FormData();
   data.append('noise', file);
-  data.append('user', 'you'); // TODO: names in uploads?
+  data.append('user', sessionID); // TODO: names in uploads? // TODO: make this persistent
 
   return window.fetch('/upload', {
     method: 'POST',
@@ -359,7 +359,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     let file = new File([blob], filename);
 
     // TODO: upload progress meter
-    upload(file)
+    upload(file, state.recorder.filename.sessionID)
       .then(response => console.log(response.statusText))
       .then(success => {
         let updatedNoiseList = [...state.noiseList];
