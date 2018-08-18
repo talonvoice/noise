@@ -46,8 +46,8 @@ FEATURES:
             [x] change index.js to read from `sounds` property of sounds.json
             [ ] handle noise w/multiple previews
             [ ] address exceptions to rules
-              [ ] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
-              [ ] hiss.mp3 instead of sss.mp3
+              [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
+              [x] hiss.mp3 instead of sss.mp3
               [ ] sst.mp3 appears to be missing
               [ ] smooches.mp3 (also part of `smooch`)
               [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
