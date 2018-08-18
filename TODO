@@ -2,7 +2,11 @@
 FEATURES:
 
   IN PROGRESS:
-    [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
+    MVP:
+      Translucent recorder overlay UI:
+        [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
+      Upload user subfolders:
+        [x] add functionality to place uploads into user subfolders (UUID still embedded in filename, however)
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
