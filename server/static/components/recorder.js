@@ -1,3 +1,5 @@
+import { updateSamplePlayer } from './player.js';
+
 function renderRecorder({
   noise,
   recorderState, // TODO: divorce state shape of recorder
@@ -13,17 +15,11 @@ function renderRecorder({
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
-  const recorderPreview = recorder.querySelector('[data-id=preview');
-  const recorderPreviewLabel = recorder.querySelector('[data-id=preview-label');
+
+  updateSamplePlayer({ url: noise.preview.path, title: noise.preview.title });
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
-  recorderPreviewLabel.innerHTML = `${noise.preview.title}:`;
-  recorderPreview.innerHTML = `
-    <source src="${noise.preview.path}" type="audio/mpeg"/>
-  `;
-  recorderPreview.load();
-  recorderPreview.style.display = 'block';
 
   renderRecordingControls({
     recorderState,
