@@ -16,7 +16,11 @@ function renderRecorder({
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
 
-  updateSamplePlayer({ url: noise.preview.path, title: noise.preview.title });
+  updateSamplePlayer({
+    url: noise.preview.path,
+    title: noise.preview.title,
+    target: 'preview',
+  });
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;

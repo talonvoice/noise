@@ -29,7 +29,8 @@
               <br>
               <br>
               <!-- TODO: convert to accessible custom controls -->
-              <label class="Recorder-previewLabel" data-id="preview-label" for="preview"></label> <audio class="Recorder-preview" id="preview" data-id="preview" style="display: none" controls="">
+              <label class="Recorder-previewLabel" data-id="preview-label" for="preview"></label>
+              <audio class="Recorder-preview" id="preview" data-id="preview" controls="">
               </audio>
             </p>
             <!-- TODO: only show this if there are actually video examples -->
@@ -50,9 +51,6 @@
         </div>
         <div class="Centered-column--fill">
           <div class="Recorder-actions">
-            <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
-            <audio style="display: none" data-id="player" class="Player" controls disabled></audio>
-            <a style="display: none" data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
             <button data-id="recordButton" class="Recorder-recordButton">Record</button>
             <p data-id="recorderTime" class="Recorder-time">00:00</p>
             <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
@@ -61,6 +59,17 @@
         <div class="Centered-column">
           <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
         </div>
+      </div>
+      <div class="Review" style="/*display: none*/">
+        <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
+        <p class="Review-player">
+          <!-- TODO: convert to accessible custom controls -->
+          <label class="Review-playbackLabel" data-id="playback-label" for="playback">Review your recording:</label>
+          <br>
+          <audio class="Review-playback" id="playback" data-id="playback" controls="" disabled>
+          </audio>
+        </p>
+        <a style="display: none" data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
       </div>
     </div>
   </div>

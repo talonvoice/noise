@@ -170,7 +170,10 @@ function selectNoise(index) {
       selectedNoise: index, // TODO: or assign actual noise?
       recorder: {
         ...state.recorder,
-        status: noise.status === NOISE_STATUS_VALUES.UNRECORDED ? RECORDER_STATUS_VALUES.WAITING : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
+        status:
+          noise.status === NOISE_STATUS_VALUES.UNRECORDED
+            ? RECORDER_STATUS_VALUES.WAITING
+            : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
         startTime: null,
         elapsed: 0,
       },
@@ -221,7 +224,11 @@ const onRecordClick = function() {
 
       /* UI dispatch */
       // TODO: move into UI component?
-      updateSamplePlayer({ disabled: true });
+      updateSamplePlayer({
+        title: 'Review your recording:',
+        disabled: true,
+        target: 'playback',
+      });
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
@@ -349,6 +356,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     });
 
     updateSamplePlayer({
+      title: 'Review your recording:',
+      target: 'playback',
       url,
     });
 

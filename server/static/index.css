@@ -136,6 +136,8 @@ a {
 
 .Recorder-previewLabel {
   font-weight: bold;
+  text-align: center;
+  display: block;
 }
 
 .Recorder-exampleVideo {
@@ -200,7 +202,12 @@ a {
   color: #ccc;
 }
 
-.Player {
+.Review {
+  margin-top: 10px;
+}
+
+.Review-player {
+  text-align: center;
 }
 
 .DownloadLink--disabled {

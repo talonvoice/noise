@@ -4,9 +4,10 @@ FEATURES:
   IN PROGRESS:
     MVP:
       [ ] fix sample player so that it's not replaced by recording
-        [ ] create "recorded" player in HTML
-        [ ] modify code to allow targeting either sample player or "recorded" player
-        [ ] target "recorded" player instead
+        [x] create "recorded" player in HTML
+        [x] modify code to allow targeting either sample player or "recorded" player
+        [x] target "recorded" player instead
+        [ ] hide "recorded" player b/c WIP
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
@@ -51,6 +52,7 @@ FEATURES:
             [ ] handle noise w/multiple previews
               [x] change JSON format
               [x] display preview title
+              [x] merge duplicate rendering code
               [ ] render multiple previews
             [ ] address exceptions to rules
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
