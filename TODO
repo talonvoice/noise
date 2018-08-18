@@ -1,12 +1,153 @@
 # TODOS
 FEATURES:
-
+  
   IN PROGRESS:
     MVP:
+      [x] fix sample player so that it's not replaced by recording
+        [x] create "recorded" player in HTML
+        [x] modify code to allow targeting either sample player or "recorded" player
+        [x] target "recorded" player instead
+        [x] hide "recorded" player b/c WIP
+        [x] rename updateSamplePlayer() to updatePlayer()
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
         [x] add functionality to place uploads into user subfolders (UUID still embedded in filename, however)
+      Interstitial:
+        [x] copy part of noises.md to /static/templates introduction placeholder
+      Integrate new sounds:
+        [x] list the steps
+        [x] copy noises.md over to sounds.json.md to prepare for conversion
+        [x] get app to work again (missing sounds)
+          [x] rename pop-f.mp3 and hiss-f.mp3
+          [x] bring screech.mp3 back from the dead for testing
+        [x] change `noise.preview` so that '/static/' is now '/static/previews'
+          [x] change '/static/' to '/static/previews' in any values
+          [x] move sounds to /static/previews
+          [x] test
+        [-] simplify noises.json to make converting markdown file easier
+          [-] change `noise` to `sound` in code
+          [-] change `noise.preview` so that '/static' can be omitted
+            [-] remove '/static' from any values
+            [-] add code to handle `noise.preview` no longer having '/static', probably by having a "base path" constant that points to it
+          [-] test
+        [x] convert markdown file according to mapping rules below
+          [x] figure out mapping rules
+          [x] identify filename exceptions
+          [x] implement conversion
+            [x] create placeholder JSON from noises.md
+            [x] make placeholder JSON valid JSON w/Comments
+            [x] make placeholder JSON valid JSON
+            [x] make placeholder JSON same properties as noises.json (w/perhaps an added one)
+            [x] create object for each `noise`
+            [x] extract `noise.name`
+            [x] extract `noise.preview`
+            [x] extract `noise.desc`
+            [x] extract `noise.category`
+            [-] clean up formatting
+            [x] test
+            [x] fix issues
+          [x] integrate sounds.json into code
+            [x] point app.py to sounds.json
+            [x] change index.js to read from `sounds` property of sounds.json
+            [x] handle noise w/multiple previews
+              [x] change JSON format
+              [x] display preview title
+              [x] merge duplicate rendering code
+              [x] add code that can render multiple previews
+              [x] change recorder code to use new preview code
+              [x] modify JSON to address exceptions that have multiple previews; test multiple previews
+              [x] change recording playback code to use new code path
+              [x] remove old code
+              [x] rehide WIP "recorded" player
+            [x] address exceptions to rules
+              [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
+              [x] hiss.mp3 instead of sss.mp3
+              [x] smooches.mp3 (also part of `smooch`), would need multiple previews supported
+              [x] pop-f.mp3 (part of `pop`), '-f' due to naming conflict?
+                [x] renamed to pop.mp3
+              [x] pop-fail.mp3 (part of `pop`), duplicate? maybe demo of incorrect sound? @open-question
+              [x] pop-old.mp3 (part of `pop`), this is the original sound...keep it? @open-question
+              [x] uh.mp3 (part of `glottals`, not glottals.mp3), , would need multiple previews supported
+              [x] uh-oh.mp3 (part of `glottals`, not glottals.mp3)
+              [x] hiss-f.mp3 (`hiss`), '-f' due to naming conflict?
+                [x] renamed to hiss.mp3
+          [x] should some files have names/descriptions?
+            [x] for now, consider labeling each media player by its name
+          [x] rules
+            [x] `noise`:
+              [x] `noise.category`: any H2 (new property)
+                [x] 'Various hisses' => 'hiss'
+                [x] 'Voiceless noises' => 'noise'
+                [x] 'Other Sounds' => 'other' (to be remapped to 'noise' later)
+                [x] 'Combined hiss and voiceless noises' => 'combined'
+                [x] 'Click Sounds' => 'click'
+              [x] `noise.desc`: the text below any H3 header
+                [x] formatting
+                  [-] '-' => '<li>'
+                  [x] '-' => '\n-' for now
+                  [-] newline not part of list item => <br>
+                  [-] URL => <a>
+                  [-] handle empty
+                  [x] alternatively, decide to store as markdown in JSON and convert on-the-fly
+                    [x] we may opt for this, with \n for the list items for now, but no markdown conversion yet
+              [x] `noise.name`: same rule for each category, all in H3
+                [x] Rule: H3 contains full name ("### <name>")
+                [x] By category
+                  [x] 'Various hisses'
+                    [x] e.g., "### Hiss (sss)" => "Hiss (sss)"
+                  [x] 'Voiceless noises'
+                    [x] e.g., "### P (puh)" => "P (puh)"
+                  [x] 'Combined hiss and voiceless noises'
+                    [x] e.g., "### Retracting Tape Measure (ssk)" => "Retracting Tape Measure (ssk)"
+                  [x] 'Click Sounds'
+                    [x] e.g., "### Trot (X Click, Lateral Click)" => "Trot (X Click, Lateral Click)"
+                  [x] 'Other Sounds'
+                    [x] e.g., "### Sucking Teeth" => "Sucking Teeth")
+              [x] `noise.preview`: different rules for each category, all in H3
+                [x] Rules
+                  [x] append ".mp3" to end of name to get preview A.K.A. filename
+                    [x] write code to handle this case
+                  [x] since a sound might have more than one .mp3 file allow `noise.preview` to optionally be an array
+                    [x] write code to handle this case (UI too)
+                  [x] Category-specific rules
+                    [x] IN PARENTHESES: filename embedded in H3 in parentheses ("### rest_of_name (<filename>)")
+                    [x] BEFORE PARENTHESES: filename embedded in first part of H3 before parentheses ("### <filename>(<rest_of_name_1>) <rest_of_name_2>")
+                    [x] H3-EQUIVALENT: the H3 content is exactly the same as the filename, except that the filename will be lowercased and spine-cased. ("### filename" 
+                [x] Categories
+                  [x] 'Various hisses'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### Hiss (sss)") => "sss"
+                  [x] 'Voiceless noises'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### P (puh)" => "puh"
+                  [x] 'Combined hiss and voiceless noises'
+                    [x] IN PARENTHESES
+                    [x] e.g., "### Retracting Tape Measure (ssk)") => "ssk"
+                  [x] 'Click Sounds'
+                    [x] BEFORE PARENTHESES
+                    [x] e.g., "### Trot (X Click, Lateral Click)" => "trot"
+                  [x] 'Other Sounds'
+                    [x] H3-EQUIVALENT
+                    [x] e.g., "### Sucking Teeth" => "sucking-teeth")
+        [ ] convert `noise.desc` from markdown to HTML on-the-fly (in other words, clean up formatting)
+        [x] add code to   handle `noise.preview` optionally being an array
+          [x] attempt with in-editor tools
+          [x] ...
+        [x] identify any missing sounds
+        [ ] address missing sounds
+          [ ] sst.mp3 appears to be missing
+        [x] identify any orphan sounds
+        [ ] address orphan sounds
+          [ ] screech.mp3, remove in cleanup
+          [ ] pop-fail.mp3 (added to `pop`, OK? @open-question)
+          [ ] pop-old.mp3 (added to `pop`, OK? @open-question)
+          [ ] uh.mp3 (added to `glottals`, OK? @open-question)
+        [ ] test
+        [ ] merge
+        [ ] post-MVP?: group sounds in UI by category
+          [ ] remap 'other' => 'noise' when appropriate
+        [ ] post-MVP?: consider adding versioning to uploads (tag w/app version)
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)

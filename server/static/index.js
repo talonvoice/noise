@@ -1,6 +1,6 @@
 import { generateUUID, merge, showNotification } from './utilities.js';
 import {
-  updateSamplePlayer,
+  updatePlaybackPlayer,
   updateDownloadLink,
   renderButton,
   renderNoiseList,
@@ -89,7 +89,7 @@ function getNoises() {
     .fetch('noises')
     .then(response => response.json())
     .then(
-      noises => processNoises(noises), // Handle the success response object
+      json => processNoises(json.sounds), // TODO: handle categories
     )
     .catch(
       error => console.log(error), // Handle the error response object
@@ -170,7 +170,10 @@ function selectNoise(index) {
       selectedNoise: index, // TODO: or assign actual noise?
       recorder: {
         ...state.recorder,
-        status: noise.status === NOISE_STATUS_VALUES.UNRECORDED ? RECORDER_STATUS_VALUES.WAITING : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
+        status:
+          noise.status === NOISE_STATUS_VALUES.UNRECORDED
+            ? RECORDER_STATUS_VALUES.WAITING
+            : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
         startTime: null,
         elapsed: 0,
       },
@@ -221,7 +224,11 @@ const onRecordClick = function() {
 
       /* UI dispatch */
       // TODO: move into UI component?
-      updateSamplePlayer({ disabled: true });
+      updatePlaybackPlayer({
+        title: '',
+        disabled: true,
+      });
+
       updateDownloadLink({ disabled: true });
 
       /* I/O dispatch */
@@ -348,7 +355,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       filename, // from state
     });
 
-    updateSamplePlayer({
+    updatePlaybackPlayer({
+      title: '',
       url,
     });
 

@@ -94,6 +94,10 @@ a {
   flex: 1;
 }
 
+.Subheader {
+  margin: 0;
+}
+
 .Recorder {
   background-color: rgba(255, 255, 255, 0.75);
   /* bottom: 0;
@@ -196,7 +200,19 @@ a {
   color: #ccc;
 }
 
-.Player {
+.Player-label {
+  font-weight: bold;
+  text-align: center;
+  display: block;
+}
+
+.Review {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.Review-player {
+  text-align: center;
 }
 
 .DownloadLink--disabled {

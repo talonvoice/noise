@@ -25,12 +25,9 @@
         <div class="Recorder-metadata">
           <div class="Recorder-examples">
             <p class="Recorder-exampleAudio">
-              Listen to an example:
+              <h4 class="Subheader">Listen to an example:</h4>
               <br>
-              <br>
-              <!-- TODO: convert to accessible custom controls -->
-              <audio class="Recorder-preview" data-id="preview" style="display: none" controls="">
-              </audio>
+              <div data-id="recorder-examples-list"></div>
             </p>
             <!-- TODO: only show this if there are actually video examples -->
             <p class="Recorder-exampleVideo" style="display: none">
@@ -50,9 +47,6 @@
         </div>
         <div class="Centered-column--fill">
           <div class="Recorder-actions">
-            <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
-            <audio style="display: none" data-id="player" class="Player" controls disabled></audio>
-            <a style="display: none" data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
             <button data-id="recordButton" class="Recorder-recordButton">Record</button>
             <p data-id="recorderTime" class="Recorder-time">00:00</p>
             <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
@@ -61,6 +55,15 @@
         <div class="Centered-column">
           <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
         </div>
+      </div>
+      <div class="Review" style="display: none">
+        <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
+        <p class="Review-player">
+          <!-- TODO: convert to accessible custom controls -->
+          <h4 class="Subheader">Review your recording:</h4>
+          <div data-id="review-player-list"></div>
+        </p>
+        <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
       </div>
     </div>
   </div>
