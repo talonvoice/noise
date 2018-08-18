@@ -7,7 +7,8 @@ FEATURES:
         [x] create "recorded" player in HTML
         [x] modify code to allow targeting either sample player or "recorded" player
         [x] target "recorded" player instead
-        [ ] hide "recorded" player b/c WIP
+        [x] hide "recorded" player b/c WIP
+        [ ] rename updateSamplePlayer() to updatePlayer()
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
