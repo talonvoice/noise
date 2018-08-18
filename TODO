@@ -2,6 +2,7 @@
 FEATURES:
 
   IN PROGRESS:
+    [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
@@ -13,6 +14,7 @@ FEATURES:
     [ ] make UI mobile-friendly (currently looks just like desktop app)
     [ ] show user visual indicator that they can't change noises while recording @ux
     [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
+    [ ] 
     [ ] add wizard (easy sequential navigation) @ux
     [ ] simple text "pacing" timeline @ux
       [ ] change noises data structure to allow for pauses and prompts
