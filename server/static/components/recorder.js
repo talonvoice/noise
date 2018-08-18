@@ -14,9 +14,11 @@ function renderRecorder({
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
   const recorderPreview = recorder.querySelector('[data-id=preview');
+  const recorderPreviewLabel = recorder.querySelector('[data-id=preview-label');
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
+  recorderPreviewLabel.innerHTML = `${noise.preview.title}:`;
   recorderPreview.innerHTML = `
     <source src="${noise.preview.path}" type="audio/mpeg"/>
   `;

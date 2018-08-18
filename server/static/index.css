@@ -134,6 +134,10 @@ a {
   margin-bottom: 10px;
 }
 
+.Recorder-previewLabel {
+  font-weight: bold;
+}
+
 .Recorder-exampleVideo {
   /* border: solid 1px #999;
   height: 240px;

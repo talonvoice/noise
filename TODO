@@ -4,6 +4,9 @@ FEATURES:
   IN PROGRESS:
     MVP:
       [ ] fix sample player so that it's not replaced by recording
+        [ ] create "recorded" player in HTML
+        [ ] modify code to allow targeting either sample player or "recorded" player
+        [ ] target "recorded" player instead
       Translucent recorder overlay UI:
         [x] to fix funky UI when list is long, modify the recorder UI to be a translucent overlay that sticks to the bottom of the page (or is just fixed if position:sticky is not supported)
       Upload user subfolders:
@@ -46,6 +49,9 @@ FEATURES:
             [x] point app.py to sounds.json
             [x] change index.js to read from `sounds` property of sounds.json
             [ ] handle noise w/multiple previews
+              [x] change JSON format
+              [x] display preview title
+              [ ] render multiple previews
             [ ] address exceptions to rules
               [x] tsk.mp3 is for `Tut aka Tsk`, not tut.mp3
               [x] hiss.mp3 instead of sss.mp3
@@ -127,7 +133,7 @@ FEATURES:
         [ ] test
         [ ] merge
         [ ] post-MVP?: group sounds in UI by category
-
+        [ ] post-MVP?: consider adding versioning to uploads (tag w/app version)
     Convert to FLAC:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
