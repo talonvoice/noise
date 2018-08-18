@@ -1,22 +1,22 @@
 {
   "categories": [
     {
-      "short_name": "Various hisses",
+      "short_name": "hiss",
       "name": "Various hisses",
       "description": ""
     },
     {
-      "short_name": "Voiceless noises",
+      "short_name": "noise",
       "name": "Voiceless noises",
       "description": ""
     },
     {
-      "short_name": "Combined hiss and voiceless noises",
+      "short_name": "combined",
       "name": "Combined hiss and voiceless noises",
       "description": ""
     },
-    { "short_name": "Other Sounds", "name": "Other Sounds", "description": "" },
-    { "short_name": "Click Sounds", "name": "Click Sounds", "description": "" }
+    { "short_name": "other", "name": "Other Sounds", "description": "" },
+    { "short_name": "click", "name": "Click Sounds", "description": "" }
   ],
   "sounds": [
     {
