@@ -6,10 +6,11 @@ FEATURES:
       [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
         [x] refactor index.js (see: TECHNICAL HEALTH)
         [x] merge refactor branch into master branch
-        [ ] rebase FLAC branch on top of master branch @est(30 minutes)
+        [ ] rebase FLAC branch on top of ]master branch @est(30 minutes)
         [ ] merge record.js with main.js
   
   PLANNED:
+    [ ] make UI mobile-friendly (currently looks just like desktop app)
     [ ] show user visual indicator that they can't change noises while recording @ux
     [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
     [ ] add wizard (easy sequential navigation) @ux
