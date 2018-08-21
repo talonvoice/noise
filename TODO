@@ -15,6 +15,13 @@ FEATURES:
         [x] add functionality to place uploads into user subfolders (UUID still embedded in filename, however)
       Interstitial:
         [x] copy part of noises.md to /static/templates introduction placeholder
+        [ ] convert to HTML
+        [ ] include on main page
+        [ ] turn into modal (Bootstrap?)
+        [ ] add some content
+          [ ] introduction and instructions
+          [ ] agreement
+        [ ] use cookie for persistence
       Integrate new sounds:
         [x] list the steps
         [x] copy noises.md over to sounds.json.md to prepare for conversion
