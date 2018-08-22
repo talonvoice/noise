@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="static/index.css" />
 </head>
 
-<body>
+<body data-id="body">
   <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
   <form style="display: none" enctype="multipart/form-data" action="/upload" method="POST">
     <input name="noise" type="file" accept="audio/*;capture=microphone">
@@ -66,7 +66,6 @@
         <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
       </div>
     </div>
-  </div>
   </div>
   <script type="module" src="static/index.js"></script>
 </body>

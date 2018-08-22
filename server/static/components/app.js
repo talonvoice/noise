@@ -37,6 +37,13 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   }
 }
 
+const showInterstitial = ({ content = '' }) => {
+  const body = document.querySelector('[data-id=body]');
+  const container = document.createElement('div');
+  container.innerHTML = content;
+  body.appendChild(container);
+};
+
 export {
   renderPlayer,
   updatePlaybackPlayer,
@@ -46,4 +53,5 @@ export {
   renderRecorder,
   renderRecordingControls,
   renderArrows,
+  showInterstitial,
 };
