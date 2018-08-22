@@ -37,11 +37,17 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   }
 }
 
-const showInterstitial = ({ content = '' }) => {
-  const body = document.querySelector('[data-id=body]');
-  const container = document.createElement('div');
-  container.innerHTML = content;
-  body.appendChild(container);
+const createInterstitial = ({ content = '' }) => {
+  const template = `
+    <div data-id="interstitial" style="display: none">${content}</div>
+  `;
+  const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
+  placeholder.innerHTML = template;
+};
+
+const toggleInterstitial = ({isShowing = false}) => {
+  const container = document.querySelector('[data-id=interstitial]');
+  container.style.display = isShowing ? 'block' : 'none';
 };
 
 export {
@@ -53,5 +59,5 @@ export {
   renderRecorder,
   renderRecordingControls,
   renderArrows,
-  showInterstitial,
+  createInterstitial,
 };

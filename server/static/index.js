@@ -7,7 +7,7 @@ import {
   renderRecorder,
   renderRecordingControls,
   renderArrows,
-  showInterstitial,
+  createInterstitial,
 } from './components/app.js';
 import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
 import { initializeRecorder } from './record/record.js';
@@ -112,7 +112,7 @@ function loadInterstitial() {
   window
     .fetch('/static/components/introduction.html')
     .then(response => response.text())
-    .then(text => showInterstitial({ content: text }))
+    .then(text => createInterstitial({ content: text }))
     .catch(
       error => console.log(error), // Handle the error response object
     );
