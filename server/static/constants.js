@@ -1,6 +1,7 @@
 const RECORDER_STATUS_VALUES = {
-  'NEED_PERMISSIONS': { description: 'Waiting to record' },
-  'WAITING': { description: 'Waiting to record' },
+  'NEED_PERMISSIONS': { description: 'Ready to record' },
+  'WAIT_FOR_CLICK': { description: 'Ready to record' },
+  'STARTING': { description: 'Waiting for recorder to start' },
   'RECORDING': { description: 'Recording' },
   'UPLOADING': { description: 'Uploading' },
   'UPLOADED': { description: 'Done uploading' },

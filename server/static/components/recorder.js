@@ -47,7 +47,7 @@ function renderRecordingControls({
   onButtonClick,
 }) {
   renderTime({
-    time: recorderState.elapsed,
+    time: recorderState.startTime ? Date.now() - recorderState.startTime : 0,
     disabled,
   });
   renderButton({ recording, disabled, onButtonClick });
