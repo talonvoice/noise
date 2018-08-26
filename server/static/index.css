@@ -11,6 +11,58 @@ a {
   text-decoration: none;
 }
 
+/* generic */
+.Overlay {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.33) ;
+}
+
+.Tray {
+  position: fixed;
+  position: sticky;
+  bottom: 0;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.Link {
+  text-decoration: none;
+  color: lightslategray;
+  font-family: Times;
+  font-size: 16px;
+}
+
+.Button {
+  font-family: Times;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.Centered {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: center;
+}
+.Centered-column--fill {
+  flex: 1;
+}
+
+.Dialog {
+  background-color: rgba(255, 255, 255, 0.75);
+  border: solid 3px #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+
 /* Noise List */
 
 .RecordingList {
@@ -75,40 +127,16 @@ a {
 }
 
 /* Recorder */
-.Tray {
-  position: fixed;
-  position: sticky;
-  bottom: 0;
-  margin-left: 15%;
-  margin-right: 15%;
-}
-
-.Centered {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 0 auto;
-  justify-content: center;
-}
-.Centered-column--fill {
-  flex: 1;
-}
 
 .Subheader {
   margin: 0;
 }
 
 .Recorder {
-  background-color: rgba(255, 255, 255, 0.75);
   /* bottom: 0;
   position: absolute; */ /* TODO: use only if there are other elements on the page for now */
   display: block;
-  border: solid 3px #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px;
   width: 640px;
-  box-sizing: border-box;
 }
 
 .Recorder-info {

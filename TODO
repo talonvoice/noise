@@ -17,7 +17,7 @@ FEATURES:
         [x] copy part of noises.md to /static/templates introduction placeholder
         [x] convert to HTML
         [x] include on main page
-        [ ] turn into modal (Bootstrap?)
+        [x] turn into modal (Bootstrap?)
         [ ] add some content
           [ ] introduction and instructions
           [ ] agreement

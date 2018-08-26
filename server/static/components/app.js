@@ -37,17 +37,32 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   }
 }
 
-const createInterstitial = ({ content = '' }) => {
+const createInterstitial = ({ content = '', handleClick = () => {} }) => {
   const template = `
-    <div data-id="interstitial" style="display: none">${content}</div>
+    <div class="Introduction Dialog" data-id="interstitial">
+      <div class="Introduction-content">${content}</div>
+      <div class="Introduction-controls" data-id="controls">
+        <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
+        <a class="Link" href="talonvoice.com">Never mind</a>
+      </div>
+      </div>
+    </div>
   `;
-  const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
+
+  const placeholder = document.querySelector(
+    '[data-id=interstitial-placeholder]',
+  );
   placeholder.innerHTML = template;
+
+  const accept = document.querySelector('[data-id=interstitial-accept]');
+  accept.addEventListener('click', handleClick);
 };
 
-const toggleInterstitial = ({isShowing = false}) => {
-  const container = document.querySelector('[data-id=interstitial]');
-  container.style.display = isShowing ? 'block' : 'none';
+const renderInterstitial = ({ isShowing = false }) => {
+  const placeholder = document.querySelector(
+    '[data-id=interstitial-placeholder]',
+  );
+  placeholder.style.display = isShowing ? 'block' : 'none';
 };
 
 export {
@@ -60,4 +75,5 @@ export {
   renderRecordingControls,
   renderArrows,
   createInterstitial,
+  renderInterstitial,
 };
