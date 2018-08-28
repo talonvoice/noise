@@ -21,7 +21,7 @@ FEATURES:
         [ ] add some content
           [ ] introduction and instructions
           [ ] agreement
-        [ ] use cookie for persistence
+        [x] use cookie for persistence
       Integrate new sounds:
         [x] list the steps
         [x] copy noises.md over to sounds.json.md to prepare for conversion

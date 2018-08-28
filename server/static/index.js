@@ -1,4 +1,11 @@
-import { generateUUID, merge, showNotification } from './utilities.js';
+import {
+  generateUUID,
+  merge,
+  showNotification,
+  getCookieValue,
+  setCookieValue,
+  resetCookieValue,
+} from './utilities.js';
 import {
   updatePlaybackPlayer,
   updateDownloadLink,
@@ -117,9 +124,12 @@ function loadInterstitial() {
       createInterstitial({
         content: text,
         handleClick: () => {
-          debugger;
+          setCookieValue('accepted', 'true');
           toggleInterstitialShowing();
-          renderInterstitial({ isShowing: !isInterstitialShowing() });
+          renderInterstitial({
+            isShowing:
+              !isInterstitialShowing() && getCookieValue('accepted') !== 'true',
+          });
         },
       });
       return isInterstitialShowing();
@@ -489,7 +499,11 @@ function processNoises(noises) {
   render();
 }
 
-loadInterstitial().then(isShowing => renderInterstitial({ isShowing }));
+loadInterstitial().then(isShowing => {
+  renderInterstitial({
+    isShowing: isShowing && getCookieValue('accepted') !== 'true',
+  });
+});
 getNoises();
 renderButton({
   recording: false,
