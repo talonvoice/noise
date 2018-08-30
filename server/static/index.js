@@ -1,4 +1,11 @@
-import { generateUUID, merge, showNotification } from './utilities.js';
+import {
+  generateUUID,
+  merge,
+  showNotification,
+  getCookieValue,
+  setCookieValue,
+  resetCookieValue,
+} from './utilities.js';
 import {
   updatePlaybackPlayer,
   updateDownloadLink,
@@ -7,6 +14,8 @@ import {
   renderRecorder,
   renderRecordingControls,
   renderArrows,
+  createInterstitial,
+  renderInterstitial,
 } from './components/app.js';
 import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
 import { initializeRecorder } from './record/record.js';
@@ -107,11 +116,37 @@ function upload(file, sessionID) {
   });
 }
 
+function loadInterstitial() {
+  return window
+    .fetch('/static/components/introduction.html')
+    .then(response => response.text())
+    .then(text => {
+      createInterstitial({
+        content: text,
+        handleClick: () => {
+          setCookieValue('accepted', 'true');
+          toggleInterstitialShowing();
+          renderInterstitial({
+            isShowing:
+              !isInterstitialShowing() && getCookieValue('accepted') !== 'true',
+          });
+        },
+      });
+      return isInterstitialShowing();
+    })
+    .catch(
+      error => console.log(error), // Handle the error response object
+    );
+}
+
 /*
   State
  */
 
 let state = {
+  interstitial: {
+    isShowing: true,
+  },
   recorder: {
     explicitlyPermitted: false,
     status: RECORDER_STATUS_VALUES.WAITING,
@@ -133,6 +168,18 @@ let state = {
 
 function updateState(changes) {
   state = merge(state, changes);
+}
+
+function isInterstitialShowing() {
+  return state.interstitial.isShowing;
+}
+
+function toggleInterstitialShowing() {
+  updateState({
+    state: {
+      interstitial: { isShowing: !isInterstitialShowing() },
+    },
+  });
 }
 
 function updateFilenamePrefix(prefix) {
@@ -452,6 +499,11 @@ function processNoises(noises) {
   render();
 }
 
+loadInterstitial().then(isShowing => {
+  renderInterstitial({
+    isShowing: isShowing && getCookieValue('accepted') !== 'true',
+  });
+});
 getNoises();
 renderButton({
   recording: false,

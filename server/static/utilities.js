@@ -35,4 +35,22 @@ function showNotification(message) {
   alert(message);
 }
 
-export { generateUUID, merge, showNotification };
+function getCookieValue(name) {
+  let regexString = `(?:(?:^|.*;\s*)${name}\s*\=\s*([^;]*).*$)|^.*$`;
+  let regex = new RegExp(regexString);
+  let valuesAsArray = regex.exec(document.cookie)
+  let cookieValue = valuesAsArray.length > 0 ? decodeURIComponent(valuesAsArray[1]) : undefined;
+
+  return cookieValue;
+}
+
+function setCookieValue(name, value) {
+  let newValue = (`${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
+  document.cookie = newValue;
+}
+
+function resetCookieValue(name) { 
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+}
+
+export { generateUUID, merge, showNotification, getCookieValue, setCookieValue, resetCookieValue };

@@ -37,6 +37,36 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
   }
 }
 
+const createInterstitial = ({ content = '', handleClick = () => {} }) => {
+  const template = `
+    <div class="Dialog Dialog--introduction" data-id="interstitial">
+      <div class="Introduction" data-id="interstitial">
+        <div class="Introduction-content">${content}</div>
+        <div class="Introduction-controls" data-id="controls">
+          <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
+          <a class="Link" href="https://talonvoice.com">Never mind</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const placeholder = document.querySelector(
+    '[data-id=interstitial-placeholder]',
+  );
+  placeholder.innerHTML = template;
+
+  const accept = document.querySelector('[data-id=interstitial-accept]');
+  accept.addEventListener('click', handleClick);
+};
+
+const renderInterstitial = ({ isShowing = false }) => {
+  const placeholder = document.querySelector(
+    '[data-id=interstitial-placeholder]',
+  );
+  placeholder.style.display = isShowing ? 'block' : 'none';
+};
+
 export {
   renderPlayer,
   updatePlaybackPlayer,
@@ -46,4 +76,6 @@ export {
   renderRecorder,
   renderRecordingControls,
   renderArrows,
+  createInterstitial,
+  renderInterstitial,
 };
