@@ -39,12 +39,14 @@ function updateDownloadLink({ url = null, filename = null, disabled = false }) {
 
 const createInterstitial = ({ content = '', handleClick = () => {} }) => {
   const template = `
-    <div class="Introduction Dialog" data-id="interstitial">
-      <div class="Introduction-content">${content}</div>
-      <div class="Introduction-controls" data-id="controls">
-        <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
-        <a class="Link" href="https://talonvoice.com">Never mind</a>
-      </div>
+    <div class="Dialog Dialog--introduction" data-id="interstitial">
+      <div class="Introduction" data-id="interstitial">
+        <div class="Introduction-content">${content}</div>
+        <div class="Introduction-controls" data-id="controls">
+          <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
+          <a class="Link" href="https://talonvoice.com">Never mind</a>
+        </div>
+        </div>
       </div>
     </div>
   `;

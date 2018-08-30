@@ -18,52 +18,56 @@
     <ul class="RecordingList-container" data-id="list-container"></ul>
   </div>
   <div class="Tray">
-    <div class="Recorder Dialog" data-id="recorder">
-      <p class="Recorder-title" data-id="title"></p>
-      <hr>
-      <div class="Recorder-info">
-        <div class="Recorder-metadata">
-          <div class="Recorder-examples">
-            <p class="Recorder-exampleAudio">
-              <h4 class="Subheader">Listen to an example:</h4>
-              <br>
-              <div data-id="recorder-examples-list"></div>
-            </p>
-            <!-- TODO: only show this if there are actually video examples -->
-            <p class="Recorder-exampleVideo" style="display: none">
-              Watch a video of the mouth movement:
-              <br>
-              <a href="#">Video of mouth movement</a>
-            </p>
-          </div>
-          <p class="Recorder-description" data-id="description"></p>
-          <!-- TODO: use this if we are going to have a long description as well -->
-          <p class="Recorder-instructions" style="display: none"></p>
-        </div>
-      </div>
-      <div class="Centered">
-        <div class="Centered-column">
-          <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
-        </div>
-        <div class="Centered-column--fill">
-          <div class="Recorder-actions">
-            <button data-id="recordButton" class="Recorder-recordButton">Record</button>
-            <p data-id="recorderTime" class="Recorder-time">00:00</p>
-            <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
+    <div class="Dialog Dialog--recorder">
+      <div class="Recorder" data-id="recorder">
+        <p class="Recorder-title" data-id="title"></p>
+        <hr>
+        <div class="Recorder-info">
+          <div class="Recorder-metadata">
+            <div class="Recorder-examples">
+              <div class="Recorder-examplesAudio">
+                <h3 class="Subheader">Listen to an example:</h3>
+                <p class="Recorder-exampleAudio">
+                  <div data-id="recorder-examples-list"></div>
+                </p>
+              </div>
+              <div class="Recorder-examplesVideo" style="display: none">
+                <!-- TODO: only show this if there are actually video examples -->
+                <h3 class="Subheader">Watch a video of the mouth movement:</h3>
+                <p class="Recorder-exampleVideo">
+                  <a href="#">Video of mouth movement</a>
+                </p>
+              </div>
+            </div>
+            <p class="Recorder-description" data-id="description"></p>
+            <!-- TODO: use this if we are going to have a long description as well -->
+            <p class="Recorder-instructions" style="display: none"></p>
           </div>
         </div>
-        <div class="Centered-column">
-          <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
+        <div class="Centered">
+          <div class="Centered-column">
+            <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
+          </div>
+          <div class="Centered-column--fill">
+            <div class="Recorder-actions">
+              <button data-id="recordButton" class="Recorder-recordButton">Record</button>
+              <p data-id="recorderTime" class="Recorder-time">00:00</p>
+              <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
+            </div>
+          </div>
+          <div class="Centered-column">
+            <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
+          </div>
         </div>
-      </div>
-      <div class="Review" style="display: none">
-        <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
-        <p class="Review-player">
-          <!-- TODO: convert to accessible custom controls -->
-          <h4 class="Subheader">Review your recording:</h4>
-          <div data-id="review-player-list"></div>
-        </p>
-        <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
+        <div class="Review" style="display: none">
+          <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
+          <p class="Review-player">
+            <!-- TODO: convert to accessible custom controls -->
+            <h3 class="Subheader">Review your recording:</h3>
+            <div data-id="review-player-list"></div>
+          </p>
+          <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
+        </div>
       </div>
     </div>
   </div>

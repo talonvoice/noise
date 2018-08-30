@@ -18,10 +18,12 @@ FEATURES:
         [x] convert to HTML
         [x] include on main page
         [x] turn into modal (Bootstrap?)
-        [ ] add some content
-          [ ] introduction and instructions
-          [ ] agreement
+        [x] add some content
+          [x] introduction and instructions
+          [x] Terms and Conditions agreement placeholder
         [x] use cookie for persistence
+        [x] tweak styling
+        [x] change the modal to work with a lot of content
       Integrate new sounds:
         [x] list the steps
         [x] copy noises.md over to sounds.json.md to prepare for conversion

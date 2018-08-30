@@ -1,5 +1,6 @@
 body {
   height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
 }
 
 p {
@@ -25,21 +26,26 @@ a {
   position: fixed;
   position: sticky;
   bottom: 0;
-  margin-left: 15%;
-  margin-right: 15%;
+  display: flex;
+  justify-content: center;
 }
 
 .Link {
+  display: inline-block;
   text-decoration: none;
-  color: lightslategray;
-  font-family: Times;
-  font-size: 16px;
+  color: #26526f;
+  padding: 8px;
+  border-radius: 3px;
 }
 
 .Button {
-  font-family: Times;
-  font-size: 16px;
   cursor: pointer;
+  background-color: #26526f;
+  color: white;
+  padding: 8px;
+  margin-right: 16px;
+  font-size: inherit;
+  border-radius: 3px;
 }
 
 .Centered {
@@ -54,15 +60,41 @@ a {
 }
 
 .Dialog {
-  background-color: rgba(255, 255, 255, 0.75);
   border: solid 3px #ccc;
   padding: 10px;
   border-radius: 5px;
+  box-sizing: border-box;
+}
+.Dialog--introduction {
+  background-color: rgba(255, 255, 255, 1.0);
+  height: calc(100% - 60px);
+  margin: 30px;
+  overflow-y: scroll;
+}
+.Dialog--recorder {
+  /* bottom: 0;
+  position: absolute; */ /* TODO: use only if there are other elements on the page for now */
+  background-color: rgba(255, 255, 255, 0.75);
+  display: block;
+  width: 640px;
   margin: 10px;
+}
+
+/* Introduction */
+.Introduction {
   box-sizing: border-box;
 }
 
-
+.Introduction-paragraph {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.Introduction-paragraph--callout {
+  border: solid 1px #e9e9e9;
+  background-color: #f6f6f6;
+  padding: 8px;
+}
+  
 /* Noise List */
 
 .RecordingList {
@@ -130,13 +162,6 @@ a {
 
 .Subheader {
   margin: 0;
-}
-
-.Recorder {
-  /* bottom: 0;
-  position: absolute; */ /* TODO: use only if there are other elements on the page for now */
-  display: block;
-  width: 640px;
 }
 
 .Recorder-info {
@@ -226,6 +251,18 @@ a {
 }
 .Recorder-status--disabled {
   color: #ccc;
+}
+
+.Player {
+  margin-bottom: 8px;
+}
+.Player:last-child { /* TODO: use a variant instead of a pseudo-selector */
+  margin-bottom: 0;
+}
+
+.Player-header {
+  margin-top: 0;
+  margin-bottom: 4px;
 }
 
 .Player-label {
