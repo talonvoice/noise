@@ -3,6 +3,23 @@ FEATURES:
   
   IN PROGRESS:
     MVP:
+      Merge in aegis' changes @1:
+        [x] pull down his changes @done(18-10-14 16:59)
+        Understand where we currently stand:
+          Which branch/commit did aegis branch off of?:
+            Answer so far: updated MVP TODOs 41d46665d77ecae18570de551c399a089d7fc5ac ... from feature/flac?
+            [ ] learn how to understand how the colored lines match up to branch names in SourceTree @1a
+              I am stuck on figuring out SourceTree's interface; how can I tell what was branched off of?
+            [ ] alternatively, learn how to use git command line to distinguish there which branch another branch originated from @1b
+          What does aegis's change fix?:
+            Answer so far: async issues, I think ...
+            [ ] study diff to determine what it does @1c
+            [ ] read Slack communication to determine the original ask of him @1d
+        [ ] run and test
+          [ ] list what to test here
+          [ ] switch to branch on main fork and test
+        [ ] merge
+          [ ] if all is good, merge into own branch
       Integrate new sounds:
         [ ] convert `noise.desc` from markdown to HTML on-the-fly (in other words, clean up formatting)
         [x] add code to   handle `noise.preview` optionally being an array
@@ -29,15 +46,6 @@ FEATURES:
           [x] merge refactor branch into master branch
           [ ] rebase FLAC branch on top of ]master branch @est(30 minutes)
           [ ] merge record.js with main.js
-      Merge in aegis' changes @1:
-        [ ] understand where we currently stand
-        [ ] what does aegis's change fix? async issues, I think ...
-        [ ] run and test
-          [ ] switch to branch on main fork and test
-          [ ] study diff
-        [ ] merge
-          [ ] which branch/commit did aegis branch off of?
-          [ ] if all is good, merge into own branch
       Clean up @3:
         [ ] check notes for aegis's priorities
   
