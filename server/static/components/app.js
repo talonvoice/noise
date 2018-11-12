@@ -1,5 +1,7 @@
 import { renderNoiseList } from './list.js';
 import { renderPlayer } from './player.js';
+import { updateIsFlac } from './is-flac.js';
+
 import {
   renderRecorder,
   renderRecordingControls,
@@ -67,7 +69,13 @@ const renderInterstitial = ({ isShowing = false }) => {
   placeholder.style.display = isShowing ? 'block' : 'none';
 };
 
+// TODO: move everything UI into here eventually from index.js
+function updateApp({ isFlac, onFlacClick }) {
+  updateIsFlac({ checked: isFlac, disabled: false, onClick: onFlacClick});
+}
+
 export {
+  updateApp,
   renderPlayer,
   updatePlaybackPlayer,
   updateDownloadLink,
