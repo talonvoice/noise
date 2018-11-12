@@ -3,23 +3,6 @@ FEATURES:
   
   IN PROGRESS:
     MVP:
-      Merge in aegis' changes @1:
-        [x] pull down his changes @done(18-10-14 16:59)
-        Understand where we currently stand:
-          Which branch/commit did aegis branch off of?:
-            Answer so far: updated MVP TODOs 41d46665d77ecae18570de551c399a089d7fc5ac ... from feature/flac?
-            [ ] learn how to understand how the colored lines match up to branch names in SourceTree @1a
-              I am stuck on figuring out SourceTree's interface; how can I tell what was branched off of?
-            [ ] alternatively, learn how to use git command line to distinguish there which branch another branch originated from @1b
-          What does aegis's change fix?:
-            Answer so far: async issues, I think ...
-            [ ] study diff to determine what it does @1c
-            [ ] read Slack communication to determine the original ask of him @1d
-        [ ] run and test
-          [ ] list what to test here
-          [ ] switch to branch on main fork and test
-        [ ] merge
-          [ ] if all is good, merge into own branch
       Integrate new sounds:
         [ ] convert `noise.desc` from markdown to HTML on-the-fly (in other words, clean up formatting)
         [x] add code to   handle `noise.preview` optionally being an array
@@ -44,12 +27,105 @@ FEATURES:
         [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
           [x] refactor index.js (see: TECHNICAL HEALTH)
           [x] merge refactor branch into master branch
-          [ ] rebase FLAC branch on top of ]master branch @est(30 minutes)
-          [ ] merge record.js with main.js
+          [ ] hook up record.js events to UI using record/record.js as a guide
+            [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
+            [ ] change UI when there is an error
+              [ ] record.js: pass in onRecordError
+              [ ] record.js: add logic to execute onRecordError
+              [ ] index.js: hook up above
+              [ ] test
+              [ ] fix bugs
+            [ ] fix bugs introduced by UI timer
+              [ ] clicking record and then stop repeatedly immediately after seems to cause a hang
+              [ ] consider using "recording" flag if async issue
+              [ ] update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
+                [ ] just use setTimeout() instead
+            [ ] figure out additional steps
+            [ ] make the two record.js APIs look alike as possible
+            [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
+            [ ] merge two onDataAvailable functions
+          [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+          [ ] fix rerendering
+          [ ] clean up
+        [ ] test for async issues
+        [ ] map out the data flow to ferret out issues
+        [ ] show user visual indicator that they can't change noises while recording @ux
+        [ ] check if we are changing the UI without relying on the recorder response (changing the state of the Record button immediately, for instance)
+      Merge in aegis' changes (which addressed some of the issues above) @1:
+        [ ] understand where we currently stand
+          [x] other lines across all files @done(18-10-16 17:18)
+          [x] line 315, handleRequestMediaPermissionsSuccess(), 14 different changes; some of them look like refactoring; 
+          [x] look at Slack chat to determine what the bugs were, and what he said about how they were fixed
+            [x] copy relevant conversations to Notion @done(18-10-17 11:29)
+            [-] consider subscribing to Slack to get access to older conversations - how much is it? @active
+            [x] bold what is especially relevant
+          [x] begin maintaining TODOs outside of codebase
+        [ ] what does aegis's change fix? async issues, I think ...
+        [ ] run and test
+          [ ] switch to branch on main fork and test
+          [ ] study diff
+        [ ] merge
+          [ ] which branch/commit did aegis branch off of?
+          [ ] if all is good, merge into own branch
+          [ ] merge in Ryan's fixes, more notes here: https://www.notion.so/nickvisut/Ryan-s-fixes-477da9fa542149498dffdbb93d357a39
       Clean up @3:
         [ ] check notes for aegis's priorities
+
+    MVP (old):
+      [ ] address showstoppers, maybe perf
+      [ ] address first two features
+      [ ] do pre-deployment tasks
+      Bugs:
+        Showstoppers:
+          [ ] stop button sometimes doesn't work (this could actually just be a performance problem, see below)
+            [ ] console.log or debugger statement in click handler
+            [ ] get VSCode Chrome debugging working
+            [ ] could be solved by state machine/flag
+          [ ] audio artifacts
+            [ ] reproducible?
+        Performance:
+          [ ] stop button (and perhaps some other UI) is noticeably slow to respond (this could be causing the showstopper above)
+            [ ] could be caused by refreshing too often (have not divorced time from data availability yet)
+            [ ] if it is because we are busy encoding, add a state for STOPPING where the Stop button is greyed out as soon as the user clicks it, thus feeling like a more responsive UI
+              - CONTEXT: we are using a web worker, so the UI shouldn't be blocking, but we are not indicating to the user that they press the button yet
+              [ ] huge files to download
+              [ ] currently using non-minified version of libflac.js
+            [ ] other files are not minified in any meaningful way
+            [ ] no gzipping on server-side
+            [ ] dead code
+            [ ] multiple web workers being spawned
+          [ ] other testing scenarios
+            [ ] ...
+      Features:
+        [ ] integrate noises.json
+        [ ] landing page/interstitial
+          [ ] intro and instructions (pause at beginning and in between each sound)
+          [ ] license agreement akin to Mozilla's (Ryan is taking care of the content for now)
+        [ ] associate with user across sessions
+          [ ] store UUID in JSON blob
+          [ ] store noise list data in JSON blob
+          [ ] save JSON blob to local storage
+            [ ] decide best local storage method
+            [ ] utilize storage API
+              [ ] do we need permissions?
+              [ ] if so, decide when to ask for permissions (on load? on record?)
+              [ ] implement perms request
+          [ ] on load, load data from local storage
+      Pre-Deployment:
+        [ ] cache-busting solution
+          [ ] append build timestamp to everything
+          [ ] webpack ftw
+        [ ] merge to master
+          [ ] open PR against talonvoice/noise
+          [ ] review and address feedback
+          [ ] get PR merged in 
+      Post-Deployment:
+          [ ] user testing
   
   PLANNED:
+     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
+    
+  ICEBOX:
     [ ] make UI mobile-friendly (currently looks just like desktop app)
     [ ] show user visual indicator that they can't change noises while recording @ux
     [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
@@ -99,6 +175,7 @@ TECHNICAL HEALTH:
     [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
     [ ] add development web server for automatically reloading on save of static files
     [ ] add build step so that we can use packages more easily, minify, etc
+      [ ] alternatively, append version number to everything 
     [-] update requirements.txt
 
   ICEBOX:

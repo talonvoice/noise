@@ -5,8 +5,9 @@ import {
   getCookieValue,
   setCookieValue,
   resetCookieValue,
-} from './utilities.js';
+} from './utilities/utilities.js';
 import {
+  updateApp,
   updatePlaybackPlayer,
   updateDownloadLink,
   renderButton,
@@ -18,7 +19,9 @@ import {
   renderInterstitial,
 } from './components/app.js';
 import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
-import { initializeRecorder } from './record/record.js';
+
+import { initializeRecorder } from './record/record.js'; // old code path: MediaRecorder and WEBM
+import { record } from './utilities/record.js'; // new code path: libflac.js and FLAC
 
 /*
   UI
@@ -37,7 +40,8 @@ function renderRecorderAndArrows() {
     onButtonClick: onRecordClick,
   }); // TODO: must also point to onRecordClick, which is stuck inside a closure
   renderArrows(
-    state.recorder.status !== RECORDER_STATUS_VALUES.WAITING &&
+    state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
+      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK &&
       state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
     state.noiseList,
     state.selectedNoise,
@@ -47,12 +51,14 @@ function renderRecorderAndArrows() {
 }
 
 function renderApp() {
+  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
   renderNoiseList(
     state.noiseList,
     selectNoise,
     state.selectedNoise,
     render,
     () =>
+      state.recorder.status === RECORDER_STATUS_VALUES.STARTING ||
       state.recorder.status === RECORDER_STATUS_VALUES.RECORDING ||
       state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
   );
@@ -66,7 +72,8 @@ function renderApp() {
       state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING ||
       state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED,
     arrowsDisabled:
-      state.recorder.status !== RECORDER_STATUS_VALUES.WAITING &&
+      state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
+      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK &&
       state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
     noiseList: state.noiseList,
     selectedNoise: state.selectedNoise,
@@ -149,9 +156,8 @@ let state = {
   },
   recorder: {
     explicitlyPermitted: false,
-    status: RECORDER_STATUS_VALUES.WAITING,
+    status: RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
     startTime: null,
-    elapsed: 0,
     filename: {
       prefix: '',
       sessionID: generateUUID(), // TODO: let server take care of this
@@ -159,8 +165,12 @@ let state = {
     },
     chunkNumber: 0,
     chunks: [],
-    startRecorder: () => {}, // TODO: currently abusing state to have a reference to startRecorder(); figure out a better way to do this
-    stopRecorder: () => {}, // TODO: currently abusing state to have a reference to stopRecorder(); figure out a better way to do this
+    callbacks: {
+      // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
+      startRecording: () => {},
+      stopRecording: () => {},
+    },
+    isFlac: true,
   },
   noiseList: [],
   selectedNoise: -1,
@@ -168,6 +178,9 @@ let state = {
 
 function updateState(changes) {
   state = merge(state, changes);
+  if (changes.recorder) {
+    renderRecorderAndArrows();
+  }
 }
 
 function isInterstitialShowing() {
@@ -219,13 +232,12 @@ function selectNoise(index) {
         ...state.recorder,
         status:
           noise.status === NOISE_STATUS_VALUES.UNRECORDED
-            ? RECORDER_STATUS_VALUES.WAITING
+            ? RECORDER_STATUS_VALUES.WAIT_FOR_CLICK
             : RECORDER_STATUS_VALUES.ALREADY_RECORDED,
         startTime: null,
-        elapsed: 0,
       },
     });
-    updateFilenamePrefix(noise.name);
+    updateFilenamePrefix(noise.name); // TODO: this can be a calculated value instead
 
     // TODO: also rerender recorder?
     return true; // NOTE: signaling that we DID modify the state
@@ -246,14 +258,81 @@ function decrementSelectedNoise() {
   }
 }
 
+function updateRecorderStatus(newStatus) {
+  // TODO: rename to advanceRecorderStatus() and do a state machine that takes in status as a parameter?
+
+  /* state management dispatch */
+  if (state.recorder.status !== newStatus) {
+    updateState({
+      recorder: {
+        ...state.recorder,
+        status: newStatus,
+      },
+    });
+  }
+}
+
+function updateRecorderAndNoiseStatus(recordStatus, noiseStatus) {
+    let updatedNoiseList = [...state.noiseList];
+    updatedNoiseList[state.selectedNoise].status =
+      noiseStatus; // TODO: how to ensure no async probs?
+
+    updateState({
+      noiseList: updatedNoiseList,
+      recorder: {
+        ...state.recorder,
+        status: recordStatus,
+      },
+    });
+}
+
 /*
   Event handlers
  */
+const onFlacClick = function(e) {
+  e.preventDefault();
 
-// TODO: consider making this a function generator where we pass in startRecorder() and stopRecorder()
+  // TODO: clean up after current recorders, if any, and allow for toggling on/off after first recording occurs (currently broken)
+  updateState({
+    recorder: {
+      ...state.recorder,
+      chunks: [],
+      status: RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
+      isFlac: !state.recorder.isFlac,
+    },
+  });
+
+  renderApp();
+};
+
+const doStartRecording = function() {
+  /* state management dispatch */
+  updateState({
+    recorder: {
+      ...state.recorder,
+      chunks: [],
+    },
+  });
+
+  /* UI dispatch */
+  // TODO: move into UI component?
+  updatePlaybackPlayer({
+    title: '',
+    disabled: true,
+  });
+  updateDownloadLink({ disabled: true });
+
+  /* I/O dispatch */
+  state.recorder.callbacks.startRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+  state.recorder.status = RECORDER_STATUS_VALUES.STARTING;
+}
+
+// TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
+// TODO: refactor this big time
 const onRecordClick = function() {
-  if (state.recorder.status === RECORDER_STATUS_VALUES.WAITING) {
+  if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK) {
     if (!state.recorder.explicitlyPermitted) {
+      // TODO: consider doing this reacting to state change instead
       requestMediaPermissions(
         handleRequestMediaPermissionsSuccess,
         handleRequestMediaPermissionsFailure,
@@ -261,28 +340,10 @@ const onRecordClick = function() {
 
       // TODO: how to run the code below even when permissions are requested? Pass it along into the requestsMediaPermissions call?
     } else {
-      /* state management dispatch */
-      updateState({
-        recorder: {
-          ...state.recorder,
-          chunks: [],
-        },
-      });
-
-      /* UI dispatch */
-      // TODO: move into UI component?
-      updatePlaybackPlayer({
-        title: '',
-        disabled: true,
-      });
-
-      updateDownloadLink({ disabled: true });
-
-      /* I/O dispatch */
-      state.recorder.startRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+      doStartRecording();
     }
   } else if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
-    state.recorder.stopRecorder(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+    state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
   } // TODO: what do we do if it's starting or stopping? disable the interactions?
 };
 
@@ -301,27 +362,41 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     },
   });
 
-  /* UI dispatch */
-  renderRecorderAndArrows();
+  let initialized = {};
 
-  let { startRecorder, stopRecorder } = initializeRecorder({
-    stream,
-    onRecordStart,
-    onDataAvailable,
-    onRecordStop,
-    onRecordError,
-  });
+  updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
+  if (!state.recorder.isFlac) {
+    initialized = initializeRecorder({
+      stream,
+      onRecordStart,
+      onDataAvailable,
+      onRecordStop,
+      onRecordError,
+    }); // old code path: MediaRecorder and WEBM
+  } else {
+    // TODO: replace with more intuitive code
+    initialized = record({
+      onRecordStart,
+      onRecordStop: onRecordStopFlac,
+      onFileReady: onFileReadyFlac,
+      onDataAvailable: onDataAvailableFlac,
+    }); // new code path: libflac.js and FLAC
+  }
 
   // TODO: set up audio context instead?
   updateState({
     recorder: {
       ...state.recorder,
-      startRecorder,
-      stopRecorder,
+      callbacks: {
+        ...state.recorder.callbacks,
+        startRecording: initialized.startRecording,
+        stopRecording: initialized.stopRecording,
+      },
     },
   });
 
-  onRecordClick(); // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
+  // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
+  doStartRecording();
 
   /* UI dispatch */
   // TODO: move into UI component?
@@ -332,66 +407,52 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   });
 
   function onRecordStart() {
+    // TODO: start/stop a timer
     console.log(`Recording started...`);
+    state.recorder.startTime = Date.now();
+    if (state.recorder.timer) {
+      clearInterval(state.recorder.timer);
+    }
+    state.recorder.timer = setInterval(renderRecorderAndArrows, 1000);
 
     /* state management dispatch */
-    updateState({
-      recorder: {
-        ...state.recorder,
-        startTime: Date.now(),
-        status: RECORDER_STATUS_VALUES.RECORDING,
-      },
-    });
+    updateRecorderStatus(RECORDER_STATUS_VALUES.RECORDING);
+  }
 
-    /* UI dispatch */
-    // TODO: move into UI component?
-    renderRecorderAndArrows();
-    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
+  // TODO: merge the two functions below
+
+  function onDataAvailableFlac(e) {
+      // used to do a UI update here
   }
 
   function onDataAvailable(e) {
+    // e: BlobEvent
+    //console.log(e);
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
-      console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
-
-      /* state management dispatch */
-      updateState({
-        recorder: {
-          ...state.recorder,
-          chunks: [...state.recorder.chunks, e.data],
-          elapsed: Date.now() - state.recorder.startTime,
-        },
-      });
-
-      /* UI dispatch */
-      // TODO: move into UI component?
-      renderRecorderAndArrows();
+      // TODO: handle this elsewhere?
+      state.recorder.chunks.push(e.data);
     }
   }
 
+  // TODO: merge the two functions below
   function onRecordStop() {
     console.log(`Recording stopped...`);
+    if (state.recorder.timer) {
+      clearInterval(state.recorder.timer);
+    }
+    state.recorder.startTime = null;
 
-    /* state management dispatch */
-    updateState({
-      recorder: {
-        ...state.recorder,
-        elapsed: Date.now() - state.recorder.startTime,
-        status: RECORDER_STATUS_VALUES.UPLOADING,
-      },
-    });
-
-    /* UI dispatch */
-    // TODO: move into UI component?
-    renderRecorderAndArrows();
-    // TODO: also render list (with isDisabled, maybe just a boolean instead of function, returning false)?
-
+    updateRecorderStatus(RECORDER_STATUS_VALUES.UPLOADING);
     // generate filename from session ID and create blob out of chunks for:
     // 1) display download link on screen (currently hidden functionality)
     // 2) uploading to server
+
+    // TODO: move into own function
+    const extension = state.recorder.isFlac ? 'flac' : 'webm';
     const filename = `${state.recorder.filename.prefix}.${
       state.recorder.filename.sessionID
-    }.webm`;
+    }.${extension}`;
     let blob = new Blob(state.recorder.chunks);
 
     /* UI dispatch */
@@ -407,6 +468,11 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
       url,
     });
 
+    // TODO: implement this so that the user can play back the sound they just recorded
+    // updateRecordingPlayer({
+    //   url,
+    // });
+
     /*
      async I/O (network request)
     */
@@ -417,30 +483,72 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     upload(file, state.recorder.filename.sessionID)
       .then(response => console.log(response.statusText))
       .then(success => {
-        let updatedNoiseList = [...state.noiseList];
-        updatedNoiseList[state.selectedNoise].status =
-          NOISE_STATUS_VALUES.RECORDED; // TODO: how to ensure no async probs?
-
-        updateState({
-          noiseList: updatedNoiseList,
-          recorder: {
-            ...state.recorder,
-            status: RECORDER_STATUS_VALUES.UPLOADED,
-          },
-        });
-
+        updateRecorderAndNoiseStatus(RECORDER_STATUS_VALUES.UPLOADED, NOISE_STATUS_VALUES.RECORDED);
         // TODO: move into UI component?
         renderApp();
       })
       .catch(error => {
         console.log(error); // TODO: Handle the error response object (notify the user that uploading failed)
 
-        updateState({
-          recorder: {
-            ...state.recorder,
-            status: RECORDER_STATUS_VALUES.WAITING,
-          },
-        });
+        updateRecorderStatus(RECORDER_STATUS_VALUES.WAIT_FOR_CLICK);
+
+        // TODO: move into UI component?
+        renderApp();
+      });
+  }
+
+  function onRecordStopFlac() {
+    console.log(`Recording stopped...`);
+  }
+
+  function onFileReadyFlac(blob) {
+    console.log(`File ready to upload...`);
+
+    // TODO: add state for encoding?
+    updateRecorderStatus(RECORDER_STATUS_VALUES.UPLOADING);
+
+    // generate filename from session ID and create blob out of chunks for:
+    // 1) display download link on screen (currently hidden functionality)
+    // 2) uploading to server
+
+    // TODO: move into own function
+    const extension = state.recorder.isFlac ? 'flac' : 'webm';
+    const filename = `${state.recorder.filename.prefix}.${
+      state.recorder.filename.sessionID
+    }.${extension}`;
+    // let blob = new Blob(state.recorder.chunks);
+
+    /* UI dispatch */
+    let url = URL.createObjectURL(blob);
+
+    updateDownloadLink({
+      url,
+      filename, // from state
+    });
+
+    // TODO: implement this so that the user can play back the sound they just recorded
+    // updateRecordingPlayer({
+    //   url,
+    // });
+
+    /*
+      async I/O (network request)
+    */
+
+    let file = new File([blob], filename);
+
+    // TODO: upload progress meter
+    upload(file, state.recorder.filename.sessionID)
+      .then(response => console.log(response.statusText))
+      .then(success => {
+        updateRecorderAndNoiseStatus(RECORDER_STATUS_VALUES.UPLOADED, NOISE_STATUS_VALUES.RECORDED);
+        // TODO: move into UI component?
+        renderApp();
+      })
+      .catch(error => {
+        console.log(error); // TODO: Handle the error response object (notify the user that uploading failed)
+
+        updateRecorderStatus(RECORDER_STATUS_VALUES.WAIT_FOR_CLICK);
 
         // TODO: move into UI component?
         renderApp();
@@ -473,13 +581,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
         break;
     }
 
-    updateState({
-      noiseList: updatedNoiseList,
-      recorder: {
-        ...state.recorder,
-        status: RECORDER_STATUS_VALUES.WAITING,
-      },
-    });
+    updateRecorderStatus(RECORDER_STATUS_VALUES.WAIT_FOR_CLICK);
 
     // TODO: move into UI component?
     renderApp();
