@@ -1,0 +1,270 @@
+# TODOS
+FEATURES:
+
+  IN PROGRESS:
+    MVP:
+      [ ] merge in Ryan's fixes, more notes here: https://www.notion.so/nickvisut/Ryan-s-fixes-477da9fa542149498dffdbb93d357a39
+        [x] other lines across all files @done(18-10-16 17:18)
+        [x] line 315, handleRequestMediaPermissionsSuccess(), 14 different changes; some of them look like refactoring; 
+        [x] look at Slack chat to determine what the bugs were, and what he said about how they were fixed
+          [x] copy relevant conversations to Notion @done(18-10-17 11:29)
+          [-] consider subscribing to Slack to get access to older conversations - how much is it? @active
+          [x] bold what is especially relevant
+        [x] begin maintaining TODOs outside of codebase
+
+    MVP (old):
+      [ ] address showstoppers, maybe perf
+      [ ] address first two features
+      [ ] do pre-deployment tasks
+      Bugs:
+        Showstoppers:
+          [ ] stop button sometimes doesn't work (this could actually just be a performance problem, see below)
+            [ ] console.log or debugger statement in click handler
+            [ ] get VSCode Chrome debugging working
+            [ ] could be solved by state machine/flag
+          [ ] audio artifacts
+            [ ] reproducible?
+        Performance:
+          [ ] stop button (and perhaps some other UI) is noticeably slow to respond (this could be causing the showstopper above)
+            [ ] could be caused by refreshing too often (have not divorced time from data availability yet)
+            [ ] if it is because we are busy encoding, add a state for STOPPING where the Stop button is greyed out as soon as the user clicks it, thus feeling like a more responsive UI
+              - CONTEXT: we are using a web worker, so the UI shouldn't be blocking, but we are not indicating to the user that they press the button yet
+              [ ] huge files to download
+              [ ] currently using non-minified version of libflac.js
+            [ ] other files are not minified in any meaningful way
+            [ ] no gzipping on server-side
+            [ ] dead code
+            [ ] multiple web workers being spawned
+          [ ] other testing scenarios
+            [ ] ...
+      Features:
+        [ ] integrate noises.json
+        [ ] landing page/interstitial
+          [ ] intro and instructions (pause at beginning and in between each sound)
+          [ ] license agreement akin to Mozilla's (Ryan is taking care of the content for now)
+        [ ] associate with user across sessions
+          [ ] store UUID in JSON blob
+          [ ] store noise list data in JSON blob
+          [ ] save JSON blob to local storage
+            [ ] decide best local storage method
+            [ ] utilize storage API
+              [ ] do we need permissions?
+              [ ] if so, decide when to ask for permissions (on load? on record?)
+              [ ] implement perms request
+          [ ] on load, load data from local storage
+      Pre-Deployment:
+        [ ] cache-busting solution
+          [ ] append build timestamp to everything
+          [ ] webpack ftw
+        [ ] merge to master
+          [ ] open PR against talonvoice/noise
+          [ ] review and address feedback
+          [ ] get PR merged in 
+      Post-Deployment:
+          [ ] user testing
+
+    Convert to FLAC:
+      [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
+        [ ] hook up record.js events to UI using record/record.js as a guide
+          [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
+          [ ] change UI when there is an error
+            [ ] record.js: pass in onRecordError
+            [ ] record.js: add logic to execute onRecordError
+            [ ] index.js: hook up above
+            [ ] test
+            [ ] fix bugs
+          [ ] fix bugs introduced by UI timer
+            [ ] clicking record and then stop repeatedly immediately after seems to cause a hang
+            [ ] consider using "recording" flag if async issue
+            [ ] update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
+              [ ] just use setTimeout() instead
+          [ ] figure out additional steps
+          [ ] make the two record.js APIs look alike as possible
+          [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
+          [ ] merge two onDataAvailable functions
+        [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+        [ ] fix rerendering
+        [ ] clean up
+      [ ] test for async issues
+      [ ] map out the data flow to ferret out issues
+      [ ] show user visual indicator that they can't change noises while recording @ux
+      [ ] check if we are changing the UI without relying on the recorder response (changing the state of the Record button immediately, for instance)
+
+  PLANNED:
+    [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
+    
+  ICEBOX:
+    [ ] show user visual indicator that they can't change noises while recording @ux
+    [ ] add wizard (easy sequential navigation) @ux
+    [ ] simple text "pacing" timeline @ux
+      [ ] change noises data structure to allow for pauses and prompts
+      [ ] show user a timeline for visual prompts
+      [ ] show user basic visual prompts for recording a noise
+      [ ] integrate new sample sounds
+    [ ] fix status and time being disabled right after upload (they shouldn't be) @ux
+    [ ] complex graphic timeline @ux
+      [ ] show user an animated timeline a la rhythm games
+    [ ] accessibility @a11y
+      [ ] add simple keyboard shortcuts for accessibility
+      [ ] replace built-in audio controls with custom ones for accessibility (e.g., https://developer.mozilla.org/en-US/docs/Learn/Accessibility/Multimedia#Creating_custom_audio_and_video_controls)
+    [ ] allow user to review and submit @ux
+    [ ] allow user to select mic ("zero; browsers have that ui")
+
+TECHNICAL HEALTH:
+
+  PLANNED:
+    [ ] refactor index.js further
+      [ ] state management
+        [ ] move state management into a different file
+        [ ] make it so that selected noise points to one of the actual noises? and that "selected" is a property of one of them
+      [ ] componentize
+        [ ] move arrows out of recorder.js
+      [ ] event handling
+      [ ] I/O and effects
+        [ ] figure out the correct data flow for recorder I/O
+          [ ] fix the workarounds that abuse state
+          [ ] test above
+        [ ] move rest of I/O out
+    [ ] fix weird remote branch
+    [ ] auto-rerender on state change    
+    [ ] split out CSS by "component"
+    [ ] determine if we need to also refactor for list interaction
+    [ ] add development web server for automatically reloading on save of static files
+    [ ] add build step so that we can use packages more easily, minify, etc
+      [ ] alternatively, append version number to everything
+
+  ICEBOX:
+    [ ] test scenarios
+    [ ] fallback to <input>
+    [ ] add debouncing
+    [ ] add polyfills and fallbacks
+      [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+    [ ] productionize
+      [ ] minify/uglify
+      [ ] bust caches!
+      [ ] gzip
+    [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
+    [ ] test supported desktop browsers
+    [ ] smoke test and fix mobile browsers
+    [ ] address TODOs
+      [ ] convert noise constants to simple boolean
+    [ ] fix console errors
+    [ ] remove console debugging statements
+    [ ] rename on<Action> arguments to be different from parameters
+    [ ] optimize
+      [ ] event delegation
+      [ ] DOM manipulation with fragments
+      [ ] virtual DOM
+      [ ] DOM diffing
+
+Archive:
+  [x] get branch back to working state @project(FEATURES.IN PROGRESS.MVP)
+  [x] test and identify highest priority bugs @project(FEATURES.IN PROGRESS.MVP)
+  [x] test recording all three samples in sequence @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [x] test recording all three samples in reverse sequence @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [x] test recording all three samples out of order @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [x] test 2+ minute recording @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [-] incorporate old testing scenarios here @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [-] find previous testing scenarios @project(FEATURES.IN PROGRESS.MVP.Bugs.Performance)
+  [x] refactor index.js (see: TECHNICAL HEALTH) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] merge refactor branch into master branch @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] rebase FLAC branch on top of master branch @done(18-07-31 12:25) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] automatically merge @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] fix conflicts @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] diff file(s) from original branch to current branch @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] fix any logical errors to restore functionality of branch @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] merge temporary rebase branch back to FLAC branch @started(18-07-31 11:01) @done(18-07-31 12:25) @lasted(1h24m10s) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] figure out next steps @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] study code @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] figure out additional steps @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] change Record button and disable other controls when recording starts @started(18-07-31 13:31) @done(18-07-31 14:45) @lasted(1h14m33s) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: pass in onRecordStart @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: add logic to execute onRecordStart @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] index.js: hook up above @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] fix bugs @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] change Record button and enable other controls when recording stops @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: pass in onRecordStop @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: add logic to execute onRecordStop @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] index.js: hook up above @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] fix bugs @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] attempt to move container object inside of record.js @started(18-08-02 10:55) @done(18-08-02 11:25) @lasted(30m42s) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] identify steps @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: override with local copy of container, fix any return value @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] index.js: do not pass in container, fix handling of return value @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: delete parameter for container @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] index.js: delete argument for container @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] update UI timer while recording @started(18-08-02 15:34) @done(18-08-02 17:36) @lasted(2h2m26s) @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: pass in onDataAvailable @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: add logic to execute onDataAvailable @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] index.js: hook up above @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] test @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] upload FLAC file instead of forcing a download @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] record.js: do not call forceDownload() @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] expose forceDownload() for later usage @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] hook up upload @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] look into if multiple web workers are spawned @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] yes @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [-] merge record.js with main.js @project(FEATURES.IN PROGRESS.Convert to FLAC)
+  [x] show user (a more obvious) visual indicator that a noise has been recorded @ux @project(FEATURES.ICEBOX)
+  [x] prevent user from changing noises while recording @project(FEATURES.DONE)
+  [x] get basic happy path working @project(FEATURES.DONE)
+  [x] allow user to record multiple noises @project(FEATURES.DONE)
+  [x] load data @project(FEATURES.DONE)
+  [x] update UI when done recording, and uploading @project(FEATURES.DONE)
+  [x] load noise info from data json @project(FEATURES.DONE)
+  [x] add navigation arrows as a precursor to the wizard @project(FEATURES.DONE)
+  [x] ask for microphone permission on record instead of on load (see: https://developers.google.com/web/fundamentals/media/recording-video/#ask_permission_to_use_camera_responsibly,https://developers.google.com/web/fundamentals/media/recording-video/#use_the_permissions_api_to_check_if_you_already_have_access) @project(FEATURES.DONE)
+  [x] get FLAC sample code working (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/speech-to-flac.js) @project(FEATURES.DONE)
+  [-] update requirements.txt @project(TECHNICAL HEALTH.PLANNED)
+  [x] refactor index.js so that event handling, state management, and UI updates for record/stop are more decoupled @project(TECHNICAL HEALTH.DONE)
+  [x] state management @project(TECHNICAL HEALTH.DONE)
+  [x] move state management to one place in main.js @project(TECHNICAL HEALTH.DONE)
+  [x] create update state function @project(TECHNICAL HEALTH.DONE)
+  [x] move clone() and deepMerge() out to snippets @project(TECHNICAL HEALTH.DONE)
+  [x] migrate state management to use update state function @project(TECHNICAL HEALTH.DONE)
+  [x] componentize @project(TECHNICAL HEALTH.DONE)
+  [x] separate UI code out from main.js @project(TECHNICAL HEALTH.DONE)
+  [x] move UI code to own functions @project(TECHNICAL HEALTH.DONE)
+  [x] move functions to own file @project(TECHNICAL HEALTH.DONE)
+  [x] move "sub-component" references to new file @project(TECHNICAL HEALTH.DONE)
+  [x] I/O and effects @project(TECHNICAL HEALTH.DONE)
+  [x] identify I/O @project(TECHNICAL HEALTH.DONE)
+  [x] move recorder I/O outside of index.js @project(TECHNICAL HEALTH.DONE)
+  [x] move to same place in index.js @project(TECHNICAL HEALTH.DONE)
+  [x] move out of index.js @project(TECHNICAL HEALTH.DONE)
+  [x] move recording code to new file record.js @project(TECHNICAL HEALTH.DONE)
+  [x] isolate recorder-specific code from other code @project(TECHNICAL HEALTH.DONE)
+  [x] tag what to do with each piece @project(TECHNICAL HEALTH.DONE)
+  [x] move code within record.js @project(TECHNICAL HEALTH.DONE)
+  [x] move other code back into app.js @project(TECHNICAL HEALTH.DONE)
+  [x] test for regressions and fix bugs @project(TECHNICAL HEALTH.DONE)
+  [x] clean up relevant TODOs @project(TECHNICAL HEALTH.DONE)
+  [x] misc TODOs @project(TECHNICAL HEALTH.DONE)
+  [x] merge updateRecordButton with renderButton @project(TECHNICAL HEALTH.DONE)
+  [x] test above @project(TECHNICAL HEALTH.DONE)
+  [x] add missing status into recorder.js @project(TECHNICAL HEALTH.DONE)
+  [x] test above @project(TECHNICAL HEALTH.DONE)
+  [x] pass missing args to renderRecordingControls etc @project(TECHNICAL HEALTH.DONE)
+  [x] separate out recorder status from noise status so that we can do onRecordClick properly @project(TECHNICAL HEALTH.DONE)
+  [x] refactor constants so easier to extend and use @project(TECHNICAL HEALTH.DONE)
+  [x] create new constants just for noises @project(TECHNICAL HEALTH.DONE)
+  [x] point noises to the new constants @project(TECHNICAL HEALTH.DONE)
+  [x] change any logic where we set the recorder status to be the noise status or vice versa @project(TECHNICAL HEALTH.DONE)
+  [x] merge onRecordClick and onFirstRecordClick (requires that we maintain recorder.status properly) @project(TECHNICAL HEALTH.DONE)
+  [x] hack together by having placeholders for startRecorder() and stopRecorder() @project(TECHNICAL HEALTH.DONE)
+  [x] fix switching noises not resetting the recorder @project(TECHNICAL HEALTH.DONE)
+  [x] identify issue @project(TECHNICAL HEALTH.DONE)
+  [x] come up with sol'n @project(TECHNICAL HEALTH.DONE)
+  [x] code sol'n @project(TECHNICAL HEALTH.DONE)
+  [x] clean up @project(TECHNICAL HEALTH.DONE)
+  [x] fix button to be record "circle" when done uploading @project(TECHNICAL HEALTH.DONE)
+  [x] fix record button being enabled when the sound is already recorded @project(TECHNICAL HEALTH.DONE)
+  [x] fix status saying "already recorded" instead of "uploaded" too soon @project(TECHNICAL HEALTH.DONE)
+  [x] refactor into modules @project(TECHNICAL HEALTH.DONE)
+  [x] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4) @project(TECHNICAL HEALTH.DONE)
+  [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately @project(TECHNICAL HEALTH.DONE)

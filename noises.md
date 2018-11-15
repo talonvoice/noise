@@ -161,7 +161,11 @@ https://www.youtube.com/watch?v=31zzMb3U0iY
 - At the same time that you gently start to pull air into your mouth, pull your lips out and away to get a quieter, higher pitched reverse pop of air
 
 ### Smooch
+<<<<<<< HEAD
 - Purse your lips tighly together, almost as if you've licked something sour.
+=======
+- Purse your lips tightly together, almost as if you've licked something sour.
+>>>>>>> nickvisut/master
 - Forcibly pull or suck in air through the lips, keeping them pursed.
 - This should making a small, short squeaking noise
 

@@ -1,0 +1,207 @@
+# TODOS
+FEATURES:
+  
+  IN PROGRESS:
+    MVP:
+      Integrate new sounds:
+        [ ] convert `noise.desc` from markdown to HTML on-the-fly (in other words, clean up formatting)
+        [x] add code to   handle `noise.preview` optionally being an array
+          [x] attempt with in-editor tools
+          [x] ...
+        [x] identify any missing sounds
+        [ ] address missing sounds
+          [ ] sst.mp3 appears to be missing
+        [x] identify any orphan sounds
+        [ ] address orphan sounds
+          [ ] screech.mp3, remove in cleanup
+          [ ] pop-fail.mp3 (added to `pop`, OK? @open-question)
+          [ ] pop-old.mp3 (added to `pop`, OK? @open-question)
+          [ ] uh.mp3 (added to `glottals`, OK? @open-question)
+        [ ] test
+        [ ] merge
+        [ ] post-MVP?: group sounds in UI by category
+          [ ] remap 'other' => 'noise' when appropriate
+        [ ] post-MVP?: consider adding versioning to uploads (tag w/app version)
+      Convert to FLAC @2:
+        [ ] list out remaining TODO items
+        [ ] replace WEBM encoding w/FLAC encoding (e.g., https://github.com/mmig/speech-to-flac, https://github.com/mmig/libflac.js)
+          [x] refactor index.js (see: TECHNICAL HEALTH)
+          [x] merge refactor branch into master branch
+          [ ] hook up record.js events to UI using record/record.js as a guide
+            [ ] record.js: get rid of getUserMedia() code if determined that it's not needed
+            [ ] change UI when there is an error
+              [ ] record.js: pass in onRecordError
+              [ ] record.js: add logic to execute onRecordError
+              [ ] index.js: hook up above
+              [ ] test
+              [ ] fix bugs
+            [ ] fix bugs introduced by UI timer
+              [ ] clicking record and then stop repeatedly immediately after seems to cause a hang
+              [ ] consider using "recording" flag if async issue
+              [ ] update UI (especially timer) independent of onDataAvailable (right now it's thrashing since it is SO often)
+                [ ] just use setTimeout() instead
+            [ ] figure out additional steps
+            [ ] make the two record.js APIs look alike as possible
+            [ ] address this TODO: force this state for now; should rely on callback setting it from inside record.js, though
+            [ ] merge two onDataAvailable functions
+          [ ] revisit timing and location of onRecordStart() dispatch. seems to take a while before initialization occurs; consider having two callbacks instead, or changing the UI preemptively (e.g., optimistic updates)
+          [ ] fix rerendering
+          [ ] clean up
+        [ ] test for async issues
+        [ ] map out the data flow to ferret out issues
+        [ ] show user visual indicator that they can't change noises while recording @ux
+        [ ] check if we are changing the UI without relying on the recorder response (changing the state of the Record button immediately, for instance)
+      Merge in aegis' changes (which addressed some of the issues above) @1:
+        [ ] understand where we currently stand
+          [x] other lines across all files @done(18-10-16 17:18)
+          [x] line 315, handleRequestMediaPermissionsSuccess(), 14 different changes; some of them look like refactoring; 
+          [x] look at Slack chat to determine what the bugs were, and what he said about how they were fixed
+            [x] copy relevant conversations to Notion @done(18-10-17 11:29)
+            [-] consider subscribing to Slack to get access to older conversations - how much is it? @active
+            [x] bold what is especially relevant
+          [x] begin maintaining TODOs outside of codebase
+        [ ] what does aegis's change fix? async issues, I think ...
+        [ ] run and test
+          [ ] switch to branch on main fork and test
+          [ ] study diff
+        [ ] merge
+          [ ] which branch/commit did aegis branch off of?
+          [ ] if all is good, merge into own branch
+          [ ] merge in Ryan's fixes, more notes here: https://www.notion.so/nickvisut/Ryan-s-fixes-477da9fa542149498dffdbb93d357a39
+      Clean up @3:
+        [ ] check notes for aegis's priorities
+
+    MVP (old):
+      [ ] address showstoppers, maybe perf
+      [ ] address first two features
+      [ ] do pre-deployment tasks
+      Bugs:
+        Showstoppers:
+          [ ] stop button sometimes doesn't work (this could actually just be a performance problem, see below)
+            [ ] console.log or debugger statement in click handler
+            [ ] get VSCode Chrome debugging working
+            [ ] could be solved by state machine/flag
+          [ ] audio artifacts
+            [ ] reproducible?
+        Performance:
+          [ ] stop button (and perhaps some other UI) is noticeably slow to respond (this could be causing the showstopper above)
+            [ ] could be caused by refreshing too often (have not divorced time from data availability yet)
+            [ ] if it is because we are busy encoding, add a state for STOPPING where the Stop button is greyed out as soon as the user clicks it, thus feeling like a more responsive UI
+              - CONTEXT: we are using a web worker, so the UI shouldn't be blocking, but we are not indicating to the user that they press the button yet
+              [ ] huge files to download
+              [ ] currently using non-minified version of libflac.js
+            [ ] other files are not minified in any meaningful way
+            [ ] no gzipping on server-side
+            [ ] dead code
+            [ ] multiple web workers being spawned
+          [ ] other testing scenarios
+            [ ] ...
+      Features:
+        [ ] integrate noises.json
+        [ ] landing page/interstitial
+          [ ] intro and instructions (pause at beginning and in between each sound)
+          [ ] license agreement akin to Mozilla's (Ryan is taking care of the content for now)
+        [ ] associate with user across sessions
+          [ ] store UUID in JSON blob
+          [ ] store noise list data in JSON blob
+          [ ] save JSON blob to local storage
+            [ ] decide best local storage method
+            [ ] utilize storage API
+              [ ] do we need permissions?
+              [ ] if so, decide when to ask for permissions (on load? on record?)
+              [ ] implement perms request
+          [ ] on load, load data from local storage
+      Pre-Deployment:
+        [ ] cache-busting solution
+          [ ] append build timestamp to everything
+          [ ] webpack ftw
+        [ ] merge to master
+          [ ] open PR against talonvoice/noise
+          [ ] review and address feedback
+          [ ] get PR merged in 
+      Post-Deployment:
+          [ ] user testing
+  
+  PLANNED:
+     [ ] show 15-second countdown to user on record in lieu of pacing timeline for MVP
+    
+  ICEBOX:
+    [ ] make UI mobile-friendly (currently looks just like desktop app)
+    [ ] show user visual indicator that they can't change noises while recording @ux
+    [x] show user (a more obvious) visual indicator that a noise has been recorded @ux
+    [ ] 
+    [ ] add wizard (easy sequential navigation) @ux
+    [ ] simple text "pacing" timeline @ux
+      [ ] change noises data structure to allow for pauses and prompts
+      [ ] show user a timeline for visual prompts
+      [ ] show user basic visual prompts for recording a noise
+      [ ] integrate new sample sounds
+
+  ICEBOX:
+    [ ] fix status and time being disabled right after upload (they shouldn't be) @ux
+    [ ] complex graphic timeline @ux
+      [ ] show user an animated timeline a la rhythm games
+    [ ] accessibility @a11y
+      [ ] add simple keyboard shortcuts for accessibility
+      [ ] replace built-in audio controls with custom ones for accessibility (e.g., https://developer.mozilla.org/en-US/docs/Learn/Accessibility/Multimedia#Creating_custom_audio_and_video_controls)
+    [ ] allow user to review and submit @ux
+    [ ] allow user to select mic ("zero; browsers have that ui")
+
+  DONE:
+
+
+
+TECHNICAL HEALTH:
+
+  IN PROGRESS:
+
+  PLANNED:
+    [ ] refactor index.js further
+      [ ] state management
+        [ ] move state management into a different file
+        [ ] make it so that selected noise points to one of the actual noises? and that "selected" is a property of one of them
+      [ ] componentize
+        [ ] move arrows out of recorder.js
+      [ ] event handling
+      [ ] I/O and effects
+        [ ] figure out the correct data flow for recorder I/O
+          [ ] fix the workarounds that abuse state
+          [ ] test above
+        [ ] move rest of I/O out
+    [ ] fix weird remote branch
+    [ ] auto-rerender on state change    
+    [ ] split out CSS by "component"
+    [ ] determine if we need to also refactor for list interaction
+    [x] separate recorder status from clip status, then can use NEED_PERMISSIONS permission appropriately
+    [ ] add development web server for automatically reloading on save of static files
+    [ ] add build step so that we can use packages more easily, minify, etc
+      [ ] alternatively, append version number to everything 
+    [-] update requirements.txt
+
+  ICEBOX:
+    [ ] test scenarios
+    [ ] fallback to <input>
+    [ ] add debouncing
+    [ ] add polyfills and fallbacks
+      [ ] getUserMedia() - https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
+    [ ] productionize
+      [ ] minify/uglify
+      [ ] bust caches!
+      [ ] gzip
+    [ ] replace libflac3*.strict.js with official fix for strict mode when following issue is resolved (https://github.com/mmig/libflac.js/issues/4)
+    [ ] test supported desktop browsers
+    [ ] smoke test and fix mobile browsers
+    [ ] address TODOs
+      [ ] convert noise constants to simple boolean
+    [ ] fix console errors
+    [ ] remove console debugging statements
+    [ ] rename on<Action> arguments to be different from parameters
+    [ ] optimize
+      [ ] event delegation
+      [ ] DOM manipulation with fragments
+      [ ] virtual DOM
+      [ ] DOM diffing
+
+  DONE:
+
+Archive:
