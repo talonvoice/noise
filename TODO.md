@@ -22,4 +22,5 @@ should be it and we're ready to publish (edited)
 - [ ] stop recording should maybe be in a different spot from start recording, because users will be likely to have talon running with the noise recognizers (edited)
 
 ## other
-[x] "archive" older TODOs and use Github Markdown syntax instead
+- [x] "archive" older TODOs and use Github Markdown syntax instead
+- [x] nuke misc sound files
