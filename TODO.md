@@ -24,3 +24,4 @@ should be it and we're ready to publish (edited)
 ## other
 - [x] "archive" older TODOs and use Github Markdown syntax instead
 - [x] nuke misc sound files
+- [ ] update README and a couple of other minor things
