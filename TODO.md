@@ -5,7 +5,7 @@ Using GitHub Markdown task list syntax (https://help.github.com/articles/about-t
 ## @here the merge is done, if you want to help
 - [x] correct README (context: the readme seems wrong, I had to `cd server; python app.py`, also you need to `pip install -r requirements.txt` in server/ if you don't have flask)
 - [x] remove extraneous right arrow (context: there's an extra right arrow that doesn't seem to do anything)
-- [ ] make player opaque and the width of the screen (context: the transparent overlay is just a distraction, should probably be opaque and the width of the screen)
+- [x] make player opaque and the width of the screen (context: the transparent overlay is just a distraction, should probably be opaque and the width of the screen)
 - [ ] users should probably be able to re-record sounds; it's not useful to fully disable them
 - [ ] when you start recording, it needs to pause the sample playback
 - [ ] "uh" and "oh" should be separate noises (might need to record a new sound)
