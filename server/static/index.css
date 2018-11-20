@@ -1,6 +1,7 @@
 body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
 }
 
 p {
@@ -74,10 +75,10 @@ a {
 .Dialog--recorder {
   /* bottom: 0;
   position: absolute; */ /* TODO: use only if there are other elements on the page for now */
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 1);
   display: block;
-  width: 640px;
-  margin: 10px;
+  width: 100%;
+  margin: 0;
 }
 
 /* Introduction */
@@ -320,6 +321,7 @@ a {
   padding: 10px;
   border: solid 1px #ccc;
   background-color: rgba(255, 255, 255, 0.50);
+  display: none;
 }
 
 .IsFlac-label {
