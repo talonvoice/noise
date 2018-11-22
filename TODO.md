@@ -9,6 +9,8 @@ Using GitHub Markdown task list syntax (https://help.github.com/articles/about-t
 - [ ] users should probably be able to re-record sounds; it's not useful to fully disable them
    - [ ] for allowing users to re-record, need to use unique filenames (take uuid out of filename, add a counter)
 - [ ] when you start recording, it needs to pause the sample playback
+   - [x] stop the sample playback when user begins recording
+   - [ ] pause the sample playback when user begins recording (requires non-native HTML player)
 - [ ] "uh" and "oh" should be separate noises (might need to record a new sound)
 - [ ] and we should clean up the examples on some of them, like
    - [ ] smooch has double-smooching which will confuse the training, and

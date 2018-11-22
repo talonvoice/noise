@@ -325,7 +325,17 @@ const doStartRecording = function() {
   /* I/O dispatch */
   state.recorder.callbacks.startRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
   state.recorder.status = RECORDER_STATUS_VALUES.STARTING;
+
+  // force re-render
+  renderApp();
 }
+
+const doStopRecording = () => {
+  state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below the call to this function
+
+  // force re-render
+  renderApp();
+};
 
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 // TODO: refactor this big time
@@ -343,7 +353,7 @@ const onRecordClick = function() {
       doStartRecording();
     }
   } else if (state.recorder.status === RECORDER_STATUS_VALUES.RECORDING) {
-    state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+    doStopRecording();
   } // TODO: what do we do if it's starting or stopping? disable the interactions?
 };
 

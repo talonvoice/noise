@@ -19,6 +19,7 @@ function renderRecorder({
   let players = '';
 
   if (noise.preview && Array.isArray(noise.preview)) {
+    // if there's more than one preview
     players = noise.preview
       .map(({ path, title }, index) =>
         renderPlayer({
@@ -29,6 +30,7 @@ function renderRecorder({
       )
       .join('');
   } else {
+    // if there's only one preview (majority case)
     let { path, title } = noise.preview;
     players = renderPlayer({
       id: 0,
