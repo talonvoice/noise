@@ -1,7 +1,12 @@
-Start with:
+Install requirements:
 ```bash
 $ cd server
 $ pip install -r requirements.txt
+```
+
+Start web server:
+```bash
+$ cd server
 $ python app.py
 ```
 

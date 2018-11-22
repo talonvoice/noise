@@ -340,7 +340,7 @@ const doStopRecording = () => {
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 // TODO: refactor this big time
 const onRecordClick = function() {
-  if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK) {
+  if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK || state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED) {
     if (!state.recorder.explicitlyPermitted) {
       // TODO: consider doing this reacting to state change instead
       requestMediaPermissions(
@@ -523,9 +523,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     // TODO: move into own function
     const extension = state.recorder.isFlac ? 'flac' : 'webm';
-    const filename = `${state.recorder.filename.prefix}.${
-      state.recorder.filename.sessionID
-    }.${extension}`;
+    const filename = `${state.recorder.filename.prefix}.${extension}`;
     // let blob = new Blob(state.recorder.chunks);
 
     /* UI dispatch */
