@@ -227,7 +227,7 @@ a {
 .Recorder-recordButton--disabled {
   opacity: 0.5;
   cursor: auto;
-  background-color: green;
+  background-color: red;
 }
 
 .Recorder-time {
@@ -299,7 +299,7 @@ a {
 }
 
 .Arrow--disabled {
-  color: rgba(207,207,207,0.5);
+  color: rgba(207,207,207,0.2);
   cursor: auto;
 }
 .Arrow:not(.Arrow--disabled):hover {

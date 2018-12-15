@@ -37,8 +37,7 @@ function renderRecorderAndArrows() {
     onButtonClick: onRecordClick,
   }); // TODO: must also point to onRecordClick, which is stuck inside a closure
   renderArrows(
-    state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
+    state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING || state.recorder.status === RECORDER_STATUS_VALUES.STARTING || state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     state.noiseList,
     state.selectedNoise,
     decrementSelectedNoise,
@@ -66,8 +65,7 @@ function renderApp() {
     disabled:
       state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING || state.recorder.status === RECORDER_STATUS_VALUES.STARTING,
     arrowsDisabled:
-      state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING || state.recorder.status === RECORDER_STATUS_VALUES.STARTING || state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     noiseList: state.noiseList,
     selectedNoise: state.selectedNoise,
     onButtonClick: onRecordClick,
