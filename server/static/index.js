@@ -33,7 +33,7 @@ function renderRecorderAndArrows() {
     recorderState: state.recorder,
     recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     disabled:
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING || state.recorder.status === RECORDER_STATUS_VALUES.STARTING,
     onButtonClick: onRecordClick,
   }); // TODO: must also point to onRecordClick, which is stuck inside a closure
   renderArrows(
@@ -64,7 +64,7 @@ function renderApp() {
     recorderState: state.recorder, // TODO: divorce state shape of recorder
     recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     disabled:
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING || state.recorder.status === RECORDER_STATUS_VALUES.STARTING,
     arrowsDisabled:
       state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
       state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,

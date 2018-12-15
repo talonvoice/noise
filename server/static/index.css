@@ -227,6 +227,7 @@ a {
 .Recorder-recordButton--disabled {
   opacity: 0.5;
   cursor: auto;
+  background-color: green;
 }
 
 .Recorder-time {
