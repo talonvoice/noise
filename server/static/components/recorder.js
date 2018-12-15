@@ -12,6 +12,7 @@ function renderRecorder({
   onLeftArrowClick,
   onRightArrowClick,
 }) {
+  disabled = false;
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
@@ -152,9 +153,9 @@ function renderButton({
     recordButtonClone.classList.add('Recorder-recordButton--disabled');
   } else {
     recordButtonClone.classList.remove('Recorder-recordButton--disabled');
-    recordButtonClone.addEventListener('click', onButtonClick);
   }
-  recordButtonClone.disabled = disabled;
+  recordButtonClone.addEventListener('click', onButtonClick);
+  //recordButtonClone.disabled = disabled;
 
   if (recording) {
     recordButtonClone.classList.add('Recorder-recordButton--recording');

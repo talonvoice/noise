@@ -33,16 +33,12 @@ function renderRecorderAndArrows() {
     recorderState: state.recorder,
     recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     disabled:
-      state.noiseList[state.selectedNoise].status ===
-        NOISE_STATUS_VALUES.RECORDED ||
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING ||
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED,
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
     onButtonClick: onRecordClick,
   }); // TODO: must also point to onRecordClick, which is stuck inside a closure
   renderArrows(
     state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
+      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
     state.noiseList,
     state.selectedNoise,
     decrementSelectedNoise,
@@ -51,6 +47,7 @@ function renderRecorderAndArrows() {
 }
 
 function renderApp() {
+  console.log('rendering from index!')
   updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
   renderNoiseList(
     state.noiseList,
@@ -67,14 +64,10 @@ function renderApp() {
     recorderState: state.recorder, // TODO: divorce state shape of recorder
     recording: state.recorder.status === RECORDER_STATUS_VALUES.RECORDING,
     disabled:
-      state.noiseList[state.selectedNoise].status ===
-        NOISE_STATUS_VALUES.RECORDED ||
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING ||
-      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED,
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING,
     arrowsDisabled:
       state.recorder.status !== RECORDER_STATUS_VALUES.STARTING &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK &&
-      state.recorder.status !== RECORDER_STATUS_VALUES.UPLOADED,
+      state.recorder.status !== RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
     noiseList: state.noiseList,
     selectedNoise: state.selectedNoise,
     onButtonClick: onRecordClick,
@@ -340,7 +333,7 @@ const doStopRecording = () => {
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 // TODO: refactor this big time
 const onRecordClick = function() {
-  if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK) {
+  if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK || state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED) {
     if (!state.recorder.explicitlyPermitted) {
       // TODO: consider doing this reacting to state change instead
       requestMediaPermissions(
@@ -447,6 +440,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   // TODO: merge the two functions below
   function onRecordStop() {
+    console.log(`onRecordStop() from index`);
     console.log(`Recording stopped...`);
     if (state.recorder.timer) {
       clearInterval(state.recorder.timer);
@@ -508,10 +502,17 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   }
 
   function onRecordStopFlac() {
+    if (state.recorder.timer) {
+      clearInterval(state.recorder.timer);
+    }
+    state.recorder.startTime = null;
+    
     console.log(`Recording stopped...`);
+    console.log(`onRecordStopFlac() from index`);
   }
 
   function onFileReadyFlac(blob) {
+    console.log(`onFileReadyFlac() from index`);
     console.log(`File ready to upload...`);
 
     // TODO: add state for encoding?
@@ -523,9 +524,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
     // TODO: move into own function
     const extension = state.recorder.isFlac ? 'flac' : 'webm';
-    const filename = `${state.recorder.filename.prefix}.${
-      state.recorder.filename.sessionID
-    }.${extension}`;
+    const filename = `${state.recorder.filename.prefix}.${extension}`;
     // let blob = new Blob(state.recorder.chunks);
 
     /* UI dispatch */
