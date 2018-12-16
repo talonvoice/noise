@@ -150,6 +150,7 @@ const handleGetUserMediaSuccess = function(stream) {
   recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
 
   function recordClickHandler() {
+    console.log('recordClickHandler()');
     console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management */
@@ -218,6 +219,8 @@ const handleGetUserMediaSuccess = function(stream) {
   });
 
   mediaRecorder.addEventListener('stop', function() {
+    console.log(`stop event from main`);
+
     /* state management */
     state.recorder.elapsed = Date.now() - state.recorder.startTime;
     const filename = `${state.recorder.filename.prefix}.${
@@ -304,6 +307,7 @@ function render() {
 }
 
 function renderApp() {
+  console.log('rendering from main!')
   renderNoiseList(
     state.noiseList,
     selectNoise,
