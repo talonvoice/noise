@@ -208,11 +208,7 @@
     },
     {
       "name": "Pop",
-      "preview": [
-        { "path": "/static/previews/pop.mp3", "title": "pop" },
-        { "path": "/static/previews/pop-old.mp3", "title": "pop 2" },
-        { "path": "/static/previews/pop-fail.mp3", "title": "not a pop (incorrect)" }
-      ],
+      "preview": { "path": "/static/previews/pop.mp3", "title": "pop" },
       "desc":
         "- Relax your jaw and keep your lips pressed very gently together\n- Push a very tiny bit of air into your mouth, then quickly open your jaw, pulling your lips apart.\n- This should create a gentle pop sound that resonates within your mouth and cheeks.\n- This works best with a bit of moisture on your lips",
       "category": "other"
@@ -229,10 +225,8 @@
     },
     {
       "name": "Smooch",
-      "preview": [
-        { "path": "/static/previews/smooch.mp3", "title": "smooch" },
-        { "path": "/static/previews/smooches.mp3", "title": "smooches" }
-      ],
+      "preview": 
+        { "path": "/static/previews/smooches.mp3", "title": "smooch" },
       "desc":
         "- Purse your lips tightly together, almost as if you've licked something sour.\n- Forcibly pull or suck in air through the lips, keeping them pursed.\n- This should making a small, short squeaking noise",
       "category": "other"
@@ -247,13 +241,17 @@
       "category": "other"
     },
     {
-      "name": "Glottals",
-      "preview": [
-        { "path": "/static/previews/uh-oh.mp3", "title": "uh-oh" },
-        { "path": "/static/previews/uh.mp3", "title": "uh" }
-      ],
+      "name": "Uh",
+      "preview": { "path": "/static/previews/uh.mp3", "title": "uh" },
       "desc":
-        "- Keep your mouth and lips relaxed.\n- Force air from your diaphram, like saying the \"uh\" from \"uh oh\"\n- Now push your lips forward and try the \"oh\" from \"uh oh\"",
+        "- Keep your mouth and lips relaxed.\n- Force air from your diaphragm, like saying the \"uh\" from \"uh oh\"",
+      "category": "other"
+    },
+    {
+      "name": "Oh",
+      "preview": { "path": "/static/previews/oh.mp3", "title": "oh" },
+      "desc":
+        "- Keep your mouth and lips relaxed.\n- Force air from your diaphragm and push your lips forward, like saying the  \"oh\" from \"uh oh\"",
       "category": "other"
     },
     {
