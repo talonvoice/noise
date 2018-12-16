@@ -46,7 +46,7 @@
     },
     {
       "name": "Hiss (sss)",
-      "preview": { "path": "/static/previews/hiss.mp3", "title": "hiss" },
+      "preview": { "path": "/static/previews/hiss-old.mp3", "title": "hiss" },
       "desc":
         "Straight hiss sound\n- Let your mouth hang slightly open with your lips parted. This should feel very natural.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- Your tongue should stay relaxed behind the teeth and not be pushed against them, and the air should flow easily.",
       "category": "hiss"
@@ -226,7 +226,7 @@
     {
       "name": "Smooch",
       "preview": 
-        { "path": "/static/previews/smooches.mp3", "title": "smooch" },
+        { "path": "/static/previews/smooch.mp3", "title": "smooch" },
       "desc":
         "- Purse your lips tightly together, almost as if you've licked something sour.\n- Forcibly pull or suck in air through the lips, keeping them pursed.\n- This should making a small, short squeaking noise",
       "category": "other"
