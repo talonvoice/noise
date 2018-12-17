@@ -219,12 +219,6 @@ a {
   cursor: pointer;
 }
 
-/* .Recorder-recordButton--recording {
-  border-color: darkred;
-  box-shadow: inset 0 0 5px 2px darkred;
-  cursor: auto;
-  opacity: 0.5;
-} */
 .Recorder-recordButton--recording, .Recorder-recordButton--disabled {
   opacity: 0.2;
   cursor: auto;
@@ -242,12 +236,6 @@ a {
   margin-bottom: 20px;
   cursor: pointer;
 }
-/* .Recorder-stopButton--stopped {
-  border-color: black;
-  box-shadow: inset 0 0 5px 2px black;
-  cursor: auto;
-  opacity: 0.5;
-} */
 .Recorder-stopButton--stopped, .Recorder-stopButton--disabled {
   opacity: 0.2;
   cursor: auto;
