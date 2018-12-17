@@ -305,6 +305,8 @@ const doStartRecording = function() {
     },
   });
 
+  updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
+  
   /* UI dispatch */
   // TODO: move into UI component?
   updatePlaybackPlayer({
@@ -322,6 +324,7 @@ const doStartRecording = function() {
 }
 
 const doStopRecording = () => {
+  console.log('doStartRecording() from main');
   state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below the call to this function
 
   // force re-render
@@ -366,7 +369,6 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   let initialized = {};
 
-  updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
   if (!state.recorder.isFlac) {
     initialized = initializeRecorder({
       stream,
