@@ -1,3 +1,4 @@
+// TODO: a bad merge means there is a lot of duplicate/dead code, mostly shared between this file and main.js; identify the dead code and remove it
 import {
   generateUUID,
   merge,
@@ -46,7 +47,7 @@ function renderRecorderAndArrows() {
 }
 
 function renderApp() {
-  console.log('rendering from index!')
+  // console.log('rendering from index!')
   updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
   renderNoiseList(
     state.noiseList,
@@ -305,6 +306,8 @@ const doStartRecording = function() {
     },
   });
 
+  updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
+  
   /* UI dispatch */
   // TODO: move into UI component?
   updatePlaybackPlayer({
@@ -322,6 +325,7 @@ const doStartRecording = function() {
 }
 
 const doStopRecording = () => {
+  // console.log('doStartRecording() from main');
   state.recorder.callbacks.stopRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below the call to this function
 
   // force re-render
@@ -331,7 +335,7 @@ const doStopRecording = () => {
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 // TODO: refactor this big time
 const onRecordClick = function() {
-  console.log('onRecordClick() from index');
+  // console.log('onRecordClick() from index');
   if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK || state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED || state.recorder.status === RECORDER_STATUS_VALUES.ALREADY_RECORDED) {
     if (!state.recorder.explicitlyPermitted) {
       // TODO: consider doing this reacting to state change instead
@@ -366,7 +370,6 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   let initialized = {};
 
-  updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
   if (!state.recorder.isFlac) {
     initialized = initializeRecorder({
       stream,
@@ -410,7 +413,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   function onRecordStart() {
     // TODO: start/stop a timer
-    console.log(`Recording started...`);
+    // console.log(`Recording started...`);
     state.recorder.startTime = Date.now();
     if (state.recorder.timer) {
       clearInterval(state.recorder.timer);
@@ -439,8 +442,8 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   // TODO: merge the two functions below
   function onRecordStop() {
-    console.log(`onRecordStop() from index`);
-    console.log(`Recording stopped...`);
+    // console.log(`onRecordStop() from index`);
+    // console.log(`Recording stopped...`);
     if (state.recorder.timer) {
       clearInterval(state.recorder.timer);
     }
@@ -506,13 +509,13 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     }
     state.recorder.startTime = null;
 
-    console.log(`Recording stopped...`);
-    console.log(`onRecordStopFlac() from index`);
+    // console.log(`Recording stopped...`);
+    // console.log(`onRecordStopFlac() from index`);
   }
 
   function onFileReadyFlac(blob) {
-    console.log(`onFileReadyFlac() from index`);
-    console.log(`File ready to upload...`);
+    // console.log(`onFileReadyFlac() from index`);
+    // console.log(`File ready to upload...`);
 
     // TODO: add state for encoding?
     updateRecorderStatus(RECORDER_STATUS_VALUES.UPLOADING);

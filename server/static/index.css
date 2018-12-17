@@ -219,15 +219,26 @@ a {
   cursor: pointer;
 }
 
-.Recorder-recordButton--recording {
-  border: solid 6px darkred;
-  border-radius: 0;
-  box-shadow: inset 0 0 5px 2px darkred;
-}
-.Recorder-recordButton--disabled {
-  opacity: 0.5;
+.Recorder-recordButton--recording, .Recorder-recordButton--disabled {
+  opacity: 0.2;
   cursor: auto;
-  background-color: red;
+}
+.Recorder-stopButton {
+  box-sizing: border-box;
+  background-color: black;
+  border: solid 4px lightgray;
+  border-radius: 0;
+  padding: 5px;
+  font-size: 0px;
+  height: 50px;
+  width: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.Recorder-stopButton--stopped, .Recorder-stopButton--disabled {
+  opacity: 0.2;
+  cursor: auto;
 }
 
 .Recorder-time {
