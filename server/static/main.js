@@ -1,4 +1,5 @@
 // TODO: we are relying on the native import(), which may not be available in our supported browsers; assess and replace with transpilation if necessary
+// TODO: a bad merge means there is a lot of duplicate/dead code, mostly shared between this file and index.js; identify the dead code and remove it
 import { generateUUID } from './utilities.js';
 import {
   renderRecorder,
@@ -88,7 +89,7 @@ function decrementSelectedNoise() {
 
 let adapter = {}; // this object is used as a mea != ns to communicate with the recording code; TODO: replace with more intuitive code
 const firstRecordClick = function() {
-  console.log(state.recorder.status);
+  // console.log(state.recorder.status);
   // TODO: fix this when we separate out recorder status from noise status
   // if (state.recorder.status === NEED_PERMISSIONS) {
   // getUserMedia(); // normal .webm code path
@@ -150,7 +151,8 @@ const handleGetUserMediaSuccess = function(stream) {
   recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
 
   function recordClickHandler() {
-    console.log(state.recorder);
+    // console.log('recordClickHandler()');
+    // console.log(state.recorder);
     if (state.recorder.status === WAITING) {
       /* state management */
       // state.recorder.recordedChunks = [];
@@ -182,7 +184,7 @@ const handleGetUserMediaSuccess = function(stream) {
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
       // add this chunk of data to the recorded chunks
-      console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
+      // console.log(`Pushing chunk #${++state.recorder.chunkNumber}`);
 
       /* state management */
       recordedChunks.push(e.data);
@@ -218,6 +220,8 @@ const handleGetUserMediaSuccess = function(stream) {
   });
 
   mediaRecorder.addEventListener('stop', function() {
+    // console.log(`stop event from main`);
+
     /* state management */
     state.recorder.elapsed = Date.now() - state.recorder.startTime;
     const filename = `${state.recorder.filename.prefix}.${
@@ -304,6 +308,7 @@ function render() {
 }
 
 function renderApp() {
+  // console.log('renderApp(): rendering from main!');
   renderNoiseList(
     state.noiseList,
     selectNoise,

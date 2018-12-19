@@ -12,6 +12,7 @@ function renderRecorder({
   onLeftArrowClick,
   onRightArrowClick,
 }) {
+  disabled = false;
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
@@ -147,22 +148,31 @@ function renderButton({
   // TODO: look into other ways of doing this, including using the original reference to the handler
   const recordButton = document.querySelector('[data-id=recordButton]');
   const recordButtonClone = recordButton.cloneNode(true);
+  const stopButton = document.querySelector('[data-id=stopButton]');
+  const stopButtonClone = stopButton.cloneNode(true);
 
   if (disabled) {
     recordButtonClone.classList.add('Recorder-recordButton--disabled');
+    stopButtonClone.classList.add('Recorder-stopButton--disabled');
   } else {
     recordButtonClone.classList.remove('Recorder-recordButton--disabled');
-    recordButtonClone.addEventListener('click', onButtonClick);
+    stopButtonClone.classList.remove('Recorder-stopButton--disabled');
   }
   recordButtonClone.disabled = disabled;
+  stopButtonClone.disabled = disabled;
 
   if (recording) {
     recordButtonClone.classList.add('Recorder-recordButton--recording');
+    stopButtonClone.classList.remove('Recorder-stopButton--stopped');
+    stopButtonClone.addEventListener('click', onButtonClick);
   } else {
     recordButtonClone.classList.remove('Recorder-recordButton--recording');
+    stopButtonClone.classList.add('Recorder-stopButton--stopped');
+    recordButtonClone.addEventListener('click', onButtonClick);
   }
 
   recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
+  stopButton.parentNode.replaceChild(stopButtonClone, stopButton);
 }
 
 export {
