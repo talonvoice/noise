@@ -67,7 +67,7 @@ a {
   box-sizing: border-box;
 }
 .Dialog--introduction {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgb(255, 255, 255);
   height: calc(100% - 60px);
   margin: 30px;
   overflow-y: scroll;
@@ -85,9 +85,15 @@ a {
 /* Introduction */
 .Introduction {
   box-sizing: border-box;
+  max-width: 800px;
+  margin: auto;
+}
+.Introduction article {
+  padding: 5px;
+  border: 1px dotted grey;
 }
 
-.Introduction-paragraph {
+.Introduction > li {
   margin-top: 1em;
   margin-bottom: 1em;
 }

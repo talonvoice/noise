@@ -46,7 +46,7 @@ const createInterstitial = ({ content = '', handleClick = () => {} }) => {
         <div class="Introduction-content">${content}</div>
         <div class="Introduction-controls" data-id="controls">
           <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
-          <a class="Link" href="https://talonvoice.com">Never mind</a>
+          <a class="Link" href="https://talonvoice.com">Nevermind</a>
         </div>
         </div>
       </div>
