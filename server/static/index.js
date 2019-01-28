@@ -229,7 +229,7 @@ function selectNoise(index) {
         startTime: null,
       },
     });
-    updateFilenamePrefix(noise.name); // TODO: this can be a calculated value instead
+    updateFilenamePrefix(noise.short_name); // TODO: this can be a calculated value instead
 
     // TODO: also rerender recorder?
     return true; // NOTE: signaling that we DID modify the state

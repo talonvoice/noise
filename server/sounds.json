@@ -25,6 +25,7 @@
   "sounds": [
     {
       "name": "Tut aka Tsk (C Click, Dental Click)",
+      "short_name": "tsk",
       "preview": { "path": "/static/previews/tsk.mp3", "title": "tsk" },
       "desc":
         "- Place the tip of your tongue against the roof of your mouth near your top front teeth.\n- Start by making a 't' sound, to get your mouth in the right shape\n- Instead of forcing air out, suck in lightly on your hard palate, in quick succession",
@@ -32,6 +33,7 @@
     },
     {
       "name": "Trot (X Click, Lateral Click)",
+      "short_name": "trot",
       "preview": { "path": "/static/previews/trot.mp3", "title": "trot" },
       "desc":
         "- Place your tongue against your teeth to one side\n- On the side your have placed your tongue, raise your cheek to lift the top lip and expose the teeth\n- Suck in gently",
@@ -39,6 +41,7 @@
     },
     {
       "name": "Clop (Q Click, Alveolar Click)",
+      "short_name": "clop",
       "preview": { "path": "/static/previews/clop.mp3", "title": "clop" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Place your tongue against the roof of your mouth, then suck in.\n- As you suck in, your tongue should start to slide back a little.\n- Eventually it should slide off the roof of your mouth and the suction will create a click sound.\n- Think of a horse walking on cobblestones.",
@@ -46,6 +49,7 @@
     },
     {
       "name": "Hiss (sss)",
+      "short_name": "hiss",
       "preview": { "path": "/static/previews/hiss.mp3", "title": "hiss" },
       "desc":
         "Straight hiss sound\n- Let your mouth hang slightly open with your lips parted. This should feel very natural.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- Your tongue should stay relaxed behind the teeth and not be pushed against them, and the air should flow easily.",
@@ -53,6 +57,7 @@
     },
     {
       "name": "Muted Hiss (thh)",
+      "short_name": "thh",
       "preview": { "path": "/static/previews/thh.mp3", "title": "thh" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- Let the tip of your tongue rise a little and block some of the air flow. This should feel like it takes a little more pressure than the straight hiss sound, and the air will go off to the sides rather than the middle.",
@@ -60,6 +65,7 @@
     },
     {
       "name": "Restrained Hiss (fff)",
+      "short_name": "fff",
       "preview": { "path": "/static/previews/fff.mp3", "title": "fff" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Bring your top front teeth down to gently rest on the top of your lower lip.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- This should feel like a little more pressure than sss, and less than thh",
@@ -67,6 +73,7 @@
     },
     {
       "name": "Hi-Hat (tss)",
+      "short_name": "tss",
       "preview": { "path": "/static/previews/tss.mp3", "title": "tss" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Have your teeth closed\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- The tip of your tongue should start pushed against the small ridge behind your teeth, then immediately drop it to normal position.",
@@ -74,6 +81,7 @@
     },
     {
       "name": "Shush (shh)",
+      "short_name": "shh",
       "preview": { "path": "/static/previews/shh.mp3", "title": "shh" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted. This should feel very natural.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- The middle of your tongue should be raised closer to your palate and the air should still flow easily.",
@@ -81,6 +89,7 @@
     },
     {
       "name": "P (puh)",
+      "short_name": "puh",
       "preview": { "path": "/static/previews/puh.mp3", "title": "puh" },
       "desc":
         "- Press your lips together, the top lip should curl down a bit\n- Exhale to push air out the mouth, forcing the lips apart\n- Do this for one short breath to get the exhaled \"uh\" sound\n- Variants:\n\t- **Horse:** Drop the \"uh\" sound, keep your lips relaxed and blow out more to make the lips vibrate slowly 4-5 times\n\t- **Motorcycle:** Drop the \"uh\" sound, keep your lips relaxed and blow out more to make the lips vibrate quickly, and force more air out to get the sound to rise",
@@ -88,6 +97,7 @@
     },
     {
       "name": "F (fuh)",
+      "short_name": "fuh",
       "preview": { "path": "/static/previews/fuh.mp3", "title": "fuh" },
       "desc":
         "- Curl your bottom lip in and touch your front teeth to the top of it\n- Exhale to push air out of the mouth, forcing the lips apart\n- Do this for one short breath to get the exhaled \"uh\" sound",
@@ -95,6 +105,7 @@
     },
     {
       "name": "S (suh)",
+      "short_name": "suh",
       "preview": { "path": "/static/previews/suh.mp3", "title": "suh" },
       "desc":
         "- Keep your mouth and lips relaxed\n- Start with the hiss sound\n- Exhale to push air out of the mouth for one short breath to get the exhaled \"uh\" sound",
@@ -102,6 +113,7 @@
     },
     {
       "name": "K (kuh)",
+      "short_name": "kuh",
       "preview": { "path": "/static/previews/kuh.mp3", "title": "kuh" },
       "desc":
         "- Keep your jaw relaxed and your lips parted\n- Elevate the back of your tongue to push against the soft palate, while the tip stays down\n- Exhale to push air out of the mouth\n- This should feel like a \"stop\"",
@@ -109,6 +121,7 @@
     },
     {
       "name": "T (tuh)",
+      "short_name": "tuh",
       "preview": { "path": "/static/previews/tuh.mp3", "title": "tuh" },
       "desc":
         "- Keep your jaw relaxed and your lips parted\n- Elevate the tip of your tongue to the back of your front teeth or the ridge behind them\n- Exhale to push air out of the mouth\n- This should feel like a \"stop\"",
@@ -116,6 +129,7 @@
     },
     {
       "name": "H (huh)",
+      "short_name": "huh",
       "preview": { "path": "/static/previews/huh.mp3", "title": "huh" },
       "desc":
         "- Keep your jaw relaxed and your lips parted\n- Keep your tongue relaxed\n- Exhale forcibly from your diaphram",
@@ -123,6 +137,7 @@
     },
     {
       "name": "Hard H (hgh) epiglottal trill",
+      "short_name": "hgh",
       "preview": { "path": "/static/previews/hgh.mp3", "title": "hgh" },
       "desc":
         "- Keep your jaw relaxed and your lips parted\n- Pull your tongue slightly back towards your soft palate\n- Exhale forcibly from your diaphram, causing an air vibration across your palate",
@@ -130,18 +145,21 @@
     },
     {
       "name": "Rolled R (rrh) alveolar raised non-sonorant trill",
+      "short_name": "rrh",
       "preview": { "path": "/static/previews/rrh.mp3", "title": "rrh" },
       "desc": "",
       "category": "noise"
     },
     {
       "name": "X (xuh) velar fricative",
+      "short_name": "xuh",
       "preview": { "path": "/static/previews/xuh.mp3", "title": "xuh" },
       "desc": "- Like \"och\" or \"augh\"",
       "category": "noise"
     },
     {
       "name": "Retracting Tape Measure (ssk)",
+      "short_name": "ssk",
       "preview": { "path": "/static/previews/ssk.mp3", "title": "ssk" },
       "desc":
         "Hiss with a /k/ ending\n- Let your mouth hang slightly open with your lips parted.\n- Breathe in, through either your noise or mouth, then push it out through your teeth.\n- Your tongue should not be pushed against your teeth, and the air should flow easily.\n- Keep the tip of your tongue down and let the back should rise slightly to touch the soft palate, then force some air out. This should feel like letting out the rest of the breathe quickly.",
@@ -149,65 +167,76 @@
     },
     {
       "name": "(ssp)",
+      "short_name": "ssp",
       "preview": { "path": "/static/previews/ssp.mp3", "title": "ssp" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Stop That (sst)",
+      "short_name": "sst",
       "preview": { "path": "/static/previews/sst.mp3", "title": "sst" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Get Attention (pst)",
+      "short_name": "pst",
       "preview": { "path": "/static/previews/pst.mp3", "title": "pst" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Dirty Word (ffk)",
+      "short_name": "ffk",
       "preview": { "path": "/static/previews/ffk.mp3", "title": "ffk" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Backflip (ffp)",
+      "short_name": "ffp",
       "preview": { "path": "/static/previews/ffp.mp3", "title": "ffp" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Angry Cat (fft)",
+      "short_name": "fft",
       "preview": { "path": "/static/previews/fft.mp3", "title": "fft" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Chucking Knives (thhk)",
+      "short_name": "thhk",
       "preview": { "path": "/static/previews/thhk.mp3", "title": "thhk" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Narrow Miss (thhp)",
+      "short_name": "thhp",
       "preview": { "path": "/static/previews/thhp.mp3", "title": "thhp" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Quick Stab (shhk)",
+      "short_name": "shhk",
       "preview": { "path": "/static/previews/shhk.mp3", "title": "shhk" },
       "desc": ""
     },
     {
       "name": "Shoop (shhp)",
+      "short_name": "shhp",
       "preview": { "path": "/static/previews/shhp.mp3", "title": "shhp" },
       "desc": "",
       "category": "hiss"
     },
     {
       "name": "Pop",
+      "short_name": "pop",
       "preview": { "path": "/static/previews/pop.mp3", "title": "pop" },
       "desc":
         "- Relax your jaw and keep your lips pressed very gently together\n- Push a very tiny bit of air into your mouth, then quickly open your jaw, pulling your lips apart.\n- This should create a gentle pop sound that resonates within your mouth and cheeks.\n- This works best with a bit of moisture on your lips",
@@ -242,6 +271,7 @@
     },
     {
       "name": "Uh",
+      "short_name": "uh",
       "preview": { "path": "/static/previews/uh.mp3", "title": "uh" },
       "desc":
         "- Keep your mouth and lips relaxed.\n- Force air from your diaphragm, like saying the \"uh\" from \"uh oh\"",
@@ -249,6 +279,7 @@
     },
     {
       "name": "Oh",
+      "short_name": "oh",
       "preview": { "path": "/static/previews/oh.mp3", "title": "oh" },
       "desc":
         "- Keep your mouth and lips relaxed.\n- Force air from your diaphragm and push your lips forward, like saying the  \"oh\" from \"uh oh\"",
@@ -286,6 +317,7 @@
     },
     {
       "name": "Loogie",
+      "short_name": "loogie",
       "preview": { "path": "/static/previews/loogie.mp3", "title": "loogie" },
       "desc":
         "- Start by making the Hard H sound, then pull your lips back quickly",
