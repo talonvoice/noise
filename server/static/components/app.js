@@ -60,15 +60,23 @@ const createInterstitial = ({ content = '', handleClick = () => {} }) => {
   accept.addEventListener('click', handleClick);
 };
 
-const renderInterstitial = ({ isShowing = false, acceptedTerms = false }) => {
-  const accept = document.querySelector('[data-id=interstitial-accept]');
-  const neverMind = document.querySelector('[data-id=interstitial-link]');
+const renderInterstitial = ({ isShowing = false, acceptedTerms = false, resetScroll = false }) => {
+  if (resetScroll) {
+    // scroll interstitial to the top of its content
+    const interstitial = document.querySelector('[data-id=interstitial]');
+    interstitial.scrollTop = 0
+  }
   if (acceptedTerms) {
+    // change button variants if user already accepted T&C
+    const accept = document.querySelector('[data-id=interstitial-accept]');
+    const neverMind = document.querySelector('[data-id=interstitial-link]');
     if (accept.innerHTML !== 'Dismiss' || neverMind.style.display !== 'none') {
       accept.innerHTML = 'Dismiss';
       neverMind.style.display = 'none';
     }
   }
+
+  // show the interstitial container based on `isShowing` argument
   const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
   placeholder.style.display = isShowing ? 'block' : 'none';
 };
@@ -78,6 +86,7 @@ function updateApp({ isFlac, onFlacClick, onHelpClick }) {
   const help = document.querySelector('[data-id=help-button]');
   help.addEventListener('click', onHelpClick);
   
+  // TODO: get rid of checkbox and just default to FLAC
   updateIsFlac({ checked: isFlac, disabled: false, onClick: onFlacClick});
 }
 

@@ -123,14 +123,17 @@ function loadInterstitial() {
       createInterstitial({
         content: text,
         handleClick: () => {
+          let resetScroll = false;
           if (getCookieValue('accepted') !== 'true') {
-            setCookieValue('accepted', 'true');    
+            setCookieValue('accepted', 'true');
+            resetScroll = true;
           }
           toggleInterstitialShowing();
           renderInterstitial({
             isShowing:
               !isInterstitialShowing() && getCookieValue('accepted') !== 'true',
-            acceptedTerms: getCookieValue('accepted') === 'true'
+            acceptedTerms: getCookieValue('accepted') === 'true',
+            resetScroll: resetScroll
           });
         },
       });
