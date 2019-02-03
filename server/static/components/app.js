@@ -46,31 +46,38 @@ const createInterstitial = ({ content = '', handleClick = () => {} }) => {
         <div class="Introduction-content">${content}</div>
         <div class="Introduction-controls" data-id="controls">
           <button class="Button" data-id="interstitial-accept">Accept and Continue</button>
-          <a class="Link" href="https://talonvoice.com">Never mind</a>
+          <a class="Link" data-id="interstitial-link" href="https://talonvoice.com">Never mind</a>
         </div>
         </div>
       </div>
     </div>
   `;
 
-  const placeholder = document.querySelector(
-    '[data-id=interstitial-placeholder]',
-  );
+  const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
   placeholder.innerHTML = template;
 
   const accept = document.querySelector('[data-id=interstitial-accept]');
   accept.addEventListener('click', handleClick);
 };
 
-const renderInterstitial = ({ isShowing = false }) => {
-  const placeholder = document.querySelector(
-    '[data-id=interstitial-placeholder]',
-  );
+const renderInterstitial = ({ isShowing = false, acceptedTerms = false }) => {
+  const accept = document.querySelector('[data-id=interstitial-accept]');
+  const neverMind = document.querySelector('[data-id=interstitial-link]');
+  if (acceptedTerms) {
+    if (accept.innerHTML !== 'Dismiss' || neverMind.style.display !== 'none') {
+      accept.innerHTML = 'Dismiss';
+      neverMind.style.display = 'none';
+    }
+  }
+  const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
   placeholder.style.display = isShowing ? 'block' : 'none';
 };
 
 // TODO: move everything UI into here eventually from index.js
-function updateApp({ isFlac, onFlacClick }) {
+function updateApp({ isFlac, onFlacClick, onHelpClick }) {
+  const help = document.querySelector('[data-id=help-button]');
+  help.addEventListener('click', onHelpClick);
+  
   updateIsFlac({ checked: isFlac, disabled: false, onClick: onFlacClick});
 }
 
