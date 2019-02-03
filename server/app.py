@@ -1,3 +1,5 @@
+import hashlib
+import json
 import os
 from datetime import datetime
 from flask import Flask, Response, abort, redirect, render_template, request
@@ -5,6 +7,17 @@ from werkzeug.utils import secure_filename
 
 app = Flask('noise_data')
 
+# cache bust the sounds
+with open('sounds.json', 'r') as f:
+    sounds = json.load(f)
+
+for sound in sounds['sounds']:
+    if 'preview' in sound:
+        path = sound['preview']['path']
+        with open(path.lstrip('/'), 'rb') as f:
+            md5 = hashlib.md5(f.read()).hexdigest()
+        sound['preview']['path'] = path + '?' + md5
+sounds_json = json.dumps(sounds)
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -35,9 +48,7 @@ def upload():
 
 @app.route('/noises')
 def noises():
-    with open('sounds.json', 'r') as f:
-        noises = f.read()
-    return Response(noises, mimetype='application/json')
+    return Response(sounds_json, mimetype='application/json')
 
 
 @app.route('/')

@@ -243,16 +243,6 @@
       "category": "other"
     },
     {
-      "name": "Reverse Pop",
-      "preview": {
-        "path": "/static/previews/reverse-pop.mp3",
-        "title": "reverse-pop"
-      },
-      "desc":
-        "- Start to say the word \"wet\" but don't say it - your lips should be pursed.\n- At the same time that you gently start to pull air into your mouth, pull your lips out and away to get a quieter, higher pitched reverse pop of air",
-      "category": "other"
-    },
-    {
       "name": "Smooch",
       "preview": 
         { "path": "/static/previews/smooch.mp3", "title": "smooch" },
