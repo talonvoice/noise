@@ -17,7 +17,6 @@ const noiseTemplate = ({
     }" data-id="list-item-${number}">
       <ul class="Recording-container">
         <li class="Recording-item Recording-name" data-id="list-item-${number}-name">${name}</li>
-        <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
         <li class="Recording-item Recording-instructions" data-id="list-item-${number}-instructions">${instructions}</li>
         <li class="Recording-item Recording-status" data-id="list-item-${number}-status">${statusText}</li>
       </ul>
@@ -32,7 +31,7 @@ function renderNoiseList(
   render,
   isDisabled,
 ) {
-  // TODO: put our DOM references in a singular location?
+  // TODO: put our DOM references in a singular location?   BACKUP <li class="Recording-item Recording-description" data-id="list-item-${number}-description">${description}</li>
   // TODO: prevent rerender if arguments are the same somehow
   const list = document.querySelector('[data-id=list]');
   const container = document.querySelector('[data-id=list-container]');
