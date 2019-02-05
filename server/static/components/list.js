@@ -44,7 +44,6 @@ function renderNoiseList(
     if (noise.recordCount > 0) {
       statusText += " (" + noise.recordCount + ")";
     }
-    console.log("here", noise);
     const noiseHtml = noiseTemplate({
       selected: index === selectedNoise,
       recorded: noise.status === NOISE_STATUS_VALUES.RECORDED, // TODO: remove reliance on constants in this file, and ideally, the actual noise list as well (it ought to conform to this API rather than be a straight representation of the state)

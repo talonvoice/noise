@@ -153,7 +153,6 @@ if (!uuid) {
     uuid = generateUUID();
     localStorage.setItem("uuid", uuid);
 }
-console.log('uuid');
 let state = {
   interstitial: {
     isShowing: true,
