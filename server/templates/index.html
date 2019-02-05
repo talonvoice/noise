@@ -9,7 +9,7 @@
 
 <body data-id="body">
   <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
-  <form style="display: none" enctype="multipart/form-data" action="/upload" method="POST">
+  <form style="display: none" enctype="multip1/form-data" action="/upload" method="POST">
     <input name="noise" type="file" accept="audio/*;capture=microphone">
     <br>
     <input type="submit">
@@ -24,27 +24,29 @@
         <hr>
         <div class="Recorder-info">
           <div class="Recorder-metadata">
-            <div class="Recorder-examples">
-              <div class="Recorder-examplesAudio">
-                <h3 class="Subheader">Listen to an example:</h3>
-                <p class="Recorder-exampleAudio">
-                  <div data-id="recorder-examples-list"></div>
-                </p>
-              </div>
-              <div class="Recorder-examplesVideo" style="display: none">
-                <!-- TODO: only show this if there are actually video examples -->
-                <h3 class="Subheader">Watch a video of the mouth movement:</h3>
-                <p class="Recorder-exampleVideo">
-                  <a href="#">Video of mouth movement</a>
-                </p>
-              </div>
-            </div>
             <p class="Recorder-description" data-id="description"></p>
             <!-- TODO: use this if we are going to have a long description as well -->
             <p class="Recorder-instructions" style="display: none"></p>
           </div>
         </div>
         <div class="Centered">
+
+          <div class="Recorder-examples">
+            <div class="Recorder-examplesAudio">
+              <h3 class="Subheader">Listen to an example:</h3>
+              <p class="Recorder-exampleAudio">
+                <div data-id="recorder-examples-list"></div>
+              </p>
+            </div>
+            <div class="Recorder-examplesVideo" style="display: none">
+              <!-- TODO: only show this if there are actually video examples -->
+              <h3 class="Subheader">Watch a video of the mouth movement:</h3>
+              <p class="Recorder-exampleVideo">
+                <a href="#">Video of mouth movement</a>
+              </p>
+            </div>
+          </div>
+
           <div class="Centered-column">
             <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
           </div>
@@ -77,6 +79,7 @@
     <label class="IsFlac-label" data-id="is-flac-label" for="is-flac-checkbox">FLAC</label>
     <input class="IsFlac-checkbox" data-id="is-flac-checkbox" name="is-flac-checkbox" type="checkbox" checked="checked"></input>
   </form>
+  <button class="Help" data-id="help-button"><symbol class="Help-icon">?</symbol>Help</button>
   <div class="Overlay" data-id="interstitial-placeholder" style="display: none"></div>
   <script type="module" src="static/index.js"></script>
 </body>

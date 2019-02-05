@@ -48,7 +48,7 @@ function renderRecorderAndArrows() {
 
 function renderApp() {
   // console.log('rendering from index!')
-  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick });
+  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick, onHelpClick: onHelpClick });
   renderNoiseList(
     state.noiseList,
     selectNoise,
@@ -123,11 +123,17 @@ function loadInterstitial() {
       createInterstitial({
         content: text,
         handleClick: () => {
-          setCookieValue('accepted', 'true');
+          let resetScroll = false;
+          if (getCookieValue('accepted') !== 'true') {
+            setCookieValue('accepted', 'true');
+            resetScroll = true;
+          }
           toggleInterstitialShowing();
           renderInterstitial({
             isShowing:
               !isInterstitialShowing() && getCookieValue('accepted') !== 'true',
+            acceptedTerms: getCookieValue('accepted') === 'true',
+            resetScroll: resetScroll
           });
         },
       });
@@ -331,6 +337,17 @@ const onFlacClick = function(e) {
   });
 
   renderApp();
+};
+
+const onHelpClick = function(e) {
+  e.preventDefault();
+  
+  toggleInterstitialShowing();
+
+  renderInterstitial({
+    isShowing: isInterstitialShowing(),
+    acceptedTerms: getCookieValue('accepted') === 'true'
+  });
 };
 
 const doStartRecording = function() {
@@ -651,6 +668,7 @@ function processNoises(noises) {
 loadInterstitial().then(isShowing => {
   renderInterstitial({
     isShowing: isShowing && getCookieValue('accepted') !== 'true',
+    acceptedTerms: getCookieValue('accepted') === 'true'
   });
 });
 getNoises();
