@@ -470,7 +470,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     if (state.recorder.timer) {
       clearInterval(state.recorder.timer);
     }
-    state.recorder.timer = setInterval(renderRecorderAndArrows, 1000);
+    state.recorder.timer = setInterval(renderRecorderAndArrows, 250);
 
     /* state management dispatch */
     updateRecorderStatus(RECORDER_STATUS_VALUES.RECORDING);
