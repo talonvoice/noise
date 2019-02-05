@@ -159,16 +159,19 @@ a {
 }
 
 .Recording-name {
+  flex: 4;
 }
 
 .Recording-description {
   flex: 2;
 }
 
+/*
 .Recording-instructions {
   display: none;
   flex: 4;
 }
+*/
 
 .Recording-status {
   font-style: italic;
