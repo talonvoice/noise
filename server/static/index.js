@@ -142,6 +142,12 @@ function loadInterstitial() {
   State
  */
 
+let uuid = localStorage.getItem("uuid");
+if (!uuid) {
+    uuid = generateUUID();
+    localStorage.setItem("uuid", uuid);
+}
+console.log('uuid');
 let state = {
   interstitial: {
     isShowing: true,
@@ -152,7 +158,7 @@ let state = {
     startTime: null,
     filename: {
       prefix: '',
-      sessionID: generateUUID(), // TODO: let server take care of this
+      sessionID: uuid, // TODO: let server take care of this
       // TODO: use this UUID and put it in local storage
     },
     chunkNumber: 0,
@@ -201,10 +207,26 @@ function updateFilenamePrefix(prefix) {
 }
 
 function initializeNoises(noises) {
-  let updatedNoiseList = noises.map(noise => ({
-    ...noise,
-    status: NOISE_STATUS_VALUES.UNRECORDED, // TODO: eventually, get this information from the server
-  }));
+  let updatedNoiseList = noises.map(noise => {
+    let status = NOISE_STATUS_VALUES.UNRECORDED;
+    let recordCount = 0;
+    if (noise.short_name) {
+      let key = "noise_" + noise.short_name;
+      let localNoise = localStorage.getItem(key);
+      if (localNoise) {
+        localNoise = JSON.parse(localNoise);
+        if (localNoise.recordCount > 0) {
+          status = NOISE_STATUS_VALUES.RECORDED;
+          recordCount = localNoise.recordCount;
+        }
+      }
+    }
+    return {
+      ...noise,
+      recordCount: recordCount,
+      status: status, // TODO: eventually, get this information from the server
+    }
+  });
 
   /* state management dispatch */
   updateState({
@@ -265,9 +287,23 @@ function updateRecorderStatus(newStatus) {
 }
 
 function updateRecorderAndNoiseStatus(recordStatus, noiseStatus) {
+    let noise = state.noiseList[state.selectedNoise];
     let updatedNoiseList = [...state.noiseList];
     updatedNoiseList[state.selectedNoise].status =
       noiseStatus; // TODO: how to ensure no async probs?
+
+    let key = "noise_" + noise.short_name;
+    let localNoise = localStorage.getItem(key);
+    if (localNoise) {
+      localNoise = JSON.parse(localNoise);
+    } else {
+      localNoise = {recordCount: 0};
+    }
+    if (noiseStatus === NOISE_STATUS_VALUES.RECORDED) {
+      localNoise.recordCount += 1;
+      localStorage.setItem(key, JSON.stringify(localNoise));
+      updatedNoiseList[state.selectedNoise].recordCount = localNoise.recordCount;
+    }
 
     updateState({
       noiseList: updatedNoiseList,

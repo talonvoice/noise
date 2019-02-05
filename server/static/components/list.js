@@ -41,6 +41,11 @@ function renderNoiseList(
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
     // TODO: render differently depending on if disabled or not; will need this to be called more frequently by the consumer first, however
+    let statusText = noise.status.description;
+    if (noise.recordCount > 0) {
+      statusText += " (" + noise.recordCount + ")";
+    }
+    console.log("here", noise);
     const noiseHtml = noiseTemplate({
       selected: index === selectedNoise,
       recorded: noise.status === NOISE_STATUS_VALUES.RECORDED, // TODO: remove reliance on constants in this file, and ideally, the actual noise list as well (it ought to conform to this API rather than be a straight representation of the state)
@@ -48,13 +53,12 @@ function renderNoiseList(
       name: noise.name,
       description: noise.desc,
       instructions: '',
-      statusText: noise.status.description,
+      statusText: statusText,
     });
     container.insertAdjacentHTML('beforeend', noiseHtml);
     const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
     item.addEventListener('click', evt => {
       if (!isDisabled()) {
-        console.log('selecting...');
         // TODO: put proper hooks in place and then we may not need to pass as function, although we may still want to
         if (itemAction(index)) {
           // relies on modified signal
