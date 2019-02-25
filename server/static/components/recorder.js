@@ -142,37 +142,28 @@ function renderButton({
   disabled = false,
   onButtonClick = () => {},
 }) {
-  /* UI */
-
-  // get rid of original event handler by replacing button element
-  // TODO: look into other ways of doing this, including using the original reference to the handler
   const recordButton = document.querySelector('[data-id=recordButton]');
-  const recordButtonClone = recordButton.cloneNode(true);
   const stopButton = document.querySelector('[data-id=stopButton]');
-  const stopButtonClone = stopButton.cloneNode(true);
 
   if (disabled) {
-    recordButtonClone.classList.add('Recorder-recordButton--disabled');
-    stopButtonClone.classList.add('Recorder-stopButton--disabled');
+    recordButton.classList.add('Recorder-recordButton--disabled');
+    stopButton.classList.add('Recorder-stopButton--disabled');
   } else {
-    recordButtonClone.classList.remove('Recorder-recordButton--disabled');
-    stopButtonClone.classList.remove('Recorder-stopButton--disabled');
+    recordButton.classList.remove('Recorder-recordButton--disabled');
+    stopButton.classList.remove('Recorder-stopButton--disabled');
   }
-  recordButtonClone.disabled = disabled;
-  stopButtonClone.disabled = disabled;
+  recordButton.disabled = disabled;
+  stopButton.disabled = disabled;
 
   if (recording) {
-    recordButtonClone.classList.add('Recorder-recordButton--recording');
-    stopButtonClone.classList.remove('Recorder-stopButton--stopped');
-    stopButtonClone.addEventListener('click', onButtonClick);
+    recordButton.classList.add('Recorder-recordButton--recording');
+    stopButton.classList.remove('Recorder-stopButton--stopped');
+    stopButton.addEventListener('click', onButtonClick);
   } else {
-    recordButtonClone.classList.remove('Recorder-recordButton--recording');
-    stopButtonClone.classList.add('Recorder-stopButton--stopped');
-    recordButtonClone.addEventListener('click', onButtonClick);
+    recordButton.classList.remove('Recorder-recordButton--recording');
+    stopButton.classList.add('Recorder-stopButton--stopped');
+    recordButton.addEventListener('click', onButtonClick);
   }
-
-  recordButton.parentNode.replaceChild(recordButtonClone, recordButton);
-  stopButton.parentNode.replaceChild(stopButtonClone, stopButton);
 }
 
 export {
