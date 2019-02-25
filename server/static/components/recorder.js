@@ -1,5 +1,24 @@
 import { renderPlayer } from './player.js';
+ 
+function getPlayers(noise) {
+  let { preview: { path: path_audio, title: title_audio } = {}, video: { path: path_video, title: title_video } = {} } = noise;
+  
+  const audio_player = 'preview' in noise ? renderPlayer({
+    id: 0,
+    url: path_audio,
+    title: title_audio,
+    mediaType: 'audio',
+  }) : '';
+  
+  const video_player = 'video' in noise ? renderPlayer({
+    id: 0,
+    url: path_video,
+    title: title_video,
+    mediaType: 'video',
+  }) : '';
 
+  return audio_player + video_player;
+}
 function renderRecorder({
   noise,
   recorderState, // TODO: divorce state shape of recorder
@@ -17,29 +36,8 @@ function renderRecorder({
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description');
   const examples = document.querySelector('[data-id=recorder-examples-list]');
-  let players = '';
 
-  if (noise.preview && Array.isArray(noise.preview)) {
-    // if there's more than one preview
-    players = noise.preview
-      .map(({ path, title }, index) =>
-        renderPlayer({
-          id: index,
-          url: path,
-          title: title,
-        }),
-      )
-      .join('');
-  } else {
-    // if there's only one preview (majority case)
-    let { path, title } = noise.preview;
-    players = renderPlayer({
-      id: 0,
-      url: path,
-      title: title,
-    });
-  }
-  examples.innerHTML = players;
+  examples.innerHTML = getPlayers(noise);
 
   recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;

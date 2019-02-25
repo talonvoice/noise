@@ -11,12 +11,16 @@ app = Flask('noise_data')
 with open('sounds.json', 'r') as f:
     sounds = json.load(f)
 
-for sound in sounds['sounds']:
-    if 'preview' in sound:
-        path = sound['preview']['path']
+def bust(property):
+    if property in sound:
+        path = sound[property]['path']
         with open(path.lstrip('/'), 'rb') as f:
             md5 = hashlib.md5(f.read()).hexdigest()
-        sound['preview']['path'] = path + '?' + md5
+        sound[property]['path'] = path + '?' + md5
+
+for sound in sounds['sounds']:
+    bust('preview')
+    bust('video')
 sounds_json = json.dumps(sounds)
 
 @app.route('/upload', methods=['POST'])

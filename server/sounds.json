@@ -27,6 +27,7 @@
       "name": "Tut aka Tsk (C Click, Dental Click)",
       "short_name": "tsk",
       "preview": { "path": "/static/previews/tsk.mp3", "title": "tsk" },
+      "video": { "path": "/static/previews/tsk.mp4", "title": "tsk video" },
       "desc":
         "- Place the tip of your tongue against the roof of your mouth near your top front teeth.\n- Start by making a 't' sound, to get your mouth in the right shape\n- Instead of forcing air out, suck in lightly on your hard palate, in quick succession",
       "category": "click"
@@ -35,6 +36,7 @@
       "name": "Trot (X Click, Lateral Click)",
       "short_name": "trot",
       "preview": { "path": "/static/previews/trot.mp3", "title": "trot" },
+      "video": { "path": "/static/previews/trot.mp4", "title": "trot video" },
       "desc":
         "- Place your tongue against your teeth to one side\n- On the side your have placed your tongue, raise your cheek to lift the top lip and expose the teeth\n- Suck in gently",
       "category": "click"
@@ -43,6 +45,7 @@
       "name": "Clop (Q Click, Alveolar Click)",
       "short_name": "clop",
       "preview": { "path": "/static/previews/clop.mp3", "title": "clop" },
+            "video": { "path": "/static/previews/clop.mp4", "title": "clop video" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Place your tongue against the roof of your mouth, then suck in.\n- As you suck in, your tongue should start to slide back a little.\n- Eventually it should slide off the roof of your mouth and the suction will create a click sound.\n- Think of a horse walking on cobblestones.",
       "category": "click"
