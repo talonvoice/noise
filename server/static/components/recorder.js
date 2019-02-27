@@ -15,7 +15,7 @@ function renderRecorder({
   disabled = false;
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
-  const recorderDescription = recorder.querySelector('[data-id=description');
+  const recorderDescription = recorder.querySelector('[data-id=description]');
   const examples = document.querySelector('[data-id=recorder-examples-list]');
   let players = '';
 
