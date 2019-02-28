@@ -102,24 +102,29 @@ function record({
       }
     };
 
-    if (navigator.webkitGetUserMedia)
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+        .then(container.gotUserMedia)
+        .catch(container.userMediaFailed);
+    } else if (navigator.webkitGetUserMedia) {
       navigator.webkitGetUserMedia(
         { video: false, audio: true },
         container.gotUserMedia,
         container.userMediaFailed,
       );
-    else if (navigator.mozGetUserMedia)
+    } else if (navigator.mozGetUserMedia) {
       navigator.mozGetUserMedia(
         { video: false, audio: true },
         container.gotUserMedia,
         container.userMediaFailed,
       );
-    else
+    } else {
       navigator.getUserMedia(
         { video: false, audio: true },
         container.gotUserMedia,
         container.userMediaFailed,
       );
+    }
   };
 
   container.userMediaFailed = function(code) {

@@ -81,10 +81,15 @@ function renderApp() {
 // TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
 function requestMediaPermissions(onSuccess, onFailure) {
   /* async I/O dispatch */
-  return navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then(onSuccess)
-    .catch(onFailure);
+  if (navigator.mediaDevices.getUserMedia) {
+    return navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(onSuccess)
+      .catch(onFailure);
+  } else if (navigator.getUserMedia) {
+    return navigator.getUserMedia({ audio: true, video: false })
+      .then(onSuccess)
+      .catch(onFailure);
+  }
 }
 
 /*
@@ -569,6 +574,16 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
 function render() {
   renderApp();
+  // document.addEventListener('keydown', () => console.log('test'));
+  // keyDownHandler({
+  //   space: (evt) => { console.log('test'); onRecordClick() },
+  //   p: (evt) => { console.log('test'); onRecordClick() },
+  //   v: (evt) => { console.log('test'); onRecordClick() },
+  //   h: (evt) => { console.log('test'); loadInterstitial() },
+  //   down: (evt) => { console.log('test'); incrementSelectedNoise() },
+  //   right: incrementSelectedNoise,
+  //   left: decrementSelectedNoise,
+  // }), false);
 }
 
 function processNoises(noises) {
