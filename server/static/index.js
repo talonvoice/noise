@@ -21,7 +21,6 @@ import {
 } from './components/app.js';
 import { RECORDER_STATUS_VALUES, NOISE_STATUS_VALUES } from './constants.js'; // TODO: separate these out by domain
 
-import { initializeRecorder } from './record/record.js'; // old code path: MediaRecorder and WEBM
 import { record } from './utilities/record.js'; // new code path: libflac.js and FLAC
 
 /*
