@@ -126,10 +126,11 @@ function record({
   };
 
   container.gotUserMedia = function(localMediaStream) {
+    let track = localMediaStream.getTracks()[0];
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
       devices.forEach(function(device) {
-        if (device.kind === 'audioinput' && localMediaStream.getSettings().deviceId == device.deviceId) {
+        if (device.kind === 'audioinput' && track.getSettings().deviceId == device.deviceId) {
           console.log('microphone:', device.label);
         }
       });
