@@ -44,7 +44,7 @@ def upload():
         path = '{}-{}{}'.format(base, n, ext)
 
     noise.save(path)
-    mic_name = form.get('micName')
+    mic_name = form.get('mic')
     if mic_name:
         try:
             f = FLAC(path)
