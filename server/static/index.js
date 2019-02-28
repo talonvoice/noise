@@ -81,8 +81,11 @@ function renderApp() {
 // TODO: fallback: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia#Using_the_new_API_in_older_browsers, https://github.com/webrtc/adapter
 function requestMediaPermissions(onSuccess, onFailure) {
   /* async I/O dispatch */
+  let audioConstraints = {
+    channelCount: 1,
+  };
   if (navigator.mediaDevices.getUserMedia) {
-    return navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+    return navigator.mediaDevices.getUserMedia({ audio: audioConstraints, video: false })
       .then(onSuccess)
       .catch(onFailure);
   } else if (navigator.getUserMedia) {
@@ -166,6 +169,7 @@ let state = {
   },
   recorder: {
     explicitlyPermitted: false,
+    cachedStream: null,
     status: RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
     startTime: null,
     filename: {
@@ -340,7 +344,7 @@ const onHelpClick = function(e) {
   });
 };
 
-const doStartRecording = function(cachedStream) {
+const doStartRecording = function() {
   /* state management dispatch */
   updateState({
     recorder: {
@@ -360,8 +364,7 @@ const doStartRecording = function(cachedStream) {
   updateDownloadLink({ disabled: true });
 
   /* I/O dispatch */
-  state.recorder.callbacks.startRecording(cachedStream); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
-  state.recorder.status = RECORDER_STATUS_VALUES.STARTING;
+  state.recorder.callbacks.startRecording(state.recorder.cachedStream.clone()); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
 
   // force re-render
   renderApp();
@@ -377,11 +380,13 @@ const doStopRecording = () => {
 
 // TODO: consider making this a function generator where we pass in startRecording() and stopRecording()
 // TODO: refactor this big time
-const onRecordClick = function() {
+const onRecordClick = function(e) {
+  if (e.target.disabled) return;
   // console.log('onRecordClick() from index');
   if (state.recorder.status === RECORDER_STATUS_VALUES.WAIT_FOR_CLICK || state.recorder.status === RECORDER_STATUS_VALUES.UPLOADED || state.recorder.status === RECORDER_STATUS_VALUES.ALREADY_RECORDED) {
     if (!state.recorder.explicitlyPermitted) {
       // TODO: consider doing this reacting to state change instead
+      updateRecorderStatus(RECORDER_STATUS_VALUES.STARTING);
       requestMediaPermissions(
         handleRequestMediaPermissionsSuccess,
         handleRequestMediaPermissionsFailure,
@@ -408,6 +413,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     recorder: {
       ...state.recorder,
       explicitlyPermitted: true,
+      cachedStream: stream,
     },
   });
 
@@ -435,27 +441,30 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   });
 
   // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
-  doStartRecording(stream);
+  doStartRecording();
 
   /* UI dispatch */
   // TODO: move into UI component?
   renderButton({
     recording: false,
-    disabled: false,
+    disabled: true,
     onButtonClick: onRecordClick,
   });
 
   function onRecordStart() {
-    // TODO: start/stop a timer
-    // console.log(`Recording started...`);
-    state.recorder.startTime = Date.now();
-    if (state.recorder.timer) {
-      clearInterval(state.recorder.timer);
-    }
-    state.recorder.timer = setInterval(renderRecorderAndArrows, 250);
+    // first chunk of audio won't be as good, so don't tell them we're recording for 500ms
+    setTimeout(function() {
+      // TODO: start/stop a timer
+      // console.log(`Recording started...`);
+      state.recorder.startTime = Date.now();
+      if (state.recorder.timer) {
+        clearInterval(state.recorder.timer);
+      }
+      state.recorder.timer = setInterval(renderRecorderAndArrows, 250);
 
-    /* state management dispatch */
-    updateRecorderStatus(RECORDER_STATUS_VALUES.RECORDING);
+      /* state management dispatch */
+      updateRecorderStatus(RECORDER_STATUS_VALUES.RECORDING);
+    }, 500);
   }
 
   // TODO: merge the two functions below

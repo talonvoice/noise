@@ -32,7 +32,6 @@ function renderRecorder({
   onLeftArrowClick,
   onRightArrowClick,
 }) {
-  disabled = false;
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description]');
@@ -151,17 +150,24 @@ function renderButton({
     recordButton.classList.remove('Recorder-recordButton--disabled');
     stopButton.classList.remove('Recorder-stopButton--disabled');
   }
-  recordButton.disabled = disabled;
-  stopButton.disabled = disabled;
 
-  if (recording) {
-    recordButton.classList.add('Recorder-recordButton--recording');
-    stopButton.classList.remove('Recorder-stopButton--stopped');
-    stopButton.addEventListener('click', onButtonClick);
+  if (disabled) {
+    recordButton.disabled = true;
+    stopButton.disabled = true;
   } else {
-    recordButton.classList.remove('Recorder-recordButton--recording');
-    stopButton.classList.add('Recorder-stopButton--stopped');
-    recordButton.addEventListener('click', onButtonClick);
+    if (recording) {
+      recordButton.classList.add('Recorder-recordButton--recording');
+      stopButton.classList.remove('Recorder-stopButton--stopped');
+      stopButton.addEventListener('click', onButtonClick);
+      recordButton.disabled = true;
+      stopButton.disabled = false;
+    } else {
+      recordButton.classList.remove('Recorder-recordButton--recording');
+      stopButton.classList.add('Recorder-stopButton--stopped');
+      recordButton.addEventListener('click', onButtonClick);
+      recordButton.disabled = false;
+      stopButton.disabled = true;
+    }
   }
 }
 
