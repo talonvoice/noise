@@ -48,7 +48,7 @@ function renderRecorderAndArrows() {
 
 function renderApp() {
   // console.log('rendering from index!')
-  updateApp({ isFlac: state.recorder.isFlac, onFlacClick: onFlacClick, onHelpClick: onHelpClick });
+  updateApp({ onHelpClick: onHelpClick });
   renderNoiseList(
     state.noiseList,
     selectNoise,
@@ -173,7 +173,6 @@ let state = {
       startRecording: () => {},
       stopRecording: () => {},
     },
-    isFlac: true,
   },
   noiseList: [],
   selectedNoise: -1,
@@ -322,22 +321,6 @@ function updateRecorderAndNoiseStatus(recordStatus, noiseStatus) {
 /*
   Event handlers
  */
-const onFlacClick = function(e) {
-  e.preventDefault();
-
-  // TODO: clean up after current recorders, if any, and allow for toggling on/off after first recording occurs (currently broken)
-  updateState({
-    recorder: {
-      ...state.recorder,
-      chunks: [],
-      status: RECORDER_STATUS_VALUES.WAIT_FOR_CLICK,
-      isFlac: !state.recorder.isFlac,
-    },
-  });
-
-  renderApp();
-};
-
 const onHelpClick = function(e) {
   e.preventDefault();
   
@@ -422,23 +405,13 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
   let initialized = {};
 
-  if (!state.recorder.isFlac) {
-    initialized = initializeRecorder({
-      stream,
-      onRecordStart,
-      onDataAvailable,
-      onRecordStop,
-      onRecordError,
-    }); // old code path: MediaRecorder and WEBM
-  } else {
-    // TODO: replace with more intuitive code
-    initialized = record({
-      onRecordStart,
-      onRecordStop: onRecordStopFlac,
-      onFileReady: onFileReadyFlac,
-      onDataAvailable: onDataAvailableFlac,
-    }); // new code path: libflac.js and FLAC
-  }
+  // TODO: replace with more intuitive code
+  initialized = record({
+    onRecordStart,
+    onRecordStop: onRecordStopFlac,
+    onFileReady: onFileReadyFlac,
+    onDataAvailable: onDataAvailableFlac,
+  }); // new code path: libflac.js and FLAC
 
   // TODO: set up audio context instead?
   updateState({
@@ -493,67 +466,6 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   }
 
   // TODO: merge the two functions below
-  function onRecordStop() {
-    // console.log(`onRecordStop() from index`);
-    // console.log(`Recording stopped...`);
-    if (state.recorder.timer) {
-      clearInterval(state.recorder.timer);
-    }
-    state.recorder.startTime = null;
-
-    updateRecorderStatus(RECORDER_STATUS_VALUES.UPLOADING);
-    // generate filename from session ID and create blob out of chunks for:
-    // 1) display download link on screen (currently hidden functionality)
-    // 2) uploading to server
-
-    // TODO: move into own function
-    const extension = state.recorder.isFlac ? 'flac' : 'webm';
-    const filename = `${state.recorder.filename.prefix}.${
-      state.recorder.filename.sessionID
-    }.${extension}`;
-    let blob = new Blob(state.recorder.chunks);
-
-    /* UI dispatch */
-    let url = URL.createObjectURL(blob);
-
-    updateDownloadLink({
-      url,
-      filename, // from state
-    });
-
-    updatePlaybackPlayer({
-      title: '',
-      url,
-    });
-
-    // TODO: implement this so that the user can play back the sound they just recorded
-    // updateRecordingPlayer({
-    //   url,
-    // });
-
-    /*
-     async I/O (network request)
-    */
-
-    let file = new File([blob], filename);
-
-    // TODO: upload progress meter
-    upload(file, state.recorder.filename.sessionID)
-      .then(response => console.log(response.statusText))
-      .then(success => {
-        updateRecorderAndNoiseStatus(RECORDER_STATUS_VALUES.UPLOADED, NOISE_STATUS_VALUES.RECORDED);
-        // TODO: move into UI component?
-        renderApp();
-      })
-      .catch(error => {
-        console.log(error); // TODO: Handle the error response object (notify the user that uploading failed)
-
-        updateRecorderStatus(RECORDER_STATUS_VALUES.WAIT_FOR_CLICK);
-
-        // TODO: move into UI component?
-        renderApp();
-      });
-  }
 
   function onRecordStopFlac() {
     if (state.recorder.timer) {
@@ -577,7 +489,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     // 2) uploading to server
 
     // TODO: move into own function
-    const extension = state.recorder.isFlac ? 'flac' : 'webm';
+    const extension = 'flac';
     const filename = `${state.recorder.filename.prefix}.${extension}`;
     // let blob = new Blob(state.recorder.chunks);
 
