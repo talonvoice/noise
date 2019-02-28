@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from flask import Flask, Response, abort, redirect, render_template, request
 from werkzeug.utils import secure_filename
+from mutagen.flac import FLAC
 
 app = Flask('noise_data')
 
@@ -43,6 +44,15 @@ def upload():
         path = '{}-{}{}'.format(base, n, ext)
 
     noise.save(path)
+    mic_name = form.get('micName')
+    if mic_name:
+        try:
+            f = FLAC(path)
+            f['microphone'] = str(mic_name)[:256]
+            f.save()
+        except Exception:
+            import traceback
+            traceback.print_exc()
     return 'ok'
 
 
