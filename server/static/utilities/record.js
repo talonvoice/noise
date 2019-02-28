@@ -126,6 +126,7 @@ function record({
   };
 
   container.gotUserMedia = function(localMediaStream) {
+    console.log('microphone', localMediaStream);
     container.recording = true;
     container.recordButtonStyle = '';
 
