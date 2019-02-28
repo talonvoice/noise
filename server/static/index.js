@@ -103,10 +103,13 @@ function getNoises() {
     );
 }
 
-function upload(file, sessionID) {
+function upload(file, sessionID, micName) {
   let data = new FormData();
   data.append('noise', file);
   data.append('user', sessionID); // TODO: names in uploads? // TODO: make this persistent
+  if (micName) {
+    data.append('mic', micName);
+  }
 
   return window.fetch('/upload', {
     method: 'POST',
@@ -171,6 +174,7 @@ let state = {
       // TODO: currently abusing state to have handy references to recorder functionality; figure out a better way to do this
       startRecording: () => {},
       stopRecording: () => {},
+      getMicName: () => {},
     },
   },
   noiseList: [],
@@ -420,6 +424,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
         ...state.recorder.callbacks,
         startRecording: initialized.startRecording,
         stopRecording: initialized.stopRecording,
+        getMicName: initialized.getMicName,
       },
     },
   });
@@ -512,7 +517,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
     let file = new File([blob], filename);
 
     // TODO: upload progress meter
-    upload(file, state.recorder.filename.sessionID)
+    upload(file, state.recorder.filename.sessionID, state.recorder.callbacks.getMicName())
       .then(response => console.log(response.statusText))
       .then(success => {
         updateRecorderAndNoiseStatus(RECORDER_STATUS_VALUES.UPLOADED, NOISE_STATUS_VALUES.RECORDED);

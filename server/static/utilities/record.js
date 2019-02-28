@@ -6,6 +6,7 @@ function record({
 }) {
   let container = {};
 
+  container.micName = '';
   container.audio_context = null;
   container.stream = null;
   container.recording = false;
@@ -125,16 +126,22 @@ function record({
     console.log('grabbing microphone failed: ' + code);
   };
 
+  container.getMicName = function() {
+    return container.micName;
+  }
+
   container.gotUserMedia = function(localMediaStream) {
-    let track = localMediaStream.getTracks()[0];
-    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-      devices.forEach(function(device) {
-        if (device.kind === 'audioinput' && track.getSettings().deviceId == device.deviceId) {
-          console.log('microphone:', device.label);
-        }
-      });
-    })
+    try {
+      let track = localMediaStream.getTracks()[0];
+      navigator.mediaDevices.enumerateDevices()
+      .then(function(devices) {
+        devices.forEach(function(device) {
+          if (device.kind === 'audioinput' && track.getSettings().deviceId == device.deviceId) {
+            container.micName = device.label;
+          }
+        });
+      })
+    } catch (err) { console.error(err); }
 
     container.recording = true;
     container.recordButtonStyle = '';
@@ -264,6 +271,7 @@ function record({
     startRecording: container.startRecording,
     stopRecording: container.stopRecording,
     forceDownload: container.forceDownload,
+    getMicName: container.getMicName,
   };
 }
 
