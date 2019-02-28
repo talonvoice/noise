@@ -126,7 +126,15 @@ function record({
   };
 
   container.gotUserMedia = function(localMediaStream) {
-    console.log('microphone', localMediaStream);
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      devices.forEach(function(device) {
+        if (device.kind === 'audioinput' && localMediaStream.getSettings().deviceId == device.deviceId) {
+          console.log('microphone:', device.label);
+        }
+      });
+    })
+
     container.recording = true;
     container.recordButtonStyle = '';
 
