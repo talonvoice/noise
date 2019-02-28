@@ -49,7 +49,7 @@ function record({
     container.wav_format = isUseWavFormat;
   };
 
-  container.startRecording = function(e) {
+  container.startRecording = function(cachedStream) {
     console.log('attempt to start recording ...'); //DEBUG
     if (container.recording) return;
 
@@ -102,28 +102,32 @@ function record({
       }
     };
 
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-        .then(container.gotUserMedia)
-        .catch(container.userMediaFailed);
-    } else if (navigator.webkitGetUserMedia) {
-      navigator.webkitGetUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
-    } else if (navigator.mozGetUserMedia) {
-      navigator.mozGetUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
+    if (cachedStream) {
+      container.gotUserMedia(cachedStream);
     } else {
-      navigator.getUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+          .then(container.gotUserMedia)
+          .catch(container.userMediaFailed);
+      } else if (navigator.webkitGetUserMedia) {
+        navigator.webkitGetUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      } else if (navigator.mozGetUserMedia) {
+        navigator.mozGetUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      } else {
+        navigator.getUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      }
     }
   };
 

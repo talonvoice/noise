@@ -340,7 +340,7 @@ const onHelpClick = function(e) {
   });
 };
 
-const doStartRecording = function() {
+const doStartRecording = function(cachedStream) {
   /* state management dispatch */
   updateState({
     recorder: {
@@ -360,7 +360,7 @@ const doStartRecording = function() {
   updateDownloadLink({ disabled: true });
 
   /* I/O dispatch */
-  state.recorder.callbacks.startRecording(); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
+  state.recorder.callbacks.startRecording(cachedStream); // TODO: get a reference to this function, which is returned by initializeRecorder(), below
   state.recorder.status = RECORDER_STATUS_VALUES.STARTING;
 
   // force re-render
@@ -435,7 +435,7 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
   });
 
   // manually trigger first time we've successfully gotten permissions to the mic since the user already clicked the Record button
-  doStartRecording();
+  doStartRecording(stream);
 
   /* UI dispatch */
   // TODO: move into UI component?
