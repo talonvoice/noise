@@ -54,15 +54,16 @@ a {
   border-radius: 3px;
 }
 
-.Centered {
+.RecordUI {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: left;
   margin: 0 auto;
-  justify-content: center;
 }
-.Centered-column--fill {
-  flex: 1;
+.RecordUI-column--spaced {
+  margin-left: 20px;
+  min-width: 200px;
+  margin-right: 20px;
 }
 
 .Dialog {
@@ -344,25 +345,6 @@ a {
   border-right: none;
 }
 
-.IsFlac {
-  top: 0;
-  right: 0;
-  position: absolute;
-  padding: 10px;
-  border: solid 1px #ccc;
-  background-color: rgba(255, 255, 255, 0.50);
-  display: none;
-}
-
-.IsFlac-label {
-}
-.IsFlac-label--disabled {
-  color: #ccc;
-}
-
-.IsFlac-checkbox {
-}
-
 .Help {
   position: fixed;
   padding: 3px;
@@ -370,8 +352,8 @@ a {
   margin-bottom: 10px;
   right: 0;
   bottom: 0;
-  height: 30px;
-  width: 30px;
+  height: 80px;
+  width: 80px;
   font-size: 0; /* hide text */
   border-radius: 50%;
   background-color: rgba(183,183,183,0.5);
@@ -382,9 +364,8 @@ a {
   background-color: rgba(159,159,159,0.5);
   cursor: pointer;
 }
-
 .Help-icon {
-  font-size: 18px;
+  font-size: 30px;
   color: white;
   font-weight: bold;
 }

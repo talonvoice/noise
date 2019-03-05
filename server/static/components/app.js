@@ -1,6 +1,5 @@
 import { renderNoiseList } from './list.js';
 import { renderPlayer } from './player.js';
-import { updateIsFlac } from './is-flac.js';
 
 import {
   renderRecorder,
@@ -82,12 +81,9 @@ const renderInterstitial = ({ isShowing = false, acceptedTerms = false, resetScr
 };
 
 // TODO: move everything UI into here eventually from index.js
-function updateApp({ isFlac, onFlacClick, onHelpClick }) {
+function updateApp({ onHelpClick }) {
   const help = document.querySelector('[data-id=help-button]');
   help.addEventListener('click', onHelpClick);
-  
-  // TODO: get rid of checkbox and just default to FLAC
-  updateIsFlac({ checked: isFlac, disabled: false, onClick: onFlacClick});
 }
 
 export {

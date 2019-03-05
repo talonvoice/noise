@@ -6,6 +6,7 @@ function record({
 }) {
   let container = {};
 
+  container.micName = '';
   container.audio_context = null;
   container.stream = null;
   container.recording = false;
@@ -48,7 +49,7 @@ function record({
     container.wav_format = isUseWavFormat;
   };
 
-  container.startRecording = function(e) {
+  container.startRecording = function(cachedStream) {
     console.log('attempt to start recording ...'); //DEBUG
     if (container.recording) return;
 
@@ -101,28 +102,32 @@ function record({
       }
     };
 
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-        .then(container.gotUserMedia)
-        .catch(container.userMediaFailed);
-    } else if (navigator.webkitGetUserMedia) {
-      navigator.webkitGetUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
-    } else if (navigator.mozGetUserMedia) {
-      navigator.mozGetUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
+    if (cachedStream) {
+      container.gotUserMedia(cachedStream);
     } else {
-      navigator.getUserMedia(
-        { video: false, audio: true },
-        container.gotUserMedia,
-        container.userMediaFailed,
-      );
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+          .then(container.gotUserMedia)
+          .catch(container.userMediaFailed);
+      } else if (navigator.webkitGetUserMedia) {
+        navigator.webkitGetUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      } else if (navigator.mozGetUserMedia) {
+        navigator.mozGetUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      } else {
+        navigator.getUserMedia(
+          { video: false, audio: true },
+          container.gotUserMedia,
+          container.userMediaFailed,
+        );
+      }
     }
   };
 
@@ -130,7 +135,23 @@ function record({
     console.log('grabbing microphone failed: ' + code);
   };
 
+  container.getMicName = function() {
+    return container.micName;
+  }
+
   container.gotUserMedia = function(localMediaStream) {
+    try {
+      let track = localMediaStream.getTracks()[0];
+      navigator.mediaDevices.enumerateDevices()
+      .then(function(devices) {
+        devices.forEach(function(device) {
+          if (device.kind === 'audioinput' && track.getSettings().deviceId == device.deviceId) {
+            container.micName = device.label;
+          }
+        });
+      })
+    } catch (err) { console.error(err); }
+
     container.recording = true;
     container.recordButtonStyle = '';
 
@@ -259,6 +280,7 @@ function record({
     startRecording: container.startRecording,
     stopRecording: container.stopRecording,
     forceDownload: container.forceDownload,
+    getMicName: container.getMicName,
   };
 }
 

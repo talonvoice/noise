@@ -29,8 +29,7 @@
             <p class="Recorder-instructions" style="display: none"></p>
           </div>
         </div>
-        <div class="Centered">
-
+        <div class="RecordUI">
           <div class="Recorder-examples">
             <div class="Recorder-examplesAudio">
               <h3 class="Subheader">Listen to an example:</h3>
@@ -47,10 +46,10 @@
             </div>
           </div>
 
-          <div class="Centered-column">
+          <div class="RecordUI-column">
             <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
           </div>
-          <div class="Centered-column--fill">
+          <div class="RecordUI-column--spaced">
             <div class="Recorder-actions">
               <button data-id="recordButton" class="Recorder-recordButton">Record</button>
               <button data-id="stopButton" class="Recorder-stopButton">Stop</button>
@@ -58,7 +57,7 @@
               <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
             </div>
           </div>
-          <div class="Centered-column">
+          <div class="RecordUI-column">
             <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
           </div>
         </div>
@@ -75,10 +74,6 @@
     </div>
   </div>
   </div>
-  <form class="IsFlac">
-    <label class="IsFlac-label" data-id="is-flac-label" for="is-flac-checkbox">FLAC</label>
-    <input class="IsFlac-checkbox" data-id="is-flac-checkbox" name="is-flac-checkbox" type="checkbox" checked="checked"></input>
-  </form>
   <button class="Help" data-id="help-button"><symbol class="Help-icon">?</symbol>Help</button>
   <div class="Overlay" data-id="interstitial-placeholder" style="display: none"></div>
   <script type="module" src="static/index.js"></script>
