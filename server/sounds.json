@@ -145,8 +145,9 @@
     {
       "name": "High Fart",
       "preview": {
-        "path": "/static/previews/high-fart.mp3",
-        "title": "high-fart"
+      "short_name": "high-fart",
+      "path": "/static/previews/high-fart.mp3",
+      "title": "high-fart"
       },
       "desc":
         "- Stick your tongue out past your teeth, between your lips\n- Blow out air over the top of your tongue and let your top lip vibrate",
@@ -155,8 +156,9 @@
     {
       "name": "Low Fart",
       "preview": {
-        "path": "/static/previews/low-fart.mp3",
-        "title": "low-fart"
+      "short_name": "low-fart",
+      "path": "/static/previews/low-fart.mp3",
+      "title": "low-fart"
       },
       "desc":
         "- Stick your tongue out past your teeth, between your lips\n- Blow out air from beneath your tongue and let your bottom lip vibrate",
@@ -296,6 +298,7 @@
     },
     {
       "name": "Smooch",
+      "short_name": "smooch",
       "preview":
         { "path": "/static/previews/smooch.mp3", "title": "smooch" },
       "desc":
@@ -304,6 +307,7 @@
     },
     {
       "name": "Sucking Teeth",
+      "short_name": "sucking-teeth",
       "preview": {
         "path": "/static/previews/sucking-teeth.mp3",
         "title": "sucking-teeth"
@@ -313,6 +317,7 @@
     },
     {
       "name": "Mouth Smack",
+      "short_name": "mouth-smack",
       "preview": {
         "path": "/static/previews/mouth-smack.mp3",
         "title": "mouth-smack"
