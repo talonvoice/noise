@@ -137,7 +137,10 @@
     {
       "name": "Motorcycle",
       "short_name": "motorcycle",
-      "preview": { "path": "/static/previews/motorcycle.mp3", "title": "Motorcycle" },
+      "preview": {
+        "path": "/static/previews/motorcycle.mp3",
+        "title": "Motorcycle"
+      },
       "desc":
         "- Press your lips together, the top lip should curl down a bit\n- Exhale to push air out the mouth, forcing the lips apart\n- Drop the \"uh\" sound, keep your lips relaxed and blow out more to make the lips vibrate quickly, and force more air out to get the sound to rise",
       "category": "noise"
@@ -145,9 +148,9 @@
     {
       "name": "High Fart",
       "preview": {
-      "short_name": "high-fart",
-      "path": "/static/previews/high-fart.mp3",
-      "title": "high-fart"
+        "short_name": "high-fart",
+        "path": "/static/previews/high-fart.mp3",
+        "title": "high-fart"
       },
       "desc":
         "- Stick your tongue out past your teeth, between your lips\n- Blow out air over the top of your tongue and let your top lip vibrate",
@@ -156,9 +159,9 @@
     {
       "name": "Low Fart",
       "preview": {
-      "short_name": "low-fart",
-      "path": "/static/previews/low-fart.mp3",
-      "title": "low-fart"
+        "short_name": "low-fart",
+        "path": "/static/previews/low-fart.mp3",
+        "title": "low-fart"
       },
       "desc":
         "- Stick your tongue out past your teeth, between your lips\n- Blow out air from beneath your tongue and let your bottom lip vibrate",
@@ -299,8 +302,7 @@
     {
       "name": "Smooch",
       "short_name": "smooch",
-      "preview":
-        { "path": "/static/previews/smooch.mp3", "title": "smooch" },
+      "preview": { "path": "/static/previews/smooch.mp3", "title": "smooch" },
       "desc":
         "- Purse your lips tightly together, almost as if you've licked something sour.\n- Forcibly pull or suck in air through the lips, keeping them pursed.\n- This should making a small, short squeaking noise",
       "category": "other"
