@@ -45,7 +45,7 @@
       "name": "Clop (Q Click, Alveolar Click)",
       "short_name": "clop",
       "preview": { "path": "/static/previews/clop.mp3", "title": "clop" },
-            "video": { "path": "/static/previews/clop.mp4", "title": "clop video" },
+      "video": { "path": "/static/previews/clop.mp4", "title": "clop video" },
       "desc":
         "- Let your mouth hang slightly open with your lips parted.\n- Place your tongue against the roof of your mouth, then suck in.\n- As you suck in, your tongue should start to slide back a little.\n- Eventually it should slide off the roof of your mouth and the suction will create a click sound.\n- Think of a horse walking on cobblestones.",
       "category": "click"
@@ -109,7 +109,10 @@
     {
       "name": "Motorcycle",
       "short_name": "motorcycle",
-      "preview": { "path": "/static/previews/motorcycle.mp3", "title": "Motorcycle" },
+      "preview": {
+        "path": "/static/previews/motorcycle.mp3",
+        "title": "Motorcycle"
+      },
       "desc":
         "- Press your lips together, the top lip should curl down a bit\n- Exhale to push air out the mouth, forcing the lips apart\n- Drop the \"uh\" sound, keep your lips relaxed and blow out more to make the lips vibrate quickly, and force more air out to get the sound to rise",
       "category": "noise"
@@ -263,14 +266,15 @@
     },
     {
       "name": "Smooch",
-      "preview":
-        { "path": "/static/previews/smooch.mp3", "title": "smooch" },
+      "short_name": "smooch",
+      "preview": { "path": "/static/previews/smooch.mp3", "title": "smooch" },
       "desc":
         "- Purse your lips tightly together, almost as if you've licked something sour.\n- Forcibly pull or suck in air through the lips, keeping them pursed.\n- This should making a small, short squeaking noise",
       "category": "other"
     },
     {
       "name": "Sucking Teeth",
+      "short_name": "sucking-teeth",
       "preview": {
         "path": "/static/previews/sucking-teeth.mp3",
         "title": "sucking-teeth"
@@ -296,6 +300,7 @@
     },
     {
       "name": "High Fart",
+      "short_name": "high-fart",
       "preview": {
         "path": "/static/previews/high-fart.mp3",
         "title": "high-fart"
@@ -306,6 +311,7 @@
     },
     {
       "name": "Low Fart",
+      "short_name": "low-fart",
       "preview": {
         "path": "/static/previews/low-fart.mp3",
         "title": "low-fart"
@@ -316,6 +322,7 @@
     },
     {
       "name": "Mouth Smack",
+      "short_name": "mouth-smack",
       "preview": {
         "path": "/static/previews/mouth-smack.mp3",
         "title": "mouth-smack"
