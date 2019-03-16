@@ -23,7 +23,7 @@ To reduce vocal strain, the following sounds focus on voiceless utterances with 
 Many of these sounds will be the same utterances, while using your lips to change their tones.
 * Relaxed lips are in their natural state, slightly parted.
 * To pull your lips back, raise your cheeks as if you are fake smiling. This should make the pitch higher.
-* To push your lips forward, make an "oo" sound and keep your lips in that position. This should make the pitch lower.
+* To push your lips forward, make an 'oo' sound and keep your lips in that position. This should make the pitch lower.
 
 ## Various hisses
 
@@ -61,40 +61,40 @@ Many of these sounds will be the same utterances, while using your lips to chang
 ### P (puh)
 - Press your lips together, the top lip should curl down a bit
 - Exhale to push air out the mouth, forcing the lips apart
-- Do this for one short breath to get the exhaled "uh" sound
+- Do this for one short breath to get the exhaled 'uh' sound
 
-### **Horse**
+### Horse
 - Same as puh
-- Drop the "uh" sound
+- Drop the 'uh' sound
 - Keep your lips relaxed and blow out more air to make the lips vibrate slowly 4-5 times
 
-### **Motorcycle**
+### Motorcycle
 - Same as puh
-- Drop the "uh" sound
+- Drop the 'uh' sound
 - keep your lips relaxed and blow out more air to make the lips vibrate quickly
 - Force more air out to get the sound to rise
 
 ### F (fuh)
 - Curl your bottom lip in and touch your front teeth to the top of it
 - Exhale to push air out of the mouth, forcing the lips apart
-- Do this for one short breath to get the exhaled "uh" sound
+- Do this for one short breath to get the exhaled 'uh' sound
 
 ### S (suh)
 - Keep your mouth and lips relaxed
 - Start with the hiss sound
-- Exhale to push air out of the mouth for one short breath to get the exhaled "uh" sound
+- Exhale to push air out of the mouth for one short breath to get the exhaled 'uh' sound
 
 ### K (kuh)
 - Keep your jaw relaxed and your lips parted
 - Elevate the back of your tongue to push against the soft palate, while the tip stays down
 - Exhale to push air out of the mouth
-- This should feel like a "stop"
+- This should feel like a 'stop'
 
 ### T (tuh)
 - Keep your jaw relaxed and your lips parted
 - Elevate the tip of your tongue to the back of your front teeth or the ridge behind them
 - Exhale to push air out of the mouth
-- This should feel like a "stop"
+- This should feel like a 'stop'
 
 ### H (huh)
 - Keep your jaw relaxed and your lips parted
@@ -113,10 +113,10 @@ Many of these sounds will be the same utterances, while using your lips to chang
 - Not every one can do this!
 
 ### X (xuh) velar fricative
-- Like making the sound "och" or "augh"
+- Like making the sound 'och' or 'augh'
 - Keep mouth open and lips parted
 - Gently retract tongue towards back of throat
-- Say "ah"
+- Say 'ah'
 
 ## Combined hiss and voiceless noises
 
@@ -168,7 +168,7 @@ Many of these sounds will be the same utterances, while using your lips to chang
 
 ### Shoop (shhp)
 - Make the shush noise
-- End in 'k'
+- End in 'p'
 
 ## Click Sounds
 
@@ -201,7 +201,7 @@ https://www.youtube.com/watch?v=31zzMb3U0iY
 - Not everyone can do this!
 
 ### Reverse Pop
-- Start to say the word "wet" but don't say it - your lips should be pursed
+- Start to say the word 'wet' but don't say it - your lips should be pursed
 - At the same time that you gently start to pull air into your mouth, pull your lips out and away to get a quieter, higher pitched reverse pop of air
 - You may not hear it at first, but the mic does pic it up!
 
@@ -215,10 +215,13 @@ https://www.youtube.com/watch?v=31zzMb3U0iY
 - Purse your lips
 - Suck in air
 
-### Glottals
+### Uh
 - Keep your mouth and lips relaxed
-- Force air from your diaphram, like saying the "uh" from "uh oh"
-- Now push your lips forward and try the "oh" from "uh oh"
+- Force air from your diaphram, like saying the 'uh' from 'uh oh'
+
+### Oh
+- Keep your mouth and lips relaxed
+- Force air from your diaphram and push your lips forward, like saying the 'oh' from 'uh oh'
 
 ### High Fart
 - Stick your tongue out past your teeth, between your lips
