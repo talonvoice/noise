@@ -33,13 +33,11 @@ function renderRecorder({
   onRightArrowClick,
 }) {
   const recorder = document.querySelector('[data-id=recorder]');
-  const recorderTitle = recorder.querySelector('[data-id=title]');
   const recorderDescription = recorder.querySelector('[data-id=description]');
   const examples = document.querySelector('[data-id=recorder-examples-list]');
 
   examples.innerHTML = getPlayers(noise);
 
-  recorderTitle.innerText = noise.name;
   recorderDescription.innerText = noise.desc;
 
   renderRecordingControls({

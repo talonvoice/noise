@@ -186,17 +186,7 @@ a {
   margin: 0;
 }
 
-.Recorder-info {
-  display: flex;
-}
-
-.Recorder-metadata {
-  flex: 2;
-}
-
-.Recorder-title {
-  font-size: 24px;
-  margin-bottom: 10px;
+.Recorder-instructions {
 }
 
 .Recorder-examples {
@@ -207,16 +197,6 @@ a {
   margin-bottom: 10px;
   margin-left: 10px;
   float: right;
-}
-
-.Recorder-exampleAudio {
-  margin-bottom: 10px;
-}
-
-.Recorder-exampleVideo {
-  /* border: solid 1px #999;
-  height: 240px;
-  width: 320px; */
 }
 
 .Recorder-actions {
@@ -263,6 +243,15 @@ a {
   cursor: auto;
 }
 
+.Recorder-miniButton {
+  display: inline-block;
+  margin: 0 0 -1px 0;
+  height: 10px;
+  width: 10px;
+  border-width: 2px;
+  cursor: auto;
+}
+
 .Recorder-time {
   font-family: monospace;
   font-size: 20px;
@@ -273,13 +262,59 @@ a {
 }
 
 .Recorder-description {
-  font-size: 20px;
-  margin-bottom: 10px;
+}
+
+.Recorder-instructions-title {
+  font-weight: bold;
+}
+
+.Recorder-instructions-title a {
+  font-weight: normal;
 }
 
 .Recorder-instructions {
+  width: 280px;
   font-size: 16px;
   margin-bottom: 10px;
+}
+
+.Recorder-instructions ol {
+  margin-top: 5px;
+  margin-bottom: 0;
+  padding-left: 25px;
+}
+
+.Recorder-example audio {
+  margin-top: 5px;
+  height: 30px;
+  margin-left: -20px;
+  width: 270px;
+}
+
+.Recorder-border {
+  height: 240px;
+  width: 1px;
+  background-color: #ccc;
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+.Recorder-sound-instructions {
+  width: 280px;
+  font-size: 16px;
+}
+
+.Recorder-sound-title {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.Recorder-info {
+
+}
+
+.Recorder-metadata {
 }
 
 .Recorder-status {

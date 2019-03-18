@@ -10,14 +10,9 @@ function renderPlayer({
   const template = `
     <div class="Player">
       <!-- TODO: convert to accessible custom controls -->
-      <h4 class="Player-header">
-        <label class="Player-label" data-id="player-label-${id}" for="player-main-${id}">${title}</label>
-      </h4>
-      <p>
         <${mediaType} class="Player-main" id="player-main-${id}" data-id="player-main-${id}" controls=""${ disabled ? ' disabled' : '' }>
         ${ url !== null ? `<source src="${url}" type="${type}">` : '' }
         </${mediaType}>
-      </p>
     </div>
   `;
 
