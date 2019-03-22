@@ -1,7 +1,7 @@
 body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   margin: 0;
 }
 
@@ -59,13 +59,36 @@ a {
 .RecordUI {
   display: flex;
   flex-direction: row;
-  align-items: left;
   margin: 0 auto;
+}
+.RecordUI-column {
+  margin-left: 20px;
+  min-width: 200px;
+  margin-right: 20px;
+  flex: 1;
+}
+.RecordUI-column--line {
+  flex: auto;
 }
 .RecordUI-column--spaced {
   margin-left: 20px;
   min-width: 200px;
   margin-right: 20px;
+}
+
+.RecordControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: center;
+}
+.RecordControls-column {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.RecordControls-column--fixedWidth {
+  width: 100px;
 }
 
 .Dialog {
@@ -145,11 +168,11 @@ a {
 
 .Recording {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, Chrome/Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, Chrome/Opera */
 
   display: block;
   color: #000000;
@@ -180,13 +203,6 @@ a {
 .Recording-description {
   flex: 2;
 }
-
-/*
-.Recording-instructions {
-  display: none;
-  flex: 4;
-}
-*/
 
 .Recording-status {
   font-style: italic;
@@ -265,9 +281,9 @@ a {
 }
 
 .Recorder-time {
-  font-family: monospace;
+  font-family: 'Consolas', monospace;
   font-size: 20px;
-  margin-bottom: 10px;
+  text-align: right;
 }
 .Recorder-time--disabled {
   color: #ccc;
@@ -285,7 +301,6 @@ a {
 }
 
 .Recorder-instructions {
-  width: 280px;
   font-size: 16px;
   margin-bottom: 10px;
 }
@@ -300,15 +315,9 @@ a {
   margin-top: 5px;
   height: 30px;
   margin-left: -20px;
-  width: 270px;
-}
-
-.Recorder-description {
-  width: 280px;
 }
 
 .Recorder-border {
-  height: 240px;
   width: 1px;
   min-width: 1px;
   background-color: #ccc;
@@ -318,7 +327,6 @@ a {
 }
 
 .Recorder-sound-instructions {
-  width: 280px;
   font-size: 16px;
   padding-left: 5px;
 }
@@ -330,7 +338,6 @@ a {
 }
 
 .Recorder-info {
-
 }
 
 .Recorder-metadata {
@@ -379,8 +386,8 @@ a {
   color: rgba(183, 183, 183, 0.5);
   width: 0;
   height: 0;
-  border-top: 60px solid transparent;
-  border-bottom: 60px solid transparent;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
   font-size: 0px;
   cursor: pointer;
   background-color: transparent;
@@ -395,12 +402,12 @@ a {
 }
 
 .Arrow--left {
-  border-right: 60px solid currentColor;
+  border-right: 30px solid currentColor;
   border-left: none;
 }
 
 .Arrow--right {
-  border-left: 60px solid currentColor;
+  border-left: 30px solid currentColor;
   border-right: none;
 }
 
