@@ -60,12 +60,14 @@ a {
   display: flex;
   flex-direction: row;
   margin: 0 auto;
+  justify-content: center;
 }
 .RecordUI-column {
   margin-left: 20px;
   min-width: 200px;
   margin-right: 20px;
   flex: 1;
+  max-width: 325px;
 }
 .RecordUI-column--line {
   flex: auto;
@@ -84,11 +86,11 @@ a {
   justify-content: center;
 }
 .RecordControls-column {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .RecordControls-column--fixedWidth {
-  width: 100px;
+  width: 85px;
 }
 
 .Dialog {
@@ -231,6 +233,7 @@ a {
   margin-top: 10px;
   text-align: center;
   margin-bottom: 10px;
+  min-width: 105px;
 }
 
 .Recorder-recordButton {
@@ -315,6 +318,7 @@ a {
   margin-top: 5px;
   height: 30px;
   margin-left: -20px;
+  width: 250px;
 }
 
 .Recorder-border {
