@@ -1,79 +1,107 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Talon Noise Collection</title>
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="static/index.css" />
+  </head>
 
-<head>
-  <title>Talon Noise Collection</title>
-  <meta name="description" content="" />
-  <link rel="stylesheet" type="text/css" href="static/index.css" />
-</head>
-
-<body data-id="body">
-  <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
-  <form style="display: none" enctype="multip1/form-data" action="/upload" method="POST">
-    <input name="noise" type="file" accept="audio/*;capture=microphone">
-    <br>
-    <input type="submit">
-  </form>
-  <div class="RecordingList" data-id="list">
-    <ul class="RecordingList-container" data-id="list-container"></ul>
-  </div>
-  <div class="Tray">
-    <div class="Dialog Dialog--recorder">
-      <div class="Recorder" data-id="recorder">
-        <div class="RecordUI">
-          <div class="Recorder-instructions">
-            <div class="Recorder-instructions-title">Instructions (<a href="javascript:" data-id="help-button">more help</a>)</div>
-            <ol>
-              <li>Listen to the selected sound:</li>
-              <div class="Recorder-example" data-id="recorder-examples-list"></div>
-              <li>Read <b>Making The Sound</b></li>
-              <li>Practice making the sound</li>
-              <li>When ready, press record <div class="Recorder-recordButton Recorder-miniButton"></div></li>
-              <li>Make the sound into your microphone 5 times, pausing<br>about 1 second after each time</li>
-              <li>When done, press stop <div class="Recorder-stopButton Recorder-miniButton"></div></li>
-              <li>Pick a new sound from the list and start over from <b>1.</b></li>
-            </ol>
-          </div>
-          <div class="Recorder-border"></div>
-          <div class="Recorder-sound-instructions">
-            <div class="Recorder-sound-title" data-id="title">Making The Sound</div>
-            <div class="Recorder-info">
-              <div class="Recorder-metadata">
-                <p class="Recorder-description" data-id="description"></p>
-                <!-- TODO: use this if we are going to have a long description as well -->
+  <body data-id="body">
+    <!-- TODO: get rid of the below form after we're done; only used as reference, but may also be used as a backup for browsers that don't support getUserMedia() -->
+    <form style="display: none" enctype="multipart/form-data" action="/upload" method="POST">
+      <input name="noise" type="file" accept="audio/*;capture=microphone" />
+      <br />
+      <input type="submit" />
+    </form>
+    <div class="RecordingList" data-id="list">
+      <ul class="RecordingList-container" data-id="list-container"></ul>
+    </div>
+    <div class="Tray">
+      <div class="Dialog Dialog--recorder">
+        <div class="Recorder" data-id="recorder">
+          <div class="RecordUI">
+            <div class="RecordUI-column">
+              <div class="Recorder-instructions">
+                <div class="Recorder-instructions-title">
+                  Instructions (
+                  <a href="javascript:" data-id="help-button">more help</a>
+                  )
+                </div>
+                <ol>
+                  <li>
+                    Listen to the selected sound:
+                    <br />
+                    <div class="Recorder-example" data-id="recorder-examples-list"></div>
+                  </li>
+                  <li>
+                    Read
+                    <strong>Making The Sound</strong>
+                  </li>
+                  <li>Practice making the sound</li>
+                  <li>
+                    When ready, press record
+                    <div class="Recorder-recordButton Recorder-miniButton"></div>
+                  </li>
+                  <li>
+                    Make the sound into your microphone 5 times, pausing about 1 second after each
+                    time
+                  </li>
+                  <li>
+                    When done, press stop
+                    <div class="Recorder-stopButton Recorder-miniButton"></div>
+                  </li>
+                  <li>
+                    Pick a new sound from the list and start over from
+                    <strong>1.</strong>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="Recorder-border"></div>
+            <div class="RecordUI-column">
+              <div class="Recorder-sound-instructions">
+                <div class="Recorder-sound-title" data-id="title">Making The Sound</div>
+                <div class="Recorder-info">
+                  <div class="Recorder-metadata">
+                    <p class="Recorder-description" data-id="description"></p>
+                    <!-- TODO: use this if we are going to have a long description as well -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="Recorder-border"></div>
-          <div class="RecordUI-column">
-            <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
-          </div>
-          <div class="RecordUI-column--spaced">
-            <div class="Recorder-actions">
-              <button data-id="recordButton" class="Recorder-recordButton">Record</button>
-              <button data-id="stopButton" class="Recorder-stopButton">Stop</button>
-              <p data-id="recorderTime" class="Recorder-time">00:00</p>
-              <p data-id="recorderStatus" class="Recorder-status">Waiting to record</p>
+          <div class="RecordUI">
+            <div class="RecordControls">
+              <div class="RecordControls-column" style="display: none;">
+                <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
+              </div>
+              <div class="RecordControls-column--fixedWidth">
+                <p data-id="recorderTime" class="Recorder-time">00:00</p>
+              </div>
+              <div class="RecordControls-column">
+                <div class="Recorder-actions">
+                  <button data-id="recordButton" class="Recorder-recordButton">Record</button>
+                  <button
+                    data-id="stopButton"
+                    class="Recorder-stopButton Recorder-stopButton--stopped"
+                    disabled=""
+                  >
+                    Stop
+                  </button>
+                </div>
+              </div>
+              <div class="RecordControls-column--fixedWidth">
+                <p data-id="recorderStatus" class="Recorder-status">Ready to record</p>
+              </div>
+              <div class="RecordControls-column" style="display: none;">
+                <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
+              </div>
             </div>
           </div>
-          <div class="RecordUI-column">
-            <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
-          </div>
-        </div>
-        <div class="Review" style="display: none">
-          <!-- TODO: hide the below until we allow the user to listen/download to their own recording -->
-          <p class="Review-player">
-            <!-- TODO: convert to accessible custom controls -->
-            <h3 class="Subheader">Review your recording:</h3>
-            <div data-id="review-player-list"></div>
-          </p>
-          <a data-id="download" class="DownloadLink DownloadLink--disabled">Download</a>
         </div>
       </div>
     </div>
-  </div>
-  <div class="Overlay" data-id="interstitial-placeholder" style="display: none"></div>
-  <script type="module" src="static/index.js"></script>
-</body>
-
+    <div class="Overlay" data-id="interstitial-placeholder" style="display: none"></div>
+    <script type="module" src="static/index.js"></script>
+  </body>
 </html>

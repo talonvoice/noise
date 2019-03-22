@@ -1,11 +1,11 @@
 const RECORDER_STATUS_VALUES = {
-  NEED_PERMISSIONS: { description: 'Ready to record' },
-  WAIT_FOR_CLICK: { description: 'Ready to record' },
-  STARTING: { description: 'Waiting for recorder to start' },
+  NEED_PERMISSIONS: { description: 'Ready' },
+  WAIT_FOR_CLICK: { description: 'Ready' },
+  STARTING: { description: 'Initializing' },
   RECORDING: { description: 'Recording' },
   UPLOADING: { description: 'Uploading' },
-  UPLOADED: { description: 'Done uploading' },
-  ALREADY_RECORDED: { description: 'Already recorded' },
+  UPLOADED: { description: 'Uploaded' },
+  ALREADY_RECORDED: { description: 'Recorded' },
 };
 
 // TODO: convert this to boolean
