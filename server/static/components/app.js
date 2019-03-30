@@ -9,6 +9,7 @@ import {
 } from './recorder.js';
 
 const updatePlaybackPlayer = ({ url = null, disabled, title }) => {
+  return;
   const player = renderPlayer({
     id: 999, // TODO: workaround b/c we're not autogenerating IDs
     url,
@@ -17,7 +18,6 @@ const updatePlaybackPlayer = ({ url = null, disabled, title }) => {
   });
 
   const reviewsList = document.querySelector('[data-id=review-player-list]');
-
   reviewsList.innerHTML = player;
 };
 
@@ -25,6 +25,7 @@ const updatePlaybackPlayer = ({ url = null, disabled, title }) => {
 // TODO: merge with render() functions if possible
 
 function updateDownloadLink({ url = null, filename = null, disabled = false }) {
+  return;
   // hook up download link
   const downloadLink = document.querySelector('[data-id=download]');
 
