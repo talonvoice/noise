@@ -101,7 +101,7 @@ a {
 }
 .Dialog--introduction {
   background-color: rgb(255, 255, 255);
-  height: calc(100% - 60px);
+  max-height: calc(100% - 60px);
   margin: 30px auto;
   padding-bottom: 30px;
   overflow-y: auto;
