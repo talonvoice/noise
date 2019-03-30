@@ -84,6 +84,10 @@ a {
   align-items: center;
   margin: 0 auto;
   justify-content: center;
+  height: 60px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
 }
 .RecordControls-column {
   margin-left: 10px;
@@ -216,9 +220,6 @@ a {
   margin: 0;
 }
 
-.Recorder-instructions {
-}
-
 .Recorder-examples {
   border-radius: 5px;
   padding: 10px;
@@ -305,7 +306,7 @@ a {
 
 .Recorder-instructions {
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .Recorder-instructions ol {
