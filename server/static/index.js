@@ -608,8 +608,6 @@ var keyHandlers = {
 };
 
 window.addEventListener('keydown', function(e) {
-  if (getCookieValue('accepted') !== 'true')
-    return;
   if (e.key == 'h' || e.key == '?' || isInterstitialShowing() && e.key == 'Escape') {
     if (e.repeat) {
       e.preventDefault();
