@@ -599,23 +599,29 @@ var keyHandlers = {
       player.pause();
       player.currentTime = 0;
   },
+  'k': decrementSelectedNoise,
+  'j': incrementSelectedNoise,
   'ArrowUp': decrementSelectedNoise,
   'ArrowDown': incrementSelectedNoise,
-  'ArrowRight': incrementSelectedNoise,
   'ArrowLeft': decrementSelectedNoise,
+  'ArrowRight': incrementSelectedNoise,
 };
 
 window.addEventListener('keydown', function(e) {
   if (getCookieValue('accepted') !== 'true')
     return;
   if (e.key == 'h' || e.key == '?' || isInterstitialShowing() && e.key == 'Escape') {
+    if (e.repeat) {
+      e.preventDefault();
+      return;
+    }
     onHelpClick(e);
     return;
   }
   if (state.interstitial.isShowing)
     return;
   if (keyHandlers.hasOwnProperty(e.key)) {
-    keyHandlers[e.key](e);
+    if (!e.repeat) keyHandlers[e.key](e);
     e.preventDefault();
   }
 }, true);
