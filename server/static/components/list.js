@@ -65,6 +65,18 @@ function renderNoiseList(
       }
     });
   });
+  // make sure the element is visible
+  let selected = document.querySelector('.Recording--selected');
+  if (selected) {
+    let bound = selected.getBoundingClientRect();
+    let inViewport = bound.top >= 0 && bound.left >= 0 &&
+        bound.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+        bound.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+    var topEl = document.elementFromPoint(bound.x + bound.width / 2, bound.y + bound.height / 2);
+    if (!inViewport || !topEl || (!topEl.isSameNode(selected) && !selected.contains(topEl))) {
+      selected.scrollIntoView();
+    }
+  }
 }
 
 export { renderNoiseList };
