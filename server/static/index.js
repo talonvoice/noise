@@ -281,7 +281,10 @@ function incrementSelectedNoise() {
 }
 
 function decrementSelectedNoise() {
-  if (selectNoise((state.selectedNoise - 1) % state.noiseList.length)) {
+  var next = state.selectedNoise - 1;
+  if (next < 0)
+    next = state.noiseList.length - 1;
+  if (selectNoise(next)) {
     render();
   }
 }
