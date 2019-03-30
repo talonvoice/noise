@@ -138,13 +138,13 @@ function loadInterstitial() {
             setCookieValue('accepted', 'true');
             resetScroll = true;
           }
-          toggleInterstitialShowing();
           renderInterstitial({
             isShowing:
-              !isInterstitialShowing() && getCookieValue('accepted') !== 'true',
+              isInterstitialShowing() && getCookieValue('accepted') !== 'true',
             acceptedTerms: getCookieValue('accepted') === 'true',
             resetScroll: resetScroll
           });
+          toggleInterstitialShowing();
         },
       });
       return isInterstitialShowing();
@@ -165,7 +165,7 @@ if (!uuid) {
 }
 let state = {
   interstitial: {
-    isShowing: true,
+    isShowing: false,
   },
   recorder: {
     explicitlyPermitted: false,
@@ -203,9 +203,7 @@ function isInterstitialShowing() {
 
 function toggleInterstitialShowing() {
   updateState({
-    state: {
-      interstitial: { isShowing: !isInterstitialShowing() },
-    },
+    interstitial: { isShowing: !isInterstitialShowing() },
   });
 }
 
@@ -583,17 +581,41 @@ const handleRequestMediaPermissionsSuccess = function(stream) {
 
 function render() {
   renderApp();
-  // document.addEventListener('keydown', () => console.log('test'));
-  // keyDownHandler({
-  //   space: (evt) => { console.log('test'); onRecordClick() },
-  //   p: (evt) => { console.log('test'); onRecordClick() },
-  //   v: (evt) => { console.log('test'); onRecordClick() },
-  //   h: (evt) => { console.log('test'); loadInterstitial() },
-  //   down: (evt) => { console.log('test'); incrementSelectedNoise() },
-  //   right: incrementSelectedNoise,
-  //   left: decrementSelectedNoise,
-  // }), false);
 }
+
+var keyHandlers = {
+  // TODO: debounce?
+  ' ': onRecordClick,
+  'p': function(e) {
+      var player = document.getElementById('player-main-0');
+      player.currentTime = 0;
+      player.play();
+  },
+  's': function(e) {
+      var player = document.getElementById('player-main-0');
+      player.pause();
+      player.currentTime = 0;
+  },
+  'ArrowUp': decrementSelectedNoise,
+  'ArrowDown': incrementSelectedNoise,
+  'ArrowRight': incrementSelectedNoise,
+  'ArrowLeft': decrementSelectedNoise,
+};
+
+window.addEventListener('keydown', function(e) {
+  if (getCookieValue('accepted') !== 'true')
+    return;
+  if (e.key == 'h' || e.key == '?' || isInterstitialShowing() && e.key == 'Escape') {
+    onHelpClick(e);
+    return;
+  }
+  if (state.interstitial.isShowing)
+    return;
+  if (keyHandlers.hasOwnProperty(e.key)) {
+    keyHandlers[e.key](e);
+    e.preventDefault();
+  }
+}, true);
 
 function processNoises(noises) {
   /* state management dispatch */
