@@ -165,7 +165,7 @@ if (!uuid) {
 }
 let state = {
   interstitial: {
-    isShowing: false,
+    isShowing: getCookieValue('accepted') !== 'true',
   },
   recorder: {
     explicitlyPermitted: false,
