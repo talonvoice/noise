@@ -645,3 +645,7 @@ renderButton({
   disabled: false,
   onButtonClick: onRecordClick,
 });
+
+if (document.documentMode || /Edge/.test(navigator.userAgent)) {
+  alert("Internet Explorer and Edge have not been tested on this page. Audio recording may not work. I recommend using Chrome or Firefox instead.");
+}
