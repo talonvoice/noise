@@ -1,7 +1,7 @@
 const RECORDER_STATUS_VALUES = {
   NEED_PERMISSIONS: { description: 'Ready' },
   WAIT_FOR_CLICK: { description: 'Ready' },
-  STARTING: { description: 'Initializing' },
+  STARTING: { description: 'Please wait' },
   RECORDING: { description: 'Recording' },
   UPLOADING: { description: 'Uploading' },
   UPLOADED: { description: 'Uploaded' },
