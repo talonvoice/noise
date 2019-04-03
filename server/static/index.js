@@ -248,7 +248,18 @@ function initializeNoises(noises) {
   });
 }
 
+function isDangerous() {
+  if (state.recorder.status === RECORDER_STATUS_VALUES.STARTING ||
+      state.recorder.status === RECORDER_STATUS_VALUES.RECORDING ||
+      state.recorder.status === RECORDER_STATUS_VALUES.UPLOADING) {
+    return true;
+  }
+  return false;
+}
+
 function selectNoise(index) {
+  // don't allow changing the noise while recording
+  if (isDangerous()) return false;
   // TODO: or pass actual noise?
 
   if (state.selectedNoise !== index) {
@@ -590,11 +601,13 @@ var keyHandlers = {
   // TODO: debounce?
   ' ': onRecordClick,
   'p': function(e) {
+      if (isDangerous()) return;
       var player = document.getElementById('player-main-0');
       player.currentTime = 0;
       player.play();
   },
   's': function(e) {
+      if (isDangerous()) return;
       var player = document.getElementById('player-main-0');
       player.pause();
       player.currentTime = 0;
