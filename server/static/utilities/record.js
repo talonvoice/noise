@@ -55,7 +55,9 @@ function record({
 
     console.log('start recording'); //DEBUG
 
-    container.encoder = new Worker('static/utilities/encoder.js');
+    if (!container.encoder) {
+      container.encoder = new Worker('static/utilities/encoder.js');
+    }
 
     if (container.wav_format == true) {
       container.encoder.postMessage({ cmd: 'save_as_wavfile' });
@@ -152,29 +154,34 @@ function record({
       })
     } catch (err) { console.error(err); }
 
-    container.recording = true;
-    container.recordButtonStyle = '';
-
     console.log('success grabbing microphone');
     container.stream = localMediaStream;
 
-    var audio_context;
-    if (typeof webkitAudioContext !== 'undefined') {
-      audio_context = new webkitAudioContext();
-    } else if (typeof AudioContext !== 'undefined') {
-      audio_context = new AudioContext();
-    } else {
-      console.error(
-        'JavaScript execution environment (Browser) does not support AudioContext interface.',
-      );
-      alert(
-        'Could not start recording audio:\n Web Audio is not supported by your browser!',
-      );
-
-      return;
+    if (!container.audio_context) {
+      var audio_context;
+      if (typeof webkitAudioContext !== 'undefined') {
+        audio_context = new webkitAudioContext();
+      } else if (typeof AudioContext !== 'undefined') {
+        audio_context = new AudioContext();
+      } else {
+        console.error(
+          'JavaScript execution environment (Browser) does not support AudioContext interface.',
+        );
+        alert(
+          'Could not start recording audio:\n Web Audio is not supported by your browser!',
+        );
+        return;
+      }
+      if (!audio_context) {
+        console.error("could not make audio context", audio_context);
+        return;
+      }
+      container.audio_context = audio_context;
     }
-    container.audio_context = audio_context;
-    container.input = audio_context.createMediaStreamSource(container.stream);
+    container.input = container.audio_context.createMediaStreamSource(localMediaStream);
+
+    container.recording = true;
+    container.recordButtonStyle = '';
 
     if (container.input.context.createJavaScriptNode)
       container.node = container.input.context.createJavaScriptNode(4096, 1, 1);
@@ -200,8 +207,10 @@ function record({
     console.log(' channels        = ' + container.flacdata.channels); //DEBUG
     console.log(' sample rate     = ' + container.samplerate); //DEBUG
     console.log(' compression     = ' + container.compression); //DEBUG
+
+    let initCmd = container.wav_format ? 'init_wav' : 'init_flac';
     container.encoder.postMessage({
-      cmd: 'init',
+      cmd: initCmd,
       config: {
         samplerate: container.samplerate,
         bps: container.flacdata.bps,
@@ -221,7 +230,7 @@ function record({
     };
 
     container.input.connect(container.node);
-    container.node.connect(audio_context.destination);
+    container.node.connect(container.audio_context.destination);
   };
 
   container.stopRecording = function() {

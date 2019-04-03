@@ -30,90 +30,86 @@ function write_wav(buffer) {
 
 self.onmessage = function(e) {
   switch (e.data.cmd) {
-    case 'save_as_wavfile':
-      if (INIT == false) {
-        WAVFILE = true;
-      }
+    case 'init_wav':
+      WAVFILE = true;
+      INIT = true;
+      clear();
+      // create our WAV file header
+      var buffer = new ArrayBuffer(44);
+      var view = new DataView(buffer);
+      // RIFF chunk descriptor
+      writeUTFBytes(view, 0, 'RIFF');
+
+      // set file size at the end
+      writeUTFBytes(view, 8, 'WAVE');
+      // FMT sub-chunk
+      writeUTFBytes(view, 12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      // stereo (2 channels)
+      view.setUint16(22, 1, true);
+      view.setUint32(24, e.data.config.samplerate, true);
+      view.setUint32(
+        28,
+        e.data.config.samplerate * 2 /* only one channel, else: 4 */,
+        true,
+      );
+      view.setUint16(32, 4, true);
+      view.setUint16(34, 16, true);
+      // data sub-chunk
+      writeUTFBytes(view, 36, 'data');
+
+      // DUMMY file length (set real value on export)
+      view.setUint32(4, 10, true);
+      // DUMMY data chunk length (set real value on export)
+      view.setUint32(40, 10, true);
+
+      // store WAV header
+      wavBuffers.push(new Uint8Array(buffer));
       break;
 
-    case 'init':
-      if (WAVFILE) {
-        // save as WAV-file
+    case 'init_flac':
+      WAVFILE = false;
+      INIT = true;
+      clear();
+      if (!e.data.config) {
+        e.data.config = {
+          bps: BPS,
+          channels: CHANNELS,
+          samplerate: SAMPLERATE,
+          compression: COMPRESSION,
+        };
+      }
 
-        // WAV-FILE
-        // create our WAV file header
-        var buffer = new ArrayBuffer(44);
-        var view = new DataView(buffer);
-        // RIFF chunk descriptor
-        writeUTFBytes(view, 0, 'RIFF');
+      e.data.config.channels = e.data.config.channels
+        ? e.data.config.channels
+        : CHANNELS;
+      e.data.config.samplerate = e.data.config.samplerate
+        ? e.data.config.samplerate
+        : SAMPLERATE;
+      e.data.config.bps = e.data.config.bps ? e.data.config.bps : BPS;
+      e.data.config.compression = e.data.config.compression
+        ? e.data.config.compression
+        : COMPRESSION;
 
-        // set file size at the end
-        writeUTFBytes(view, 8, 'WAVE');
-        // FMT sub-chunk
-        writeUTFBytes(view, 12, 'fmt ');
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        // stereo (2 channels)
-        view.setUint16(22, 1, true);
-        view.setUint32(24, e.data.config.samplerate, true);
-        view.setUint32(
-          28,
-          e.data.config.samplerate * 2 /* only one channel, else: 4 */,
-          true,
-        );
-        view.setUint16(32, 4, true);
-        view.setUint16(34, 16, true);
-        // data sub-chunk
-        writeUTFBytes(view, 36, 'data');
+      ////
+      COMPRESSION = e.data.config.compression;
+      BPS = e.data.config.bps;
+      SAMPLERATE = e.data.config.samplerate;
+      CHANNELS = e.data.config.channels;
+      ////
 
-        // DUMMY file length (set real value on export)
-        view.setUint32(4, 10, true);
-        // DUMMY data chunk length (set real value on export)
-        view.setUint32(40, 10, true);
-
-        // store WAV header
-        wavBuffers.push(new Uint8Array(buffer));
+      if (!Flac.isReady()) {
+        Flac.onready = function() {
+          setTimeout(function() {
+            initFlac();
+          }, 0);
+        };
       } else {
-        // using FLAC
-
-        if (!e.data.config) {
-          e.data.config = {
-            bps: BPS,
-            channels: CHANNELS,
-            samplerate: SAMPLERATE,
-            compression: COMPRESSION,
-          };
-        }
-
-        e.data.config.channels = e.data.config.channels
-          ? e.data.config.channels
-          : CHANNELS;
-        e.data.config.samplerate = e.data.config.samplerate
-          ? e.data.config.samplerate
-          : SAMPLERATE;
-        e.data.config.bps = e.data.config.bps ? e.data.config.bps : BPS;
-        e.data.config.compression = e.data.config.compression
-          ? e.data.config.compression
-          : COMPRESSION;
-
-        ////
-        COMPRESSION = e.data.config.compression;
-        BPS = e.data.config.bps;
-        SAMPLERATE = e.data.config.samplerate;
-        CHANNELS = e.data.config.channels;
-        ////
-
-        if (!Flac.isReady()) {
-          Flac.onready = function() {
-            setTimeout(function() {
-              initFlac();
-            }, 0);
-          };
-        } else {
-          initFlac();
-        }
+        initFlac();
       }
-      break;
+      
+     break;
 
     case 'encode':
       if (WAVFILE) {
@@ -146,7 +142,6 @@ self.onmessage = function(e) {
       clear();
 
       self.postMessage({ cmd: 'end', buf: data });
-      INIT = false;
       break;
   }
 };
@@ -171,11 +166,10 @@ function initFlac() {
     console.log('flac init     : ' + flac_ok); //DEBUG
     console.log('status encoder: ' + status_encoder); //DEBUG
 
-		INIT = true;
-		self.postMessage({cmd: 'initialized'});
+    self.postMessage({cmd: 'initialized'});
   } else {
-		console.error('Error initializing the encoder.');
-		self.postMessage({cmd: 'initialization_error'});
+    console.error('Error initializing the encoder.');
+    self.postMessage({cmd: 'initialization_error'});
   }
 }
 
@@ -228,7 +222,7 @@ function exportFlacFile(recBuffers, recLength) {
   //convert buffers into one single buffer
   var samples = mergeBuffersUint8(recBuffers, recLength);
 
-  //	var audioBlob = new Blob([samples], { type: type });
+  // var audioBlob = new Blob([samples], { type: type });
   var the_blob = new Blob([samples], { type: 'audio/flac' });
   return the_blob;
 }
