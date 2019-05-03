@@ -1,25 +1,5 @@
 import { renderPlayer } from './player.js';
  
-function getPlayers(noise) {
-  let { preview: { path: path_audio, title: title_audio } = {}, video: { path: path_video, title: title_video } = {} } = noise;
-  
-  const audio_player = 'preview' in noise ? renderPlayer({
-    id: 0,
-    url: path_audio,
-    title: title_audio,
-    mediaType: 'audio',
-  }) : '';
-
-  const video_player = '';
-  // const video_player = 'video' in noise ? renderPlayer({
-  //   id: 0,
-  //   url: path_video,
-  //   title: title_video,
-  //   mediaType: 'video',
-  // }) : '';
-
-  return audio_player + video_player;
-}
 function renderRecorder({
   noise,
   recorderState, // TODO: divorce state shape of recorder
@@ -34,9 +14,6 @@ function renderRecorder({
 }) {
   const recorder = document.querySelector('[data-id=recorder]');
   const recorderDescription = recorder.querySelector('[data-id=description]');
-  const examples = document.querySelector('[data-id=recorder-examples-list]');
-
-  examples.innerHTML = getPlayers(noise);
 
   recorderDescription.innerText = noise.desc;
 

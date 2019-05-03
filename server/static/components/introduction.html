@@ -1,70 +1,54 @@
 <article class="Introduction-article">
-  <h1>Talon Noise Project</h1>
-  <h2>Introduction</h2>
+  <h1>Talon Speech Dataset</h1>
   <p class="Introduction-paragraph">
-    Thank you for contributing to the Talon Noise Project. We are collecting
-    recordings to train a deep neural network for
-    <a href="https://talonvoice.com" rel="nofollow">Talon</a>. It will recognize
-    sounds such as clicks, pops, and hisses and allow controlling a computer
-    using only a microphone.
+    Thank you for contributing to the Talon Speech Dataset. We are collecting
+    recordings to specialize a speech recognition framework for
+    <a href="https://talonvoice.com" rel="nofollow">Talon</a>.
   </p>
   <br>
-  <p class="Introduction-paragraph"><a href="https://www.youtube.com/watch?v=VMNsU7rrjRI">Demo video</a> with pop noise and eye tracking</p>
-  <p class="Introduction-paragraph">Join the #noise chat for help or more info: <a href="https://join.slack.com/t/talonvoice/shared_invite/enQtMjUzODA5NzQwNjYzLTY1NzZjNzM4NjVhZjZhYWFlNmZkYmU2YzE2ZjQxZjcyMTgwNDk5NDg2YzhmZDRmNmEwYThkODEyYjY4ZGZmODE">Join Slack</a></p>
+  <p class="Introduction-paragraph">
+    If you write down the following unique identifier, you can look up your recordings
+    in the published dataset and use them to train a model on your own voice:
+    <i id="Introduction-UUID"></i>
+  </p>
+  <br>
+  <p class="Introduction-paragraph">Join #speech-dataset on the Talon chat for help or more info: <a href="https://join.slack.com/t/talonvoice/shared_invite/enQtMjUzODA5NzQwNjYzLTY1NzZjNzM4NjVhZjZhYWFlNmZkYmU2YzE2ZjQxZjcyMTgwNDk5NDg2YzhmZDRmNmEwYThkODEyYjY4ZGZmODE">Join Slack</a></p>
 
   <h2>Contributing</h2>
   <p class="Introduction-paragraph">
-    Note that it takes around 25 minutes to record all the sounds. This page will remember your progress if you close it and come back later.
+  There are a large number of phonetically-diverse sentences ready to record, taken from the <a href="https://catalog.ldc.upenn.edu/docs/LDC93S1/PROMPTS.TXT">TIMIT prompts</a>.
   </p>
   <ol class="Introduction-list">
     <li class="Introduction-listItem">
-      Pick a sound to record. You can start with <strong>hiss</strong>, which
-      is the first sound.
+      Pick a sentence to record.
     </li>
     <li class="Introduction-listItem">
-      Read the sound's instructions and listen to the example recording.
-    </li>
-    <li class="Introduction-listItem">
-      When you think you are ready to record the sound, press the round
+      When you are ready to record the sentence, press the round
       <span class="Introduction-record">Record</span> button.
     </li>
     <li class="Introduction-listItem">
       After pressing <span class="Introduction-record">Record</span>, wait for
-      about one second, then make the sound 5-10 times to your comfort, pausing
-      about one second between each time you make the sound.
+      about one second, then read the sentence out loud in a clear voice.
     </li>
     <li class="Introduction-listItem">
-      When you are done recording, press the square
-      <span class="Introduction-stop">Stop</span> button. The sequence will look
-      like this:
-      <p class="Introduction-paragraph--callout">
-        press <span class="Introduction-record">Record</span> &rarr; wait &rarr;
-        make sound &rarr; wait &rarr; make sound &rarr; ... &rarr; press
-        <span class="Introduction-stop">Stop</span>
+      When you are done speaking, wait a moment, then press the square
+      <span class="Introduction-stop">Stop</span> button.
+      (If you don't wait, your mouse click can end up in the recording).
       </p>
     </li>
     <li class="Introduction-listItem">
       You can then select another sound from the list and repeat the process.
     </li>
     <li class="Introduction-listItem">
-      If you finish recording all of the sounds, feel free to go back and record
-      more samples at any time.
+      These sounds will be used to train a speech recognition neural network.
+      More recordings as well as different voices, microphones, and
+      environments will help the training.
     </li>
     <li class="Introduction-listItem">
-      These sounds will be used to train a neural network. More recordings as
-      well as different voices, microphones, and environments will help the
-      training.
+      Keyboard shortcuts: You can use "space" on your keyboard to record/stop, and the arrow keys to advance the list.
     </li>
   </ol>
 
-  <p class="Introduction-paragraph">
-    More information about the sounds
-    <a
-      href="https://github.com/talonvoice/noise/blob/master/noises.md"
-      rel="nofollow"
-      >can be found here.</a
-    >
-  </p>
   <p class="Introduction-paragraph">
     If you have questions or comments, join the
     <a
@@ -72,7 +56,7 @@
       rel="nofollow"
       >Talon Slack</a
     >
-    and ask in the #noise channel.
+    and ask in the #speech-dataset channel.
   </p>
 
   <h2>Content Licensing</h2>

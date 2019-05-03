@@ -352,7 +352,8 @@ const onHelpClick = function(e) {
 
   renderInterstitial({
     isShowing: isInterstitialShowing(),
-    acceptedTerms: getCookieValue('accepted') === 'true'
+    acceptedTerms: getCookieValue('accepted') === 'true',
+    uuid: uuid,
   });
 };
 
@@ -649,7 +650,8 @@ function processNoises(noises) {
 loadInterstitial().then(isShowing => {
   renderInterstitial({
     isShowing: isShowing && getCookieValue('accepted') !== 'true',
-    acceptedTerms: getCookieValue('accepted') === 'true'
+    acceptedTerms: getCookieValue('accepted') === 'true',
+    uuid: uuid,
   });
 });
 getNoises();

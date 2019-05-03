@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Talon Noise Collection</title>
+    <title>Talon Speech Collection</title>
     <meta name="description" content="" />
     <link rel="stylesheet" type="text/css" href="static/index.css" />
     <script type="text/javascript">
@@ -26,7 +26,7 @@
           <div class="RecordUI">
             <div class="RecordControls">
               <div class="RecordControls-column" style="display: none;">
-                <button class="Arrow Arrow--left" data-id="goBack">Go to previous noise</button>
+                <button class="Arrow Arrow--left" data-id="goBack">Go to previous example</button>
               </div>
               <div class="RecordControls-column--fixedWidth">
                 <p data-id="recorderTime" class="Recorder-time">00:00</p>
@@ -47,7 +47,7 @@
                 <p data-id="recorderStatus" class="Recorder-status">Ready to record</p>
               </div>
               <div class="RecordControls-column" style="display: none;">
-                <button class="Arrow Arrow--right" data-id="goForward">Go to next noise</button>
+                <button class="Arrow Arrow--right" data-id="goForward">Go to next example</button>
               </div>
             </div>
           </div>
@@ -62,29 +62,22 @@
                 </div>
                 <ol>
                   <li>
-                    Listen to the selected sound:
-                    <br />
-                    <div class="Recorder-example" data-id="recorder-examples-list"></div>
+                    Read the
+                    <strong>Sentence</strong>
                   </li>
-                  <li>
-                    Read
-                    <strong>Making The Sound</strong>
-                  </li>
-                  <li>Practice making the sound</li>
                   <li>
                     When ready, press record
                     <div class="Recorder-recordButton Recorder-miniButton"></div>
                   </li>
                   <li>
-                    Make the sound into your microphone about 5 times, pausing about 1 second after each
-                    time
+                    Speak the sentence out loud, then wait a moment
                   </li>
                   <li>
                     When done, press stop
                     <div class="Recorder-stopButton Recorder-miniButton"></div>
                   </li>
                   <li>
-                    Pick a new sound from the list and start over from
+                    Pick a new sentence from the list and start over from
                     <strong>1.</strong>
                   </li>
                 </ol>
@@ -93,7 +86,7 @@
             <div class="Recorder-border"></div>
             <div class="RecordUI-column">
               <div class="Recorder-sound-instructions">
-                <div class="Recorder-sound-title" data-id="title">Making The Sound</div>
+                <div class="Recorder-sound-title" data-id="title">Sentence</div>
                 <div class="Recorder-info">
                   <div class="Recorder-metadata">
                     <p class="Recorder-description" data-id="description"></p>

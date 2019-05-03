@@ -60,7 +60,7 @@ const createInterstitial = ({ content = '', handleClick = () => {} }) => {
   accept.addEventListener('click', handleClick);
 };
 
-const renderInterstitial = ({ isShowing = false, acceptedTerms = false, resetScroll = false }) => {
+const renderInterstitial = ({ isShowing = false, acceptedTerms = false, resetScroll = false, uuid = '' }) => {
   if (resetScroll) {
     // scroll interstitial to the top of its content
     const interstitial = document.querySelector('[data-id=interstitial]');
@@ -79,6 +79,9 @@ const renderInterstitial = ({ isShowing = false, acceptedTerms = false, resetScr
   // show the interstitial container based on `isShowing` argument
   const placeholder = document.querySelector('[data-id=interstitial-placeholder]');
   placeholder.style.display = isShowing ? 'block' : 'none';
+
+  const uuidElement = document.getElementById("Introduction-UUID");
+  uuidElement.innerText = uuid;
 };
 
 // TODO: move everything UI into here eventually from index.js

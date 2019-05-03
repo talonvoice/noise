@@ -36,7 +36,6 @@ function renderNoiseList(
   const list = document.querySelector('[data-id=list]');
   const container = document.querySelector('[data-id=list-container]');
 
-  container.innerHTML = '';
   noiseList.forEach((noise, index) => {
     // TODO: add selected value to each noise instead of relying on state.selectedNoise
     // TODO: render differently depending on if disabled or not; will need this to be called more frequently by the consumer first, however
@@ -53,17 +52,26 @@ function renderNoiseList(
       instructions: '',
       statusText: statusText,
     });
-    container.insertAdjacentHTML('beforeend', noiseHtml);
-    const item = list.querySelector(`[data-id=list-item-${index + 1}]`);
-    item.addEventListener('click', evt => {
-      if (!isDisabled()) {
-        // TODO: put proper hooks in place and then we may not need to pass as function, although we may still want to
-        if (itemAction(index)) {
-          // relies on modified signal
-          render();
-        }
+    var append = false;
+    if (index >= container.children.length) {
+      container.insertAdjacentHTML('beforeend', noiseHtml);
+      append = true;
+    }
+    const item = container.children[index];
+    if (append || item.outerHTML.trim() !== noiseHtml.trim()) {
+      if (!append) {
+        item.outerHTML = noiseHtml;
       }
-    });
+      container.children[index].addEventListener('click', evt => {
+        if (!isDisabled()) {
+          // TODO: put proper hooks in place and then we may not need to pass as function, although we may still want to
+          if (itemAction(index)) {
+            // relies on modified signal
+            render();
+          }
+        }
+      });
+    }
   });
   // make sure the element is visible
   let selected = document.querySelector('.Recording--selected');
