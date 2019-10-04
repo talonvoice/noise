@@ -57,6 +57,8 @@ def noises():
     for i in range(500):
         length = random.randint(1, 15)
         text = ' '.join(gen_long_random(length).split(' ')[:length])
+        if not text.strip():
+            continue
         sounds.append({
             "desc": text,
             "name": text,
