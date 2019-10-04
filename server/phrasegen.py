@@ -3,6 +3,8 @@ import os
 import random
 import re
 
+import random_choices
+
 english_alphabet = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split(' ')
 
 talon_alphabet = 'air bat cap drum each fine gust harp sit jury crunch look made near odd pit quench red sun trap urge vest whale plex yank zip'.split(' ')
@@ -21,7 +23,7 @@ with open('command_words.txt', 'r') as f:
 common_weights = [10 - math.log(i) for i in range(1, len(common_words)+1)]
 
 def choices(l, weights=None, k=1):
-    return ' '.join(random.choices(l, weights, k=k))
+    return ' '.join(random_choices.choices(l, weights, k=k))
 
 phrases = []
 def gen_common(k=1):
