@@ -1,5 +1,6 @@
 import random
 import itertools
+import bisect as _bisect
 
 # backported from python 3.6
 def choices(population, weights=None, *, cum_weights=None, k=1):
