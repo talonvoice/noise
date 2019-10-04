@@ -57,10 +57,10 @@ def humanize(n):
         return 'zero'
 
     group_0k = n % 1000
-    group_1k = (n // 1_000) % 1000
-    group_1m = (n // 1_000_000) % 1000
-    group_1b = (n // 1_000_000_000) % 1000
-    group_1t = (n // 1_000_000_000_000) % 1000
+    group_1k = (n // 1000) % 1000
+    group_1m = (n // 1000000) % 1000
+    group_1b = (n // 1000000000) % 1000
+    group_1t = (n // 1000000000000) % 1000
 
     out = []
     if group_1t: out += humanize_low(group_1t) + ['trillion']
