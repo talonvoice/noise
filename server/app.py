@@ -1,28 +1,15 @@
+from datetime import datetime
+from flask import Flask, Response, abort, redirect, render_template, request
+from mutagen.flac import FLAC
+from werkzeug.utils import secure_filename
 import hashlib
 import json
 import os
-from datetime import datetime
-from flask import Flask, Response, abort, redirect, render_template, request
-from werkzeug.utils import secure_filename
-from mutagen.flac import FLAC
+import random
+
+from phrasegen import gen_long_random
 
 app = Flask('noise_data')
-
-# cache bust the sounds
-with open('sounds.json', 'r') as f:
-    sounds = json.load(f)
-
-def bust(property):
-    if property in sound:
-        path = sound[property]['path']
-        with open(path.lstrip('/'), 'rb') as f:
-            md5 = hashlib.md5(f.read()).hexdigest()
-        sound[property]['path'] = path + '?' + md5
-
-for sound in sounds['sounds']:
-    bust('preview')
-    bust('video')
-sounds_json = json.dumps(sounds)
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -60,8 +47,22 @@ def upload():
     return 'ok'
 
 
+def str_to_shortname(s):
+    s = ''.join([c for c in s if c.isalpha() or c in " '"])
+    return s.replace(' ', '-')
+
 @app.route('/noises')
 def noises():
+    sounds = []
+    for i in range(500):
+        length = random.randint(1, 15)
+        text = ' '.join(gen_long_random(length).split(' ')[:length])
+        sounds.append({
+            "desc": text,
+            "name": text,
+            "short_name": str_to_shortname(text),
+        })
+    sounds_json = json.dumps({'sounds': sounds})
     return Response(sounds_json, mimetype='application/json')
 
 
