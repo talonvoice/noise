@@ -54,6 +54,18 @@ def str_to_shortname(s):
 @app.route('/noises')
 def noises():
     sounds = []
+    for i in range(20):
+        sounds.append({
+            "desc": "sit",
+            "name": "sit",
+            "short_name": "sit-{}".format(i),
+        })
+        sounds.append({
+            "desc": "six",
+            "name": "six",
+            "short_name": "six-{}".format(i),
+        })
+
     for i in range(500):
         length = random.randint(1, 15)
         text = ' '.join(gen_long_random(length).split(' ')[:length])
