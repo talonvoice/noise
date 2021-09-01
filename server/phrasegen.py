@@ -11,12 +11,12 @@ talon_alphabet = 'air bat cap drum each fine gust harp sit jury crunch look made
 # taken from https://en.wikipedia.org/wiki/Letter_frequency
 letter_weights = [8167, 1492, 2782, 4253, 12702, 2228, 2015, 6094, 6966, 153, 772, 4025, 2406, 6749, 7507, 1929, 95, 5987, 6327, 9056, 2758, 978, 2360, 150, 1974, 74]
 
-with open('common_words.txt', 'r') as f:
+with open('text/common_words.txt', 'r') as f:
     common_words = f.read().split('\n')
 
 word_map = {k: v for k, v in zip(english_alphabet, talon_alphabet)}
 word_map['cmd'] = 'command'
-with open('command_words.txt', 'r') as f:
+with open('text/command_words.txt', 'r') as f:
     command_words = [' '.join([word_map.get(word, word) for word in line.split(' ')])
                      for line in f.read().split('\n')]
 

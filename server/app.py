@@ -6,9 +6,52 @@ import hashlib
 import json
 import os
 import random
+import re
 
-from phrasegen import gen_long_random
+from phrasegen import gen_long, gen_long_random
 
+def str_to_shortname(s):
+    s = ''.join([c for c in s if c.isalpha() or c in " '"])
+    return s.replace(' ', '-')
+
+# load prompts
+with open('text/focus_words.txt', 'r') as f:
+    focus_words = f.read().strip().split('\n')
+
+def load_prompts():
+    prompts = {}
+    for ent in os.scandir('prompts'):
+        if not ent.name.endswith('.txt') or ent.name.startswith('.'):
+            continue
+        entries = []
+        with open(ent.path) as f:
+            for line in f:
+                text = line.strip()
+                if not text:
+                    continue
+
+                match = re.match((r'^(?P<text>.+)\s*' r'\((?P<name>[^)]+)\)' r'(?P<title>"[^"]+")?\s*$'), text)
+                title = text
+                name = str_to_shortname(text)
+                if match:
+                    text = match.group('text').strip()
+                    name = match.group('name').strip()
+                    if match.group('title'):
+                        title = match.group('title').strip('" ')
+                    else:
+                        title = text
+                entries.append({
+                    "desc": text,
+                    "name": title,
+                    "short_name": name,
+                })
+        name = ent.name.rsplit('.', 1)[0]
+        prompts[name] = entries
+    return prompts
+
+prompts = load_prompts()
+
+# start app
 app = Flask('noise_data')
 
 @app.route('/upload', methods=['POST'])
@@ -46,38 +89,33 @@ def upload():
             traceback.print_exc()
     return 'ok'
 
-
-def str_to_shortname(s):
-    s = ''.join([c for c in s if c.isalpha() or c in " '"])
-    return s.replace(' ', '-')
-
 @app.route('/noises')
 def noises():
-    sounds = []
-    for i in range(20):
-        sounds.append({
-            "desc": "sit",
-            "name": "sit",
-            "short_name": "sit-{}".format(i),
-        })
-        sounds.append({
-            "desc": "six",
-            "name": "six",
-            "short_name": "six-{}".format(i),
-        })
+    single_words = []
+    for i in range(5):
+        for word in focus_words:
+            single_words.append({
+                'desc': word,
+                'name': word,
+                'short_name': '{}-{}'.format(word, i),
+            })
 
     for i in range(500):
-        length = random.randint(1, 15)
-        text = ' '.join(gen_long_random(length).split(' ')[:length])
+        text = gen_long(common=1)
         if not text.strip():
             continue
-        sounds.append({
+        single_words.append({
             "desc": text,
             "name": text,
             "short_name": str_to_shortname(text),
         })
-    sounds_json = json.dumps({'sounds': sounds})
-    return Response(sounds_json, mimetype='application/json')
+    for prompt in prompts.values():
+        single_words += prompt
+
+    all_prompts = prompts.copy()
+    all_prompts["Single Words"] = single_words
+    prompts_json = json.dumps({'sounds': all_prompts['sentences']})
+    return Response(prompts_json, mimetype='application/json')
 
 
 @app.route('/')
