@@ -248,7 +248,7 @@ var shuffle = function (array) {
 };
 
 function initializeNoises(noises) {
-  shuffle(noises);
+  // shuffle(noises);
   let updatedNoiseList = noises.map(noise => {
     let status = NOISE_STATUS_VALUES.UNRECORDED;
     let recordCount = 0;
