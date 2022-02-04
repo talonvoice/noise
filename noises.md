@@ -30,33 +30,33 @@ Many of these sounds will be the same utterances, while using your lips to chang
 ### Hiss (sss)
 - Straight hiss sound
 - Let your mouth hang slightly open with your lips parted. This should feel very natural
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - Your tongue should stay relaxed behind the teeth and not be pushed against them, and the air should flow easily
 
 ### Muted Hiss (thh)
 - Let your mouth hang slightly open with your lips parted
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - Let the tip of your tongue rise a little and block some of the air flow
 - This should feel like it takes a little more pressure than the straight hiss sound, and the air will go off to the sides rather than the middle
 
 ### Restrained Hiss (fff)
 - Let your mouth hang slightly open with your lips parted
 - Bring your top front teeth down to gently rest on the top of your lower lip
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - This should feel like a little more pressure than sss, and less than thh
 
 ### Hi-Hat (tss)
 - Let your mouth hang slightly open with your lips parted
 - Have your teeth closed
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - The tip of your tongue should start pushed against the small ridge behind your teeth, then immediately drop it to normal position
 
 ### Shush (shh)
 - Let your mouth hang slightly open with your lips parted, this should feel very natural
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - The middle of your tongue should be raised closer to your palate and the air should still flow easily
 
-## Voiceless noises
+## Voiceless noses
 
 ### P (puh)
 - Press your lips together, the top lip should curl down a bit
@@ -124,7 +124,7 @@ Many of these sounds will be the same utterances, while using your lips to chang
 - Straight hiss sound
 - End with a 'k'
 - Let your mouth hang slightly open with your lips parted
-- Breathe in, through either your noise or mouth, then push it out through your teeth
+- Breathe in, through either your nose or mouth, then push it out through your teeth
 - Your tongue should not be pushed against your teeth, and the air should flow easily
 - Keep the tip of your tongue down and let the back should rise slightly to touch the soft palate, then force some air out
 - This should feel like letting out the rest of the breathe quickly
