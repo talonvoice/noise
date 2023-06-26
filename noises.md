@@ -56,7 +56,12 @@ Many of these sounds will be the same utterances, while using your lips to chang
 - Breathe in, through either your nose or mouth, then push it out through your teeth
 - The middle of your tongue should be raised closer to your palate and the air should still flow easily
 
-## Voiceless noses
+### Unvoiced subapical postalveolar non sibilant fricative
+- Bend your tongue upwards so that the tip almost touches the roof of your mouth
+- Breathe out so that the air whooshes around your tongue
+- See https://youtu.be/65c2FGQIpuc
+
+## Voiceless noises
 
 ### P (puh)
 - Press your lips together, the top lip should curl down a bit
@@ -190,6 +195,10 @@ https://www.youtube.com/watch?v=31zzMb3U0iY
 - Place your tongue against the roof of your mouth, then suck in
 - As you suck in, your tongue should start to slide back a little
 - Eventually it should slide off the roof of your mouth and the suction will create a click sound
+
+### Labiodental click
+- Place your front teeth against your lower lip, as if to make an 'f' sound
+- Suck in, and then release your teeth from your lower lip to make a sucking sound
 
 ## Other Sounds
 
